@@ -1,0 +1,66 @@
+:root {
+    /* Neutral colors */
+    --neutral-light: #F7F7F7;
+    --neutral-dark: #182126;
+
+    /* Accent colors */
+    --primary-color: #19DE8B;
+    --secondary-color: #5942DC;
+    --tertiary-color: #2FE9F9;
+
+    /* Fonts and spacing */
+    --primary-font: "Press Start 2P", system-ui, monospace;
+    --secondary-font: "Jersey 10", sans-serif;
+    --line-height: 1.5;
+
+    --font-small: clamp(0.875rem, 0.8125rem + 0.2vw, 1rem);
+    --font-medium: clamp(1rem, 0.9375rem + 0.25vw, 1.125rem);
+    --font-large: clamp(1.25rem, 1.125rem + 0.5vw, 1.5rem);
+    --font-xl: clamp(1.4rem, 1.2rem + 1vw, 1.8rem);
+    --font-xxl: clamp(2rem, 1.75rem + 1.25vw, 2.3rem);
+    --font-xxxl: var(--font-xxl);
+
+    /* UI elements */
+    --button-padding: 12px 24px;
+    --border-radius: 4px;
+    --transition-duration: 0.3s;
+
+    /* Accessibility */
+    --focus-outline: 4px solid var(--tertiary-color);
+    --focus-offset: 4px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    background: var(--neutral-dark);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-offset);
+}
+
+/* Utility screen reader */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
