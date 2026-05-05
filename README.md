@@ -1,10 +1,15 @@
-# Cosmic Sonar
+<div align="center">
+  
+<img width="800" alt="Cosmic Sonar" src="https://github.com/user-attachments/assets/fabb81d6-fe10-4ad0-99b3-0b4d630bb02c" />
 
-### Progetto di Stage Interno - Università degli Studi di Padova
-* **Dipartimento di Matematica "Tullio Levi-Civita"**
-* **Corso di Laurea:** Informatica (3° anno)
-* **Sviluppatore:** Siria Salvalaio (Matr. 2075520)
-* **Proponente:** Prof.ssa Ombretta Gaggi
+  <h3>Progetto di Stage Interno - Università degli Studi di Padova</h3>
+  <p>
+    <b>Dipartimento di Matematica "Tullio Levi-Civita"</b><br>
+    <b>Corso di Laurea:</b> Informatica (3° anno)<br>
+    <b>Sviluppatore:</b> Siria Salvalaio (Matr. 2075520)<br>
+    <b>Proponente:</b> Prof.ssa Ombretta Gaggi
+  </p>
+</div>
 
 ---
 
