@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="it"></html>
+<html lang="it">
     <head>
-        <title>Cosmic Sonar</title>
-        <meta name="description" content="Cosmic Sonar è un gioco arcade in cui i giocatori sono una navicella spaziale e devono evitare gli alieni per sopravvivere il più a lungo possibile.">
+        <title>Home - Cosmic Sonar</title>
+        <meta name="description" content="Cosmic Sonar è un gioco arcade in cui i giocatori sono una navicella spaziale e devono evitare gli alieni per sopravvivere il più a lungo possibile. Accessibile anche a persone con disabilità visiva, con controlli semplici.">
         <meta name="keywords" content="Cosmic Sonar, gioco arcade, navicella spaziale, alieni, sopravvivenza, accessibilità">
         [!HEAD!]
     </head>
     <body>
         [!HEADER!]
 
-        <div class="arcade-container">
-            <img src="src/assets/images/cabinato.svg" alt="Cabinato Arcade del gioco Cosmic Sonar" class="arcade-image">
+        <main id="main-content" class="arcade-container" tabindex="-1">
+            <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
             
             <div class="arcade-screen">
-                <img src="src/assets/images/background_screen.png" alt="Sfondo dello schermo" class="screen-bg">
                 <div class="screen-content">
                     <p class="insert-coin">Inserisci<br>moneta</p>
                 </div>
             </div>
 
             [!FOOTER!]
-        </div>
+        </main>
 
         <div class="stars" aria-hidden="true"></div>
         <div class="grid-background" aria-hidden="true"></div>
@@ -29,16 +28,17 @@
         Premi la barra spaziatrice per iniziare il gioco
     </p>
     
-    <!-- Start banner -->
+    <!-- Banner per capire cosa fare -->
     <aside class="start-banner" id="startBanner" role="complementary" aria-label="Istruzioni per iniziare">
         <p class="start-banner-text">
             Clicca <span class="tasto-spazio" aria-label="tasto spazio">SPAZIO</span> per iniziare
         </p>
     </aside>
 
-    <div class="resize-warning" aria-hidden="true">
+    <div class="resize-warning" role="alert">
         <p>⚠️ Risoluzione non supportata.<br><br>Rimpicciolisci o ingrandisci<br>la finestra per giocare.</p>
     </div>
+
 
     </body>
 </html>

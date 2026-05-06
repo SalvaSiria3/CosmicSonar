@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Menu - Cosmic Sonar</title>
+    <meta name="description" content="Menù principale del gioco Cosmic Sonar, un gioco arcade ambientato sullo spazio con alieni. Accessibile anche a persone con disabilità visiva, con controlli semplici.">
+    <meta name="keywords" content="Cosmic Sonar, gioco arcade, navicella spaziale, alieni, sopravvivenza, accessibilità, menu">
+    [!HEAD!]
+</head>
+<body>
+    [!HEADER!]
+
+    <div class="arcade-container zoomed" style="transition: none;">
+        <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
+        
+        <div class="arcade-screen">
+            <div class="screen-content">
+                <main id="main-content" class="menu-container" tabindex="-1">
+                    <h1 class="menu-title">Menù Principale</h1>
+                    <p class="menu-subtitle">(scegli un'opzione)</p>
+
+                    <div class="menu-options">
+                        <a href="tutorial.php" class="menu-option">
+                            <span class="menu-icon icon-tutorial" aria-hidden="true"></span>
+                            <span class="menu-option-title">Tutorial</span>
+                        </a>
+                        <a href="game.php" class="menu-option">
+                            <span class="menu-icon icon-game" aria-hidden="true"></span>
+                            <span class="menu-option-title">Gioca</span>
+                        </a>
+                        <a href="leaderboard.php" class="menu-option">
+                            <span class="menu-icon icon-leaderboard" aria-hidden="true"></span>
+                            <span class="menu-option-title">Classifica</span>
+                        </a>
+                        <a href="settings.php" class="menu-option">
+                            <span class="menu-icon icon-settings" aria-hidden="true"></span>
+                            <span class="menu-option-title">Impostazioni</span>
+                        </a>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        [!FOOTER!]
+    </div>
+
+    <div class="resize-warning" role="alert">
+        <p>⚠️ Risoluzione non supportata.<br><br>Rimpicciolisci o ingrandisci<br>la finestra per giocare.</p>
+    </div>
+
+    <div class="stars" aria-hidden="true"></div>
+    <div class="grid-background" aria-hidden="true"></div>
+</body>
+</html>

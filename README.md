@@ -1,6 +1,6 @@
 <div align="center">
   
-<img width="800" alt="Cosmic Sonar" src="https://github.com/user-attachments/assets/fabb81d6-fe10-4ad0-99b3-0b4d630bb02c" />
+  <img width="800" alt="Cosmic Sonar" src="https://github.com/user-attachments/assets/fabb81d6-fe10-4ad0-99b3-0b4d630bb02c" />
 
   <h3>Progetto di Stage Interno - Università degli Studi di Padova</h3>
   <p>

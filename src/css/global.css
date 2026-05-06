@@ -11,6 +11,7 @@
     /* Fonts and spacing */
     --primary-font: "Press Start 2P", system-ui, monospace;
     --secondary-font: "Jersey 10", sans-serif;
+    --tertiary-font: "Jersey 20", sans-serif;
     --line-height: 1.5;
 
     --font-small: clamp(0.875rem, 0.8125rem + 0.2vw, 1rem);
@@ -63,4 +64,129 @@ body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Skip link per accessibilità da tastiera */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--tertiary-color);
+    color: var(--neutral-dark);
+    padding: 10px 20px;
+    text-decoration: none;
+    font-family: var(--primary-font);
+    font-size: var(--font-small);
+    z-index: 9999;
+    border-radius: 0 0 8px 8px;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: none;
+}
+
+#main-content:focus {
+    outline: none;
+}
+
+/* navigation */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.7rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.logo_piccolo {
+    width: 6rem;
+    height: 6rem;
+    margin-right: 2rem;
+    background-image: url('../assets/images/favicon.ico');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-family: var(--primary-font);
+    font-size: var(--font-medium);
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    color: var(--neutral-light);
+}
+
+/* background stars */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    background-color: #111111;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle var(--duration, 2s) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+
+/* --- Blocco ridimensionamento finestra --- */
+.resize-warning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #952929;
+    font-family: var(--primary-font);
+    font-size: var(--font-medium);
+    line-height: 2;
+}
+
+/* Mostra l'avviso se la finestra è più stretta di 320px o più larga di 1200px */
+@media screen and (max-width: 1200px) {
+    .resize-warning {
+        display: flex;
+    }
 }
