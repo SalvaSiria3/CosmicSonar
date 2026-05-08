@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Gioco - Cosmic Sonar</title>
+    <meta name="description" content="Partita a Cosmic Sonar. Sopravvivi il più a lungo possibile agli alieni basandoti sull'audio spaziale.">
+    <meta name="keywords" content="Cosmic Sonar, gioco, arcade, audio, sopravvivenza">
+    [!HEAD!]
+</head>
+<body>
+    [!HEADER!]
+
+    <div class="arcade-container zoomed" style="transition: none;">
+        <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
+        
+        <div class="arcade-screen">
+            <div class="screen-content">
+                <main id="main-content" tabindex="-1">
+                    
+                    <p class="loading" tabindex="0" aria-live="assertive">
+                        Caricamento del gioco...
+                        <!-- Devo aggiungere caricamento e testo per la scorciatoia da tastiera per le impostazioni (ed eventuali dati), sarebbe utile un pulsante play? (che si può cliccare solo quando è pronto il gioco)-->
+                    </p>
+
+                    <div id="topbargame">
+                        <p>Punteggio: <span id="score"></span></p>
+                        <p>Vite: <span id="lives"></span></p>
+                        <button class="settings" aria-label="Impostazioni" title="Impostazioni">
+                            <span class="icon-settings" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        [!FOOTER!]
+    </div>
+
+    <div class="resize-warning" role="alert">
+        <p>⚠️ Risoluzione non supportata.<br><br>Rimpicciolisci o ingrandisci<br>la finestra per giocare.</p>
+    </div>
+
+    <div class="stars" aria-hidden="true"></div>
+    <div class="grid-background" aria-hidden="true"></div>
+</body>
+</html>

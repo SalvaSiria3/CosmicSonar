@@ -132,6 +132,13 @@ nav {
     transition: color 0.3s;
 }
 
+.nav-links a.disabled {
+    color: var(--neutral-light);
+    opacity: 0.5;
+    pointer-events: none; /* Impedisce interazioni del mouse e click */
+    cursor: default;
+}
+
 .nav-links a:hover,
 .nav-links a:focus {
     color: var(--neutral-light);

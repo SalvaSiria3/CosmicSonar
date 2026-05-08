@@ -9,18 +9,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const coinSound = new Audio('src/assets/sounds/coin.mp3');
     coinSound.preload = 'auto'; // Forza il browser a caricare il suono in anticipo
 
+    // Se siamo nella Home, resettiamo l'eventuale timer salvato per la musica del menu
+    if (startBanner) {
+        sessionStorage.removeItem('menuMusicTime');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !menuLoaded && startBanner) {
+            e.preventDefault();
+            toMenu();
+        }
+    });
+
     function toMenu() {
         if (menuLoaded) return;
         menuLoaded = true;
 
-        // Riproduce suono moneta (con gestione errori log)
+        // Riproduce suono moneta
         coinSound.currentTime = 0;
         coinSound.play().catch(e => console.log("Audio moneta non trovato:", e));
 
-        // Nasconde banner
         if (startBanner) startBanner.classList.add('hidden');
 
-        // Nasconde testo "Inserisci moneta"
         if (insertCoinText) {
             insertCoinText.style.animation = 'none';
             insertCoinText.style.transition = 'opacity 0.3s ease';
@@ -43,18 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500);
     }
 
-    // Intercetta la pressione del tasto Spazio
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' && !menuLoaded) {
-            e.preventDefault();
-            toMenu();
-        }
-    });
 
     // Gestisce il ritorno indietro tramite la cronologia del browser
     window.addEventListener('pageshow', (event) => {
-        if (event.persisted) {
-            menuLoaded = false; // Sblocca il tasto SPAZIO per poterlo ripremere
+        if (event.persisted && startBanner) {
+            menuLoaded = false;
 
             // Rimuove lo zoom (a quanto pare il css fa da solo il ritorno dello zoom)
             if (arcadeContainer) arcadeContainer.classList.remove('zoomed');

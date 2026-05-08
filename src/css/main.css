@@ -139,13 +139,15 @@
     border-top: 3px solid black;
     opacity: 0.98;
     transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+    visibility: visible;
 }
 
 .start-banner.hidden {
     opacity: 0;
     transform: translateY(100%);
     pointer-events: none;
+    visibility: hidden; /* Nasconde completamente il banner agli screen reader quando è chiuso */
 }
 
 .start-banner-text {
@@ -155,7 +157,7 @@
     text-transform: uppercase;
 }
 
-.tasto-spazio {
+.tasto {
     display: inline-block;
     padding: 10px 16px;
     background: var(--neutral-dark);
