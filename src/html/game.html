@@ -29,11 +29,24 @@
                     </div>
 
                     <div id="topbargame" style="display: none;">
-                        <p>Punteggio: <span id="score"></span></p>
-                        <p>Vite: <span id="lives"></span></p>
-                        <button type="button" class="settings" aria-label="Impostazioni" title="Impostazioni">
+                        <div class="score-container" aria-live="polite" aria-atomic="true">
+                            <span class="sr-only">Punteggio: </span>
+                            <span id="score">0000</span>
+                        </div>
+                        <div class="lives-container" role="group" aria-label="Vite: 3" id="lives-container">
+                            <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-3">
+                            <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-2">
+                            <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-1">
+                        </div>
+                        <button type="button" class="settings-btn" aria-label="Impostazioni" title="Impostazioni">
                             <span class="icon-settings" aria-hidden="true"></span>
                         </button>
+                    </div>
+
+                    <div id="game-area" style="display: none;" aria-hidden="true">
+                        <div class="lane" id="lane-left"></div>
+                        <div class="lane" id="lane-center"></div>
+                        <div class="lane" id="lane-right"></div>
                     </div>
                 </main>
             </div>

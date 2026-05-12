@@ -368,3 +368,88 @@
     outline: 1px solid var(--primary-color);
     outline-offset: 2px;
 }
+
+/* --- Interfaccia Gioco (Top Bar) --- */
+#topbargame {
+    position: absolute;
+    top: -5.555%;
+    left: -5cqw;
+    width: 100cqw;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3cqw 10cqw 1cqw 9cqw;
+    z-index: 10;
+    background-color: rgba(24, 33, 38, 0.70);
+    border-bottom: 0.3cqw solid var(--secondary-color);
+    box-shadow: 0 1cqw 2cqw rgba(0, 0, 0, 0.5);
+}
+
+.score-container {
+    font-family: var(--primary-font);
+    font-size: 3.5cqw;
+    color: var(--tertiary-color);
+    text-shadow: 0 0 1cqw var(--tertiary-color);
+}
+
+.lives-container {
+    display: flex;
+    gap: 1cqw;
+}
+
+.heart-icon {
+    width: 6cqw;
+    height: auto;
+}
+
+.settings-btn {
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 0.3cqw solid var(--tertiary-color);
+    box-shadow: inset 0 0 0 0.2cqw var(--secondary-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 0.8cqw;
+    margin-bottom: 1cqw;
+}
+
+.settings-btn:hover,
+.settings-btn:focus-visible {
+    background-color: rgba(247, 247, 247, 0.12);
+    outline: 1px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.settings-btn .icon-settings {
+    display: block;
+    width: 4cqw;
+    height: 4cqw;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* --- Area di Gioco (3 Colonne) --- */
+#game-area {
+    position: absolute;
+    top: 8cqw;
+    left: -7cqw;
+    width: 104cqw;
+    bottom: -7.5%;
+    padding: 0 4cqw 2cqw 4cqw;
+}
+
+.lane {
+    flex: 1;
+    background-color: rgba(25, 222, 139, 0.09);
+    border-right: 0.2cqw dashed rgba(47, 233, 249, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.lane:first-child {
+    border-left: 0.4cqw solid rgba(151, 29, 29, 0.8);
+}
+
+.lane:last-child {
+    border-right: 0.4cqw solid rgba(151, 29, 29, 0.8);
+}
