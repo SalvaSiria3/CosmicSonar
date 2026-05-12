@@ -15,16 +15,23 @@
         <div class="arcade-screen">
             <div class="screen-content">
                 <main id="main-content" tabindex="-1">
-                    
-                    <p class="loading" tabindex="0" aria-live="assertive">
-                        Caricamento del gioco...
-                        <!-- Devo aggiungere caricamento e testo per la scorciatoia da tastiera per le impostazioni (ed eventuali dati), sarebbe utile un pulsante play? (che si può cliccare solo quando è pronto il gioco)-->
-                    </p>
+                    <h1 class="sr-only">Partita in corso</h1>
 
-                    <div id="topbargame">
+                    <div id="loading-screen" class="loading-container">
+                        <img src="src/assets/images/logo_senza_sfondo.png" alt="" aria-hidden="true" class="loading-logo">
+                        <div class="progress-wrapper">
+                            <div class="progress-bar-container">
+                                <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-labelledby="loading-text"></div>
+                            </div>
+                            <p id="loading-percentage" aria-hidden="true">0%</p>
+                        </div>
+                        <p id="loading-text" aria-live="polite">Caricamento in corso...</p>
+                    </div>
+
+                    <div id="topbargame" style="display: none;">
                         <p>Punteggio: <span id="score"></span></p>
                         <p>Vite: <span id="lives"></span></p>
-                        <button class="settings" aria-label="Impostazioni" title="Impostazioni">
+                        <button type="button" class="settings" aria-label="Impostazioni" title="Impostazioni">
                             <span class="icon-settings" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -41,5 +48,8 @@
 
     <div class="stars" aria-hidden="true"></div>
     <div class="grid-background" aria-hidden="true"></div>
+
+    <!-- Script per la logica di caricamento -->
+    <script src="src/js/game/loader.js" defer></script>
 </body>
 </html>

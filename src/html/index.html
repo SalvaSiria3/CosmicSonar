@@ -9,17 +9,19 @@
     <body>
         [!HEADER!]
 
-        <main id="main-content" class="arcade-container" tabindex="-1">
+        <div class="arcade-container">
             <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
             
             <div class="arcade-screen">
                 <div class="screen-content">
-                    <h1 class="insert-coin">Inserisci<br>moneta</h1>
+                    <main id="main-content" tabindex="-1">
+                        <h1 class="insert-coin">Inserisci<br>moneta</h1>
+                    </main>
                 </div>
             </div>
 
             [!FOOTER!]
-        </main>
+        </div>
 
         <div class="stars" aria-hidden="true"></div>
         <div class="grid-background" aria-hidden="true"></div>
@@ -29,9 +31,9 @@
     </p>
     
     <!-- Banner per capire cosa fare -->
-    <aside class="start-banner" id="startBanner" role="complementary" aria-label="Istruzioni per iniziare">
+    <aside class="start-banner" id="startBanner" role="region" aria-label="Istruzioni per iniziare">
         <p class="start-banner-text">
-            Clicca <span class="tasto" aria-label="tasto spazio">SPAZIO</span> per iniziare
+            Clicca <span class="sr-only">la barra spaziatrice</span><span class="tasto" aria-hidden="true">SPAZIO</span> per iniziare
         </p>
     </aside>
 

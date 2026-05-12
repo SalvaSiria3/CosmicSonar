@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBanner = document.getElementById('startBanner');
     const audioBanner = document.getElementById('audioBanner');
     
-    // La musica non c'è nella home
+    // La musica non c'è nelle altre pagine
     if (startBanner) return;
 
     const menuSound = new Audio('src/assets/sounds/menu_sound.mp3');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // I browser nuovi bloccano l'autoplay audio se non c'è stata interazione
         if (playPromise !== undefined) {
             playPromise.catch(error => {
-                // Se bloccato, mostra il banner per chiedere l'interazione
+                // Se bloccato, mostra il banner per chiedere il click
                 if (audioBanner) audioBanner.classList.remove('hidden');
 
                 const startAudioOnInteract = () => {
@@ -31,12 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     document.removeEventListener('keydown', startAudioOnInteract);
                     document.removeEventListener('click', startAudioOnInteract);
-                    document.removeEventListener('mouseenter', startAudioOnInteract);
                 };
                 
                 document.addEventListener('keydown', startAudioOnInteract);
                 document.addEventListener('click', startAudioOnInteract);
-                    document.removeEventListener('mouseenter', startAudioOnInteract);
             });
         }
     };
