@@ -372,12 +372,12 @@
 /* --- Interfaccia Gioco (Top Bar) --- */
 #topbargame {
     position: absolute;
-    top: -5.555%;
+    top: -7%;
     left: -5cqw;
     width: 100cqw;
     justify-content: space-between;
     align-items: center;
-    padding: 3cqw 10cqw 1cqw 9cqw;
+    padding: 3cqw 10cqw 0.5cqw 9cqw;
     z-index: 10;
     background-color: rgba(24, 33, 38, 0.70);
     border-bottom: 0.3cqw solid var(--secondary-color);
@@ -428,7 +428,7 @@
     background-position: center;
 }
 
-/* --- Area di Gioco (3 Colonne) --- */
+
 #game-area {
     position: absolute;
     top: 8cqw;
@@ -453,3 +453,20 @@
 .lane:last-child {
     border-right: 0.4cqw solid rgba(151, 29, 29, 0.8);
 }
+
+/* --- Navicella Giocatore --- */
+.player-ship {
+    position: absolute;
+    bottom: 5cqw;
+    left: 50%;
+    width: 7cqw;
+    height: auto;
+    z-index: 20;
+}
+
+/* Posizioni esatte calcolate in base alla larghezza delle 3 colonne (32cqw l'una) */
+.player-ship.lane-0 { transform: translateX(calc(-50% - 32cqw)); } /* Sinistra */
+
+.player-ship.lane-1 { transform: translateX(-50%); }               /* Centro */
+
+.player-ship.lane-2 { transform: translateX(calc(-50% + 32cqw)); } /* Destra */
