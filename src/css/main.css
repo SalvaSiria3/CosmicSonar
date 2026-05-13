@@ -457,7 +457,7 @@
 /* --- Navicella Giocatore --- */
 .player-ship {
     position: absolute;
-    bottom: 5cqw;
+    bottom: 4cqw;
     left: 50%;
     width: 7cqw;
     height: auto;
@@ -470,3 +470,41 @@
 .player-ship.lane-1 { transform: translateX(-50%); }               /* Centro */
 
 .player-ship.lane-2 { transform: translateX(calc(-50% + 32cqw)); } /* Destra */
+
+/* --- Nemici (Alieni) --- */
+.alien {
+    position: absolute;
+    top: -20cqw; /* Parte sopra lo schermo, nascosto dall'overflow della colonna */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9cqw;
+    height: 9cqw;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 15;
+}
+
+@keyframes fallDown {
+    0% { top: -20cqw; }
+    100% { top: 120%; } /* Cade oltre il fondo per essere eliminato fluidamente */
+}
+
+/* --- Laser (Proiettile) --- */
+.laser {
+    position: absolute;
+    bottom: 12cqw; /* Parte poco sopra la navicella */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5cqw;
+    height: 5cqw;
+    background-color: var(--tertiary-color);
+    box-shadow: 0 0 2cqw var(--tertiary-color);
+    border-radius: 1cqw;
+    z-index: 10;
+}
+
+@keyframes shootUp {
+    0% { bottom: 12cqw; }
+    100% { bottom: 100vh; } /* Schizza fino in cima allo schermo */
+}

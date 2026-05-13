@@ -63,13 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
         playButton.focus(); // comodo per la tastiera
 
         playButton.addEventListener('click', () => {
-            // Nascondi la schermata di caricamento e mostra l'interfaccia di gioco
+
             loadingScreen.style.display = 'none';
             if (topBarGame) topBarGame.style.display = 'flex';
             
             const gameArea = document.getElementById('game-area');
             if (gameArea) gameArea.style.display = 'flex';
-            // Qui inizierà la vera logica del gioco (es. initGame())
+            
+            // Avvia la logica del gioco (spawn alieni e punteggio)
+            if (typeof window.startCosmicSonarGame === 'function') {
+                window.startCosmicSonarGame();
+            }
         });
     }
 
