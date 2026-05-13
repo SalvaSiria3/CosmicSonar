@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const coinSound = new Audio('src/assets/sounds/coin.mp3');
     coinSound.preload = 'auto'; // Forza il browser a caricare il suono in anticipo
 
-    // Se siamo nella Home, resettiamo l'eventuale timer salvato per la musica del menu
     if (startBanner) {
         sessionStorage.removeItem('menuMusicTime');
     }
@@ -25,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (menuLoaded) return;
         menuLoaded = true;
 
-        // Riproduce suono moneta
         coinSound.currentTime = 0;
         coinSound.play().catch(e => console.log("Audio moneta non trovato:", e));
 
@@ -37,12 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
             insertCoinText.style.opacity = '0';
         }
         
-        // Aggiorna lo screen reader
         if (statusMessage) {
             statusMessage.textContent = 'Moneta inserita. Caricamento del menu principale...';
         }
 
-        // Esegue l'animazione di zoom sul cabinato
         if (arcadeContainer) {
             arcadeContainer.classList.add('zoomed');
         }
@@ -59,10 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.persisted && startBanner) {
             menuLoaded = false;
 
-            // Rimuove lo zoom (a quanto pare il css fa da solo il ritorno dello zoom)
             if (arcadeContainer) arcadeContainer.classList.remove('zoomed');
             
-            // Ripristina banner e scritte
             if (startBanner) startBanner.classList.remove('hidden');
             if (insertCoinText) {
                 insertCoinText.style.animation = '';

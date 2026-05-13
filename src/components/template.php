@@ -2,7 +2,6 @@
 
 class Template {
     public static function render($file, $vars = []) {
-        // costruiamo il percorso partendo dalla posizione di questo file
         $filePath = __DIR__ . "/../../" . $file;
         
         if (!file_exists($filePath)) {

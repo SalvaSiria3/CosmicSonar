@@ -8,59 +8,87 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!loadingScreen) return;
 
     const gameAssets = [
-        //inserire i veri file
-        'sound1.mp3', 'sound2.wav', 'sound3.ogg', 'sound4.mp3', 'sound5.wav',
-        'image1.png', 'image2.svg', 'image3.webp', 'image4.png', 'image5.png',
-        'font1.woff2', 'config.json', 'level1.json', 'level2.json', 'sprite_sheet.png',
-        'sound6.mp3', 'sound7.wav', 'image6.png', 'image7.png', 'image8.png'
+        // Assets
+        'src/assets/images/cabinato.svg',
+        'src/assets/images/background.png',
+        'src/assets/images/background_screen.png',
+        'src/assets/images/favicon.ico',
+        'src/assets/images/logo_senza_sfondo.png',
+        'src/assets/images/star.webp',
+        'src/assets/images/tutorial_icon.png',
+        'src/assets/images/game_icon.png',
+        'src/assets/images/leaderboard_icon.png',
+        'src/assets/images/settings_icon.png',
+        'src/assets/images/navicella.png',
+        'src/assets/images/heart_full.png',
+        'src/assets/images/heart_empty.png',
+        'src/assets/images/aliens1.webp',
+        'src/assets/images/aliens2.webp',
+        'src/assets/images/aliens3.webp',
+        'src/assets/images/aliens4.webp',
+        // Audio
+        'src/assets/sounds/coin.mp3',
+        'src/assets/sounds/menu_sound.mp3'
     ];
 
+    // Serve per far vedere il caricamento (sennò va troppo veloce)
     let assetsLoaded = 0;
     const totalAssets = gameAssets.length;
-
+    const startTime = Date.now(); 
     function updateProgress() {
         assetsLoaded++;
         const percentage = Math.round((assetsLoaded / totalAssets) * 100);
 
         progressBar.style.width = percentage + '%';
         
-        // aggiorna il testo della percentuale per gli screen reader
+        // aggiorna il testo della percentuale per gli screen reader (ha senso?)
         loadingPercentage.textContent = percentage + '%';
 
-        // comunica il valore allo screen reader
+        // comunica il valore allo screen reader (ha senso?)
         progressBar.setAttribute('aria-valuenow', percentage);
 
-        // controlla se il caricamento è terminato
         if (assetsLoaded === totalAssets) {
-            setTimeout(loadingComplete, 300); // piccola pausa per mostrare il 100% prima di passare alla schermata successiva
+            const elapsedTime = Date.now() - startTime;
+            const minimumLoadingTime = 1000;
+            const delay = Math.max(300, minimumLoadingTime - elapsedTime);
+            
+            setTimeout(loadingComplete, delay);
         }
     }
 
-    function simulateAssetLoading() {
+    function preloadAssets() {
         if (totalAssets === 0) {
-            loadingComplete();
+            setTimeout(loadingComplete, 2000);
             return;
         }
-        // simulazione caricamento di un asset ogni X millisecondi (finchè non ho i veri file)
-        gameAssets.forEach((asset, index) => {
-            setTimeout(updateProgress, (index + 1) * 75); // Aumenta il ritardo per ogni asset
+        
+        gameAssets.forEach((asset) => {
+            if (asset.endsWith('.png') || asset.endsWith('.svg') || asset.endsWith('.webp') || asset.endsWith('.ico')) {
+                const img = new Image();
+                img.onload = updateProgress;
+                img.onerror = updateProgress;
+                img.src = asset;
+            } else if (asset.endsWith('.mp3') || asset.endsWith('.wav')) {
+                const audio = new Audio();
+                audio.oncanplaythrough = updateProgress;
+                audio.onerror = updateProgress;
+                audio.src = asset;
+            }
         });
     }
 
     function loadingComplete() {
         loadingText.textContent = 'Caricamento completato!';
         
-        // Nasconde la barra e la percentuale (e altre info del gioco)
         progressBar.parentElement.style.display = 'none';
         loadingPercentage.style.display = 'none';
 
-        // Crea e mostra il pulsante "Gioca"
         const playButton = document.createElement('button');
         playButton.textContent = 'Gioca';
         playButton.className = 'play-button';
         loadingScreen.appendChild(playButton);
         
-        playButton.focus(); // comodo per la tastiera
+        playButton.focus(); // comodo per la tastiera (appena finito il caricamento il bottone ha già il focus)
 
         playButton.addEventListener('click', () => {
 
@@ -70,13 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const gameArea = document.getElementById('game-area');
             if (gameArea) gameArea.style.display = 'flex';
             
-            // Avvia la logica del gioco (spawn alieni e punteggio)
             if (typeof window.startCosmicSonarGame === 'function') {
                 window.startCosmicSonarGame();
             }
         });
     }
 
-    // Avvia la simulazione del caricamento
-    simulateAssetLoading();
+    // Avvia il caricamento degli asset
+    preloadAssets();
 });

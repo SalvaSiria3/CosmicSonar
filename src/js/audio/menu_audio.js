@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBanner = document.getElementById('startBanner');
     const audioBanner = document.getElementById('audioBanner');
     
-    // La musica non c'è nelle altre pagine
+    // La musica non c'è nelle altre pagine (sistemare quando ci saranno altre pagine pronte)
     if (startBanner) return;
 
     const menuSound = new Audio('src/assets/sounds/menu_sound.mp3');
@@ -39,14 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Attende che il file sia pronto prima di manipolare il tempo ed avviarlo
     if (menuSound.readyState >= 1) { // 1 = HAVE_METADATA
         startMusic();
     } else {
         menuSound.addEventListener('loadedmetadata', startMusic);
     }
 
-    // Salva il tempo della canzone quando l'utente cambia pagina per farla continuare
     window.addEventListener('beforeunload', () => {
         sessionStorage.setItem('menuMusicTime', menuSound.currentTime);
     });

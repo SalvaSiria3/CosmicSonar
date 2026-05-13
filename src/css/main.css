@@ -169,7 +169,7 @@
     border: 2px solid var(--secondary-color);
 }
 
-/* --- Stile per le pagine interne (Schermo Menu) --- */
+/* --- Schermo Menu --- */
 .screen-view {
     background-color: #000;
     display: flex;
@@ -454,7 +454,7 @@
     border-right: 0.4cqw solid rgba(151, 29, 29, 0.8);
 }
 
-/* --- Navicella Giocatore --- */
+/* --- Navicella --- */
 .player-ship {
     position: absolute;
     bottom: 4cqw;
@@ -464,19 +464,20 @@
     z-index: 20;
 }
 
-/* Posizioni esatte calcolate in base alla larghezza delle 3 colonne (32cqw l'una) */
+/* Posizioni esatte calcolate in base alla larghezza delle 3 colonne */
 .player-ship.lane-0 { transform: translateX(calc(-50% - 32cqw)); } /* Sinistra */
 
 .player-ship.lane-1 { transform: translateX(-50%); }               /* Centro */
 
 .player-ship.lane-2 { transform: translateX(calc(-50% + 32cqw)); } /* Destra */
 
-/* --- Nemici (Alieni) --- */
+/* --- Alieni --- */
 .alien {
     position: absolute;
-    top: -20cqw; /* Parte sopra lo schermo, nascosto dall'overflow della colonna */
-    left: 50%;
-    transform: translateX(-50%);
+    top: -20cqw;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     width: 9cqw;
     height: 9cqw;
     background-size: contain;
@@ -487,15 +488,34 @@
 
 @keyframes fallDown {
     0% { top: -20cqw; }
-    100% { top: 120%; } /* Cade oltre il fondo per essere eliminato fluidamente */
+    100% { top: 120%; }
 }
 
-/* --- Laser (Proiettile) --- */
+@keyframes explodeEffect {
+    0% {
+        background-color: #F7F7F7;
+        box-shadow: 0 0 4cqw #F7F7F7, 0 0 8cqw #2FE9F9;
+        border-radius: 50%;
+    }
+    100% {
+        background-color: rgba(247, 247, 247, 0);
+        box-shadow: 0 0 2cqw rgba(247, 247, 247, 0), 0 0 4cqw rgba(47, 233, 249, 0);
+        border-radius: 50%;
+    }
+}
+
+.alien.exploded {
+    background-image: none; /* Toglie l'immagine dell'alieno */
+    animation: explodeEffect 0.3s ease-out forwards;
+}
+
+/* --- Proiettile --- */
 .laser {
     position: absolute;
-    bottom: 12cqw; /* Parte poco sopra la navicella */
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 12cqw;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     width: 1.5cqw;
     height: 5cqw;
     background-color: var(--tertiary-color);
@@ -506,5 +526,5 @@
 
 @keyframes shootUp {
     0% { bottom: 12cqw; }
-    100% { bottom: 100vh; } /* Schizza fino in cima allo schermo */
+    100% { bottom: 100vh; }
 }
