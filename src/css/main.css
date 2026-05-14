@@ -11,7 +11,7 @@
 
 /* Utility classes per separare lo stile dall'HTML */
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .no-transition {

@@ -191,8 +191,7 @@ nav {
     line-height: 2;
 }
 
-/* Mostra l'avviso se la finestra è più stretta di 320px o più larga di 1200px */
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1100px), screen and (min-width: 1800px) {
     .resize-warning {
         display: flex;
     }
