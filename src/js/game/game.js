@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lives = 3;
     
     let spawnRate = 5000;
-    let enemySpeed = 10.0;
+    let enemySpeed = 15.0; // Secondi di discesa dei nemici (più basso = più veloce)
     let spawnTimeoutId;
     let animationFrameId; // Motore di gioco continuo
 
@@ -50,9 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alien.className = 'alien';
         
         const alienType = Math.floor(Math.random() * 4) + 1;
-        alien.style.backgroundImage = `url('src/assets/images/aliens${alienType}.webp')`;
-        
-        alien.style.animation = `fallDown ${enemySpeed}s steps(20) forwards`;
+        alien.classList.add(`alien-${alienType}`);
+        alien.style.setProperty('--fall-speed', `${enemySpeed}s`);
         
         alien.addEventListener('animationend', () => {
             alien.remove();
@@ -82,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         laser.className = 'laser';
         lanes[currentLane].appendChild(laser);
         
-        laser.style.animation = `shootUp 0.9s linear forwards`;
         laser.addEventListener('animationend', () => laser.remove());
     }
 
@@ -102,12 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isColliding(laserRect, alienRect) && alienRect.bottom > gameAreaRect.top) {
                     laser.remove();
 
-                    const currentTop = window.getComputedStyle(alien).getPropertyValue('top');
-                    alien.style.top = currentTop;
+                    const currentTop = window.getComputedStyle(alien).top;
+                    alien.style.setProperty('--freeze-top', currentTop);
                     
                     alien.classList.add('exploded');
 
-                    setTimeout(() => alien.remove(), 300);
                     
                     score += 10;    // Bastano 10?
                     if (scoreElement) scoreElement.textContent = score.toString().padStart(4, '0');
@@ -147,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Temporanea per testare il game over (da sistemare)
     function gameOver() {
         isGameRunning = false;
         clearTimeout(spawnTimeoutId);
@@ -160,4 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     }
 
+    window.startCosmicSonarGame = function() {
+        if (isGameRunning) return;
+        isGameRunning = true;
+        
+        scheduleNextSpawn();
+        animationFrameId = requestAnimationFrame(gameLoop);
+    };
 });

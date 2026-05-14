@@ -9,6 +9,15 @@
     margin-bottom: 0;
 }
 
+/* Utility classes per separare lo stile dall'HTML */
+.hide {
+    display: none;
+}
+
+.no-transition {
+    transition: none;
+}
+
 .arcade-container.zoomed {
     transform: scale(2);
     margin-bottom: 60vw;
@@ -375,6 +384,7 @@
     top: -7%;
     left: -5cqw;
     width: 100cqw;
+    display: none;
     justify-content: space-between;
     align-items: center;
     padding: 3cqw 10cqw 0.5cqw 9cqw;
@@ -382,6 +392,10 @@
     background-color: rgba(24, 33, 38, 0.70);
     border-bottom: 0.3cqw solid var(--secondary-color);
     box-shadow: 0 1cqw 2cqw rgba(0, 0, 0, 0.5);
+}
+
+#topbargame.active {
+    display: flex;
 }
 
 .score-container {
@@ -436,6 +450,11 @@
     width: 104cqw;
     bottom: -7.5%;
     padding: 0 4cqw 2cqw 4cqw;
+    display: none;
+}
+
+#game-area.active {
+    display: flex;
 }
 
 .lane {
@@ -446,11 +465,11 @@
     overflow: hidden;
 }
 
-.lane:first-child {
+.lane:first-of-type {
     border-left: 0.4cqw solid rgba(151, 29, 29, 0.8);
 }
 
-.lane:last-child {
+.lane:last-of-type {
     border-right: 0.4cqw solid rgba(151, 29, 29, 0.8);
 }
 
@@ -484,7 +503,13 @@
     background-repeat: no-repeat;
     background-position: center;
     z-index: 15;
+    animation: fallDown var(--fall-speed, 15s) steps(30) forwards;
 }
+
+.alien-1 { background-image: url('../assets/images/aliens1.webp'); }
+.alien-2 { background-image: url('../assets/images/aliens2.webp'); }
+.alien-3 { background-image: url('../assets/images/aliens3.webp'); }
+.alien-4 { background-image: url('../assets/images/aliens4.webp'); }
 
 @keyframes fallDown {
     0% { top: -20cqw; }
@@ -493,20 +518,20 @@
 
 @keyframes explodeEffect {
     0% {
-        background-color: #F7F7F7;
-        box-shadow: 0 0 4cqw #F7F7F7, 0 0 8cqw #2FE9F9;
-        border-radius: 50%;
+        background-color: var(--neutral-light);
+        box-shadow: 0 0 4cqw var(--neutral-light), 0 0 8cqw var(--tertiary-color);
     }
     100% {
-        background-color: rgba(247, 247, 247, 0);
-        box-shadow: 0 0 2cqw rgba(247, 247, 247, 0), 0 0 4cqw rgba(47, 233, 249, 0);
-        border-radius: 50%;
+        background-color: transparent;
+        box-shadow: 0 0 4cqw transparent, 0 0 8cqw transparent;
     }
 }
 
 .alien.exploded {
-    background-image: none; /* Toglie l'immagine dell'alieno */
-    animation: explodeEffect 0.3s ease-out forwards;
+    top: var(--freeze-top) !important;
+    background-image: none !important;
+    border-radius: 50%;
+    animation: explodeEffect 0.3s ease-out forwards !important;
 }
 
 /* --- Proiettile --- */
@@ -522,6 +547,7 @@
     box-shadow: 0 0 2cqw var(--tertiary-color);
     border-radius: 1cqw;
     z-index: 10;
+    animation: shootUp 0.9s linear forwards;
 }
 
 @keyframes shootUp {

@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadingComplete() {
         loadingText.textContent = 'Caricamento completato!';
         
-        progressBar.parentElement.style.display = 'none';
-        loadingPercentage.style.display = 'none';
+        progressBar.parentElement.classList.add('hide');
+        loadingPercentage.classList.add('hide');
 
         const playButton = document.createElement('button');
         playButton.textContent = 'Gioca';
@@ -92,11 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         playButton.addEventListener('click', () => {
 
-            loadingScreen.style.display = 'none';
-            if (topBarGame) topBarGame.style.display = 'flex';
+            loadingScreen.classList.add('hide');
+            if (topBarGame) topBarGame.classList.add('active');
             
             const gameArea = document.getElementById('game-area');
-            if (gameArea) gameArea.style.display = 'flex';
+            if (gameArea) gameArea.classList.add('active');
             
             if (typeof window.startCosmicSonarGame === 'function') {
                 window.startCosmicSonarGame();

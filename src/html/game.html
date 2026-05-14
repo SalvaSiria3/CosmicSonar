@@ -9,7 +9,7 @@
 <body>
     [!HEADER!]
 
-    <div class="arcade-container zoomed" style="transition: none;">
+    <div class="arcade-container zoomed no-transition">
         <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
         
         <div class="arcade-screen">
@@ -28,7 +28,7 @@
                         <p id="loading-text" aria-live="polite">Caricamento in corso...</p>
                     </div>
 
-                    <div id="topbargame" style="display: none;">
+                    <div id="topbargame">
                         <div class="score-container" aria-live="polite" aria-atomic="true">
                             <span class="sr-only">Punteggio: </span>
                             <span id="score">0000</span>
@@ -43,7 +43,7 @@
                         </button>
                     </div>
 
-                    <div id="game-area" style="display: none;" aria-hidden="true">
+                    <div id="game-area" aria-hidden="true">
                         <div class="lane" id="lane-left"></div>
                         <div class="lane" id="lane-center"></div>
                         <div class="lane" id="lane-right"></div>
