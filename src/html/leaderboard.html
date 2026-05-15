@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Classifica - Cosmic Sonar</title>
+    <meta name="description" content="Classifica dei migliori punteggi di Cosmic Sonar.">
+    [!HEAD!]
+</head>
+<body>
+    [!HEADER!]
+
+    <div class="arcade-container zoomed no-transition">
+        <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
+        
+        <div class="arcade-screen">
+            <div class="screen-content">
+                <main id="main-content" class="leaderboard-container" tabindex="-1">
+                    <img src="src/assets/images/logo_senza_sfondo.png" alt="" aria-hidden="true" class="leaderboard-logo">
+                    <h1 class="menu-title leaderboard-title">CLASSIFICA</h1>
+                    
+                    <!-- La classifica viene generata in JS -->
+                    <ul id="leaderboard-list" class="leaderboard-list" aria-label="Top 7 Punteggi"></ul>
+                    
+                    <div class="leaderboard-actions" role="group" aria-label="Azioni classifica">
+                        <a href="menu.php" class="arcade-btn back-btn">Torna al Menu</a>
+                        <a href="game.php" class="arcade-btn play-again-btn">Gioca di nuovo</a>
+                    </div>
+                </main>
+            </div>
+        </div>
+        [!FOOTER!]
+    </div>
+    <div class="stars" aria-hidden="true"></div>
+    <div class="grid-background" aria-hidden="true"></div>
+    <script src="src/js/ui/leaderboard.js" defer></script>
+</body>
+</html>

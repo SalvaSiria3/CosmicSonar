@@ -182,7 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
             username = "ANONIMUS";
         }
         
-        const newScore = { name: username.substring(0, 10), score: score };
+        const newScore = { 
+            id: Date.now(),
+            name: username.substring(0, 10), 
+            score: score,
+            mode: 'classic' // Poi ci sarà la versione accessibile/difficile
+        };
         
         try {
             let leaderboard = JSON.parse(localStorage.getItem('cosmicSonarLeaderboard')) || [];
@@ -190,6 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             leaderboard.sort((a, b) => b.score - a.score);
             localStorage.setItem('cosmicSonarLeaderboard', JSON.stringify(leaderboard));
+            
+            sessionStorage.setItem('lastPlayedId', newScore.id);
         } catch (error) {
             console.warn("Impossibile salvare il punteggio nel localStorage:", error);
         }
