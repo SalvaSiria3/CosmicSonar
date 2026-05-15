@@ -14,11 +14,20 @@
         <div class="arcade-screen">
             <div class="screen-content">
                 <main id="main-content" class="leaderboard-container" tabindex="-1">
-                    <img src="src/assets/images/logo_senza_sfondo.png" alt="" aria-hidden="true" class="leaderboard-logo">
-                    <h1 class="menu-title leaderboard-title">CLASSIFICA</h1>
+                    <div class="leaderboard-header">
+                        <img src="src/assets/images/logo_senza_sfondo.png" alt="" aria-hidden="true" class="leaderboard-logo">
+                        <h1 class="menu-title leaderboard-title">CLASSIFICA</h1>
+                    </div>
+                    
+                    <hr class="leaderboard-divider" aria-hidden="true">
+                    
+                    <div class="leaderboard-filters" role="group" aria-label="Filtra per modalità">
+                        <button type="button" id="filter-classic" class="arcade-btn filter-btn active" aria-pressed="true">Classica</button>
+                        <button type="button" id="filter-blind" class="arcade-btn filter-btn" aria-pressed="false">Senza Vista</button>
+                    </div>
                     
                     <!-- La classifica viene generata in JS -->
-                    <ul id="leaderboard-list" class="leaderboard-list" aria-label="Top 7 Punteggi"></ul>
+                    <ul id="leaderboard-list" class="leaderboard-list" aria-label="Migliori Punteggi"></ul>
                     
                     <div class="leaderboard-actions" role="group" aria-label="Azioni classifica">
                         <a href="menu.php" class="arcade-btn back-btn">Torna al Menu</a>

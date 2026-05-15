@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameArea = document.getElementById('game-area');
     const scoreElement = document.getElementById('score');
     const topBarGame = document.getElementById('topbargame');
+    const gameAnnouncer = document.getElementById('game-announcer');
     const lanes = [
         document.getElementById('lane-left'),
         document.getElementById('lane-center'),
@@ -144,10 +145,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         lives--;
         
-        // Aggiorna l'etichetta per gli screen reader ad ogni vita persa
         const livesContainer = document.getElementById('lives-container');
         if (livesContainer) {
             livesContainer.setAttribute('aria-label', `Vite: ${lives}`);
+        }
+        
+        if (gameAnnouncer && lives > 0) {
+            gameAnnouncer.textContent = `Nave colpita! Vite rimaste: ${lives}`;
         }
         
         if (lives <= 0) {
@@ -165,6 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Nasconde l'interfaccia di gioco
         if (gameArea) gameArea.classList.remove('active');
         if (topBarGame) topBarGame.classList.remove('active');
+        
+        // Annuncia la sconfitta in modo chiaro
+        if (gameAnnouncer) {
+            gameAnnouncer.textContent = `Game Over. Punteggio finale: ${score}. Inserisci il tuo nome per la classifica oppure clicca direttamente salva e rimani anonimo.`;
+        }
         
         if (gameOverScreen) {
             gameOverScreen.classList.remove('hide');

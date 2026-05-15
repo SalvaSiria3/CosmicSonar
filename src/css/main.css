@@ -47,7 +47,7 @@
     container-type: inline-size; 
 }
 
-/* Sfondo decorativo dello schermo tramite pseudo-elemento */
+/* Sfondo decorativo dello schermo */
 .arcade-screen::before {
     content: '';
     position: absolute;
@@ -60,6 +60,15 @@
     background-image: url('../assets/images/background_screen.png');
     background-size: cover;
     background-position: center;
+    transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.arcade-container.zoomed .arcade-screen::before {
+    opacity: 0.15;
+}
+
+.arcade-container.no-transition .arcade-screen::before {
+    transition: none;
 }
 
 .screen-content {
@@ -620,23 +629,59 @@
     height: 100%;
 }
 
-.leaderboard-logo {
-    width: 45cqw;
-    height: auto;
+.leaderboard-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1cqw;
     margin-top: -2cqw;
     margin-bottom: 1cqw;
+    width: 100%;
+}
+
+.leaderboard-logo {
+    width: 40cqw;
+    height: auto;
 }
 
 .leaderboard-title {
     font-size: 6cqw;
-    margin-bottom: 2cqw;
+    margin-bottom: 1cqw;
+    margin-top: -0.5cqw;
     text-shadow: 0 0 2cqw rgba(149, 149, 149, 0.3);
+}
+
+.leaderboard-divider {
+    width: 80%;
+    border: none;
+    border-bottom: 0.4cqw dashed var(--secondary-color);
+    margin-bottom: 2cqw;
+    opacity: 0.8;
+}
+
+.leaderboard-filters {
+    display: flex;
+    gap: 2cqw;
+    margin-bottom: 3cqw;
+}
+
+.filter-btn {
+    font-size: 2.5cqw;
+    padding: 1cqw 2cqw;
+    opacity: 0.5;
+    border-width: 0.3cqw;
+}
+
+.filter-btn.active {
+    opacity: 1;
+    background-color: rgba(47, 233, 249, 0.15);
+    border-color: var(--primary-color);
 }
 
 .leaderboard-list {
     list-style: none;
     width: 80%;
-    margin-bottom: 2cqw;
 }
 
 .leaderboard-row {
@@ -660,16 +705,15 @@
     text-shadow: 0 0 1cqw var(--neutral-dark);
 }
 
-.leaderboard-row .rank { width: 15%; text-align: left; color: var(--secondary-color); }
-.leaderboard-row .name { width: 45%; text-align: left; }
-.leaderboard-row .score { width: 25%; text-align: right; color: var(--primary-color); }
-.leaderboard-row .mode-icon { width: 15%; text-align: right; font-size: 3cqw; }
+.leaderboard-row .rank { width: 15%; text-align: left; color: var(--tertiary-color); }
+.leaderboard-row .name { width: 55%; text-align: left; }
+.leaderboard-row .score { width: 30%; text-align: right; color: var(--primary-color); }
 
 .leaderboard-separator {
     text-align: center;
     color: var(--secondary-color);
     font-family: var(--primary-font);
-
+    margin-bottom: 1cqw;
 }
 
 .leaderboard-actions {

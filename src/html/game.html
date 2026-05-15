@@ -16,6 +16,9 @@
             <div class="screen-content">
                 <main id="main-content" tabindex="-1">
                     <h1 class="sr-only">Partita in corso</h1>
+                    
+                    <!-- Per comunicare danni e avvisi in tempo reale -->
+                    <p class="sr-only" aria-live="assertive" id="game-announcer"></p>
 
                     <!-- Schermata di loading -->
                     <div id="loading-screen" class="loading-container">
@@ -54,8 +57,8 @@
                     </div>
 
                     <!-- Schermata di Game Over -->
-                    <div id="game-over-screen" aria-live="assertive">
-                        <h2 class="game-over-title">GAME OVER</h2>
+                    <div id="game-over-screen" role="alertdialog" aria-modal="true" aria-labelledby="go-title">
+                        <h2 id="go-title" class="game-over-title">GAME OVER</h2>
                         <p class="final-score-text">Punteggio: <span id="final-score">0000</span></p>
                         <hr class="game-over-divider" aria-hidden="true">
                         <div class="username-input-container">
