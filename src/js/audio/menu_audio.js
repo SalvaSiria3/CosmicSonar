@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const startBanner = document.getElementById('startBanner');
     const audioBanner = document.getElementById('audioBanner');
+    const gameArea = document.getElementById('game-area');
     
-    // La musica non c'è nelle altre pagine (sistemare quando ci saranno altre pagine pronte)
-    if (startBanner) return;
+    // Evita di riprodurre la musica del menù nella Home o durante il Gioco
+    if (startBanner || gameArea) return;
 
     const menuSound = new Audio('src/assets/sounds/menu_sound.mp3');
     menuSound.loop = true;
