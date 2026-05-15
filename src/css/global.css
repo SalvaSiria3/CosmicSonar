@@ -92,6 +92,26 @@ body {
     outline: none;
 }
 
+/* bottoni */
+.arcade-btn {
+    font-family: var(--primary-font);
+    color: var(--neutral-light);
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 0.4cqw solid var(--tertiary-color);
+    box-shadow: inset 0 0 0 0.3cqw var(--secondary-color);
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.arcade-btn:hover,
+.arcade-btn:focus-visible {
+    background-color: rgba(247, 247, 247, 0.12);
+    outline: 1px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
 /* navigation */
 nav {
     position: fixed;

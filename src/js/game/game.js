@@ -2,11 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerShip = document.getElementById('player-ship');
     const gameArea = document.getElementById('game-area');
     const scoreElement = document.getElementById('score');
+    const topBarGame = document.getElementById('topbargame');
     const lanes = [
         document.getElementById('lane-left'),
         document.getElementById('lane-center'),
         document.getElementById('lane-right')
     ];
+    
+    const gameOverScreen = document.getElementById('game-over-screen');
+    const finalScoreElement = document.getElementById('final-score');
+    const saveScoreBtn = document.getElementById('save-score-btn');
+    const usernameInput = document.getElementById('username');
     
     if (!playerShip || !gameArea) return;
 
@@ -74,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate);
     }
 
-    // Spara il proiettile dalla posizione attuale del giocatore
     function shoot() {
         if (!isGameRunning) return;
         const laser = document.createElement('div');
@@ -139,12 +144,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         lives--;
         
+        // Aggiorna l'etichetta per gli screen reader ad ogni vita persa
+        const livesContainer = document.getElementById('lives-container');
+        if (livesContainer) {
+            livesContainer.setAttribute('aria-label', `Vite: ${lives}`);
+        }
+        
         if (lives <= 0) {
             gameOver();
         }
     }
 
-    // Temporanea per testare il game over (da sistemare)
     function gameOver() {
         isGameRunning = false;
         clearTimeout(spawnTimeoutId);
@@ -152,10 +162,51 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.querySelectorAll('.alien, .laser').forEach(el => el.remove());
         
-        setTimeout(() => {
-            alert(`GAME OVER!\nLa Terra è stata invasa...\nPunteggio Finale: ${score}`);
-            window.location.href = 'menu.php'; // Torna al menu principale (?)  
-        }, 100);
+        // Nasconde l'interfaccia di gioco
+        if (gameArea) gameArea.classList.remove('active');
+        if (topBarGame) topBarGame.classList.remove('active');
+        
+        if (gameOverScreen) {
+            gameOverScreen.classList.remove('hide');
+            gameOverScreen.classList.add('active');
+            finalScoreElement.textContent = score.toString().padStart(4, '0');
+            
+            setTimeout(() => usernameInput.focus(), 100);
+        }
+    }
+
+    function saveScoreAndRedirect() {
+        let username = usernameInput.value.trim().toUpperCase();
+        
+        if (username.length === 0) {
+            username = "ANONIMUS";
+        }
+        
+        const newScore = { name: username.substring(0, 10), score: score };
+        
+        try {
+            let leaderboard = JSON.parse(localStorage.getItem('cosmicSonarLeaderboard')) || [];
+            leaderboard.push(newScore);
+            
+            leaderboard.sort((a, b) => b.score - a.score);
+            localStorage.setItem('cosmicSonarLeaderboard', JSON.stringify(leaderboard));
+        } catch (error) {
+            console.warn("Impossibile salvare il punteggio nel localStorage:", error);
+        }
+        
+        window.location.href = 'leaderboard.php';
+    }
+
+    if (saveScoreBtn) {
+        saveScoreBtn.addEventListener('click', saveScoreAndRedirect);
+    }
+    
+    if (usernameInput) {
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveScoreAndRedirect();
+            }
+        });
     }
 
     window.startCosmicSonarGame = function() {

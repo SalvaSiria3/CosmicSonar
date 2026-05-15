@@ -17,6 +17,7 @@
                 <main id="main-content" tabindex="-1">
                     <h1 class="sr-only">Partita in corso</h1>
 
+                    <!-- Schermata di loading -->
                     <div id="loading-screen" class="loading-container">
                         <img src="src/assets/images/logo_senza_sfondo.png" alt="" aria-hidden="true" class="loading-logo">
                         <div class="progress-wrapper">
@@ -28,6 +29,7 @@
                         <p id="loading-text" aria-live="polite">Caricamento in corso...</p>
                     </div>
 
+                    <!-- Schermata di gioco -->
                     <div id="topbargame">
                         <div class="score-container" aria-live="polite" aria-atomic="true">
                             <span class="sr-only">Punteggio: </span>
@@ -38,7 +40,7 @@
                             <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-2">
                             <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-3">
                         </div>
-                        <button type="button" class="settings-btn" aria-label="Impostazioni" title="Impostazioni">
+                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" title="Impostazioni">
                             <span class="icon-settings" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -49,6 +51,18 @@
                         <div class="lane" id="lane-right"></div>
                         
                         <img src="src/assets/images/navicella.png" id="player-ship" class="player-ship lane-1" alt="" aria-hidden="true">
+                    </div>
+
+                    <!-- Schermata di Game Over -->
+                    <div id="game-over-screen" aria-live="assertive">
+                        <h2 class="game-over-title">GAME OVER</h2>
+                        <p class="final-score-text">Punteggio: <span id="final-score">0000</span></p>
+                        <hr class="game-over-divider" aria-hidden="true">
+                        <div class="username-input-container">
+                            <label for="username">Inserisci il tuo nome</label>
+                            <input type="text" id="username" maxlength="10" autocomplete="off" spellcheck="false" placeholder="PLAYER">
+                        </div>
+                        <button type="button" id="save-score-btn" class="arcade-btn">Salva e<br>vai alla classifica</button>
                     </div>
                 </main>
             </div>

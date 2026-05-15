@@ -256,13 +256,6 @@
     pointer-events: none;
 }
 
-.menu-option:hover,
-.menu-option:focus-visible {
-    background-color: rgba(247, 247, 247, 0.12);
-    outline: 1px solid var(--primary-color);
-    outline-offset: 2px;
-}
-
 .menu-option:hover::before,
 .menu-option:focus-visible::before {
     opacity: 1;
@@ -353,29 +346,10 @@
 }
 
 .play-button {
-    font-family: var(--primary-font);
     font-size: 4cqw;
-    background-color: rgba(0, 0, 0, 0.25);
     padding: 5cqw 15cqw;
-    text-decoration: none;
-    color: var(--neutral-light);
     text-shadow: 0 1cqw 3cqw var(--secondary-color);
-    
-    /* Effetto doppio bordo */
-    border: 0.4cqw solid var(--tertiary-color);
-    box-shadow: inset 0 0 0 0.3cqw var(--secondary-color);
-    
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-
     margin-top: 7cqw;
-}
-
-.play-button:hover,
-.play-button:focus-visible {
-    background-color: rgba(247, 247, 247, 0.12);
-    outline: 1px solid var(--primary-color);
-    outline-offset: 2px;
 }
 
 /* --- Interfaccia Gioco (Top Bar) --- */
@@ -416,21 +390,11 @@
 }
 
 .settings-btn {
-    background-color: rgba(0, 0, 0, 0.25);
-    border: 0.3cqw solid var(--tertiary-color);
+    border-width: 0.3cqw;
     box-shadow: inset 0 0 0 0.2cqw var(--secondary-color);
     border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
     padding: 0.8cqw;
     margin-bottom: 1cqw;
-}
-
-.settings-btn:hover,
-.settings-btn:focus-visible {
-    background-color: rgba(247, 247, 247, 0.12);
-    outline: 1px solid var(--primary-color);
-    outline-offset: 2px;
 }
 
 .settings-btn .icon-settings {
@@ -553,4 +517,95 @@
 @keyframes shootUp {
     0% { bottom: 12cqw; }
     100% { bottom: 100vh; }
+}
+
+/* --- Schermata Game Over --- */
+#game-over-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-family: var(--primary-font);
+    color: var(--neutral-light);
+    text-align: center;
+}
+
+#game-over-screen.active {
+    display: flex;
+}
+
+.game-over-title {
+    background: linear-gradient(to bottom, var(--tertiary-color) 40%, var(--secondary-color));
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 17cqw;
+    -webkit-text-stroke: 0.1cqw #000;
+    filter: drop-shadow(0 0 2cqw rgb(76, 49, 132));
+    font-family: var(--secondary-font);
+}
+
+.final-score-text {
+    font-size: 5cqw;
+    color: var(--primary-color);
+    font-family: var(--primary-font);
+    margin-bottom: 4.5cqw;
+}
+
+.game-over-divider {
+    width: 65cqw;
+    border: none;
+    border-bottom: 0.4cqw dashed var(--secondary-color);
+    margin-bottom: 5.5cqw;
+    opacity: 0.8;
+}
+
+.username-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5cqw;
+    margin-bottom: 1cqw;
+}
+
+.username-input-container label {
+    font-family: var(--primary-font);
+    font-size: 2.5cqw;
+    color: var(--neutral-light);
+    text-transform: uppercase;
+    text-shadow: 0 0 1cqw rgba(0, 0, 0, 1);
+    margin-bottom: 0.5cqw;
+}
+
+#username {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 0.3cqw solid var(--primary-color);
+    box-shadow: inset 0 0 1cqw rgba(47, 233, 249, 0.5), 0 0 2cqw rgba(47, 233, 249, 0.3);
+    color: var(--neutral-light);
+    font-family: var(--primary-font);
+    font-size: 4.5cqw;
+    text-align: center;
+    width: 60cqw;
+    padding: 1.5cqw;
+    text-transform: uppercase;
+    outline: none;
+    border-radius: 6px;
+    letter-spacing: 0.2cqw;
+    transition: all 0.3s ease;
+}
+
+#username:focus {
+    background-color: rgba(25, 222, 139, 0.15);
+    border-color: var(--primary-color);
+    box-shadow: inset 0 0 1cqw var(--primary-color), 0 0 3cqw var(--primary-color);
+}
+
+#save-score-btn {
+    font-size: 2.8cqw;
+    padding: 2cqw 4cqw;
+    margin-top: 3cqw;
+    line-height: 1.8;
+    text-align: center;
+    text-shadow: 0 0.5cqw 1cqw var(--secondary-color);
 }

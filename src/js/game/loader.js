@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const playButton = document.createElement('button');
         playButton.textContent = 'Gioca';
-        playButton.className = 'play-button';
+        playButton.className = 'arcade-btn play-button';
         loadingScreen.appendChild(playButton);
         
         playButton.focus(); // comodo per la tastiera (appena finito il caricamento il bottone ha già il focus)
