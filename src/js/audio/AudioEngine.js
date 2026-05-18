@@ -7,6 +7,20 @@ class AudioEngine {
         this.masterGain.gain.value = 0.5; // Volume iniziale al 50%
         
         this.masterGain.connect(this.ctx.destination); // Collega il master gain all'uscita audio del browser
+
+        this.alienBuffer = null;
+        this.loadAlienSound();
+    }
+
+    async loadAlienSound() {
+        try {
+            // Scarica e decodifica il file mp3 per poterlo manipolare in 3D
+            const response = await fetch('src/assets/sounds/alien.mp3');
+            const arrayBuffer = await response.arrayBuffer();
+            this.alienBuffer = await this.ctx.decodeAudioData(arrayBuffer);
+        } catch (e) {
+            console.warn("Impossibile caricare alien.mp3 per l'AudioEngine", e);
+        }
     }
 
     resume() {
@@ -16,9 +30,11 @@ class AudioEngine {
     }
 
     createAlienSonar(laneIndex) { //In base alla colonna, il suono sarà più a sinistra o a destra
-        const osc = this.ctx.createOscillator(); // Crea un oscillatore per generare il suono del sonar
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(150, this.ctx.currentTime); // Frequenza di base (suono abbastanza basso)
+        if (!this.alienBuffer) return null; // Sicurezza: ignora se il file non è ancora stato scaricato
+
+        const source = this.ctx.createBufferSource();
+        source.buffer = this.alienBuffer;
+        source.loop = true; // Il file mp3 si ripeterà all'infinito finché l'alieno vive
 
         const panner = this.ctx.createStereoPanner();
         // Mappa la corsia 0, 1, 2 nei valori di pan -1 (Sinistra), 0 (Centro), 1 (Destra)
@@ -27,22 +43,22 @@ class AudioEngine {
         const alienGain = this.ctx.createGain();  // Serve per il volume del singolo alieno
         alienGain.gain.setValueAtTime(0, this.ctx.currentTime); // Parte muto finché non entra nello schermo
 
-        // Catena audio: Oscillatore -> Panner -> Volume Singolo -> Volume Generale
-        osc.connect(panner);
+        // Catena audio: Sorgente -> Panner -> Volume Singolo -> Volume Generale
+        source.connect(panner);
         panner.connect(alienGain);
         alienGain.connect(this.masterGain);
 
-        osc.start();
+        source.start();
 
-        return { osc, alienGain, hasEntered: false };
+        return { source, alienGain, hasEntered: false };
     }
 
     startAlienSound(alienSound) {
         if (!alienSound || alienSound.hasEntered) return;
-        alienSound.hasEntered = true; // Segna che il suono è stato attivato (c'era il problema che suonava prima che entrasse effettivamente nello schermo)
+        alienSound.hasEntered = true; // Segna che il suono è stato attivato (c'era il problema che suonava prima che entrasse effettivamente  nello schermo)
         
-        // Alza dolcemente il volume da 0 a 0.05 in 5 centesimi di secondo
-        alienSound.alienGain.gain.setTargetAtTime(0.05, this.ctx.currentTime, 0.05);  // Volume molto basso per ogni singolo alieno (se ce ne sono tanti diventa troppo forte)
+        // Volume per il file mp3. (Modifica lo 0.4 se l'originale è troppo forte o piano)
+        alienSound.alienGain.gain.setTargetAtTime(0.4, this.ctx.currentTime, 0.05);
     }
 
     stopAlienSonar(alienSound) { // Per quando muore l'alieno
@@ -50,12 +66,14 @@ class AudioEngine {
         
         // Effettua un fade-out rapido per evitare "click" fastidiosi quando si taglia l'onda di netto
         alienSound.alienGain.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.05);
-        alienSound.osc.stop(this.ctx.currentTime + 0.1);
+        alienSound.source.stop(this.ctx.currentTime + 0.1);
     }
 
     updateAlienPitch(alienSound, yPercentage) {
         if (!alienSound) return;
-        const newFreq = 150 + (450 * yPercentage); // Da 150Hz a 600Hz
-        alienSound.osc.frequency.setValueAtTime(newFreq, this.ctx.currentTime);
+        
+        // 1 = velocità normale. Partiamo da 0.5 (molto più grave/lento) e arriviamo a 1.2 (leggermente più acuto)
+        const newRate = 0.5 + (0.7 * yPercentage); 
+        alienSound.source.playbackRate.setValueAtTime(newRate, this.ctx.currentTime);
     }
 }
