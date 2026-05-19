@@ -106,20 +106,20 @@
     z-index: 20;
     font-family: var(--secondary-font);
     color: var(--neutral-light);
-    font-size: var(--font-large);
+    font-size: 1.8vw;
     background-color: #0f0f0f;
-    padding: 1rem 1rem;
-    border-radius: 8px;
-    letter-spacing: 2px;
+    padding: 1.5vw 1vw;
+    border-radius: 0.8vw;
+    letter-spacing: 0.2vw;
 }
 
 .arcade-footer p {
-    margin: 5px 0;
+    margin: 0.5vw 0;
     line-height: 1.5;
 }
 
 .arcade-footer p:first-child {
-    font-size: var(--font-xl);
+    font-size: 2.5vw;
 }
 
 .author-name {
@@ -570,7 +570,7 @@
     opacity: 0.8;
 }
 
-.username-input-container {
+.player-name-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -578,7 +578,7 @@
     margin-bottom: 1cqw;
 }
 
-.username-input-container label {
+.player-name-container label {
     font-family: var(--primary-font);
     font-size: 2.5cqw;
     color: var(--neutral-light);
@@ -587,7 +587,7 @@
     margin-bottom: 0.5cqw;
 }
 
-#username {
+#player-name {
     background-color: rgba(0, 0, 0, 0.6);
     border: 0.3cqw solid var(--primary-color);
     box-shadow: inset 0 0 1cqw rgba(47, 233, 249, 0.5), 0 0 2cqw rgba(47, 233, 249, 0.3);
@@ -604,7 +604,7 @@
     transition: all 0.3s ease;
 }
 
-#username:focus {
+#player-name:focus {
     background-color: rgba(25, 222, 139, 0.15);
     border-color: var(--primary-color);
     box-shadow: inset 0 0 1cqw var(--primary-color), 0 0 3cqw var(--primary-color);

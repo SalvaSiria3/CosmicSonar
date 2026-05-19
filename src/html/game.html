@@ -25,7 +25,7 @@
                         <img src="src/assets/images/logo_senza_sfondo.png" alt="" aria-hidden="true" class="loading-logo">
                         <div class="progress-wrapper">
                             <div class="progress-bar-container">
-                                <div id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-labelledby="loading-text"></div>
+                                <div id="progress-bar" aria-hidden="true"></div>
                             </div>
                             <p id="loading-percentage" aria-hidden="true">0%</p>
                         </div>
@@ -34,14 +34,13 @@
 
                     <!-- Schermata di gioco -->
                     <div id="topbargame">
-                        <div class="score-container" aria-live="polite" aria-atomic="true">
-                            <span class="sr-only">Punteggio: </span>
-                            <span id="score">0000</span>
+                        <div class="score-container" id="score-container" aria-label="Punteggio: 0">
+                            <span id="score" aria-hidden="true">0000</span>
                         </div>
                         <div class="lives-container" role="group" aria-label="Vite: 3" id="lives-container">
-                            <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-1">
-                            <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-2">
-                            <img src="src/assets/images/heart_full.png" alt="" class="heart-icon" id="life-3">
+                            <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-1">
+                            <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-2">
+                            <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-3">
                         </div>
                         <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" title="Impostazioni">
                             <span class="icon-settings" aria-hidden="true"></span>
@@ -61,11 +60,14 @@
                         <h2 id="go-title" class="game-over-title">GAME OVER</h2>
                         <p class="final-score-text">Punteggio: <span id="final-score">0000</span></p>
                         <hr class="game-over-divider" aria-hidden="true">
-                        <div class="username-input-container">
-                            <label for="username">Inserisci il tuo nome</label>
-                            <input type="text" id="username" maxlength="10" autocomplete="off" spellcheck="false" placeholder="PLAYER">
+                        <div class="player-name-container">
+                            <label for="player-name">Inserisci il tuo nome</label>
+                            <input type="text" id="player-name" maxlength="10" autocomplete="off" spellcheck="false" placeholder="PLAYER"> <!-- spellcheck serve per evitare il controllo ortografico dei browser (la classica linea rossa sotto) -->
                         </div>
-                        <button type="button" id="save-score-btn" class="arcade-btn">Salva e<br>vai alla classifica</button>
+                        <button type="button" id="save-score-btn" class="arcade-btn">  <!-- Sennò lo screen reader legge "due elementi"-->
+                            <span class="sr-only">Salva e vai alla classifica</span>
+                            <span aria-hidden="true">Salva e<br>vai alla classifica</span>
+                        </button>
                     </div>
                 </main>
             </div>
@@ -75,7 +77,10 @@
     </div>
 
     <div class="resize-warning" role="alert">
-        <p>⚠️ Risoluzione non supportata.<br><br>Rimpicciolisci o ingrandisci<br>la finestra per giocare.</p>
+        <p>
+            <span class="sr-only">Attenzione: Risoluzione non supportata. Rimpicciolisci o ingrandisci la finestra per giocare.</span>
+            <span aria-hidden="true">⚠️ Risoluzione non supportata.<br><br>Rimpicciolisci o ingrandisci<br>la finestra per giocare.</span>
+        </p>
     </div>
 
     <div class="stars" aria-hidden="true"></div>

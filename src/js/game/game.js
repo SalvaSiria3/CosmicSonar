@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerShip = document.getElementById('player-ship');
     const gameArea = document.getElementById('game-area');
     const scoreElement = document.getElementById('score');
+    const scoreContainer = document.getElementById('score-container');
     const topBarGame = document.getElementById('topbargame');
     const gameAnnouncer = document.getElementById('game-announcer');
     const lanes = [
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameOverScreen = document.getElementById('game-over-screen');
     const finalScoreElement = document.getElementById('final-score');
     const saveScoreBtn = document.getElementById('save-score-btn');
-    const usernameInput = document.getElementById('username');
+    const usernameInput = document.getElementById('player-name');
     
     if (!playerShip || !gameArea) return;
 
@@ -114,6 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     score += 10;    // Bastano 10?
                     if (scoreElement) scoreElement.textContent = score.toString().padStart(4, '0');
+                    
+                    if (scoreContainer) scoreContainer.setAttribute('aria-label', `Punteggio: ${score}`);
+                    
+                    // Annuncia ad alta voce solo al raggiungimento dei traguardi specifici (sennò lo screen reader annuncerebbe ogni volta che si colpisce un nemico, diventando fastidioso)
+                    if (score === 10 || score === 100 || (score >= 500 && score % 500 === 0)) {
+                        if (gameAnnouncer) {
+                            gameAnnouncer.textContent = `Punteggio raggiunto: ${score}`;
+                        }
+                    }
                 }
             });
         });
@@ -228,6 +238,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.startCosmicSonarGame = function() {
         if (isGameRunning) return;
         isGameRunning = true;
+        
+        // Annuncio iniziale per orientare il giocatore
+        if (gameAnnouncer) {
+            gameAnnouncer.textContent = 'Partita iniziata. Sei nella corsia Centrale.';
+        }
         
         scheduleNextSpawn();
         animationFrameId = requestAnimationFrame(gameLoop);

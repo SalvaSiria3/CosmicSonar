@@ -18,9 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
             <li class="leaderboard-row ${highlightClass}">
                 ${srText}
-                <span class="rank"><span class="sr-only">Posizione </span>${rank}°</span>
+                <span class="rank">
+                    <span class="sr-only">Posizione ${rank}</span>
+                    <span aria-hidden="true">${rank}°</span>
+                </span>
                 <span class="name"><span class="sr-only">Giocatore </span>${entry.name}</span>
-                <span class="score"><span class="sr-only">Punteggio </span>${entry.score.toString().padStart(4, '0')}</span>
+                <span class="score">
+                    <span class="sr-only">Punteggio ${entry.score}</span>
+                    <span aria-hidden="true">${entry.score.toString().padStart(4, '0')}</span>
+                </span>
             </li>
         `;
     }
