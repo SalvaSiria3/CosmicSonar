@@ -16,9 +16,15 @@ class AudioEngine {
     }
 
     createAlienSonar(laneIndex) { //In base alla colonna, il suono sarà più a sinistra o a destra
-        const osc = this.ctx.createOscillator(); // Crea un oscillatore per generare il suono del sonar
+        const osc = this.ctx.createOscillator();
         osc.type = 'square';
-        osc.frequency.setValueAtTime(150, this.ctx.currentTime); // Frequenza di base (suono abbastanza basso)
+        osc.frequency.setValueAtTime(120, this.ctx.currentTime); // Frequenza di partenza udibile
+
+        // Aggiungiamo un filtro per ovattare leggermente i suoni "zanzara"
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        // Taglia solo le frequenze altissime e fastidiose (suono troppo metallico), lasciando passare il corpo del suono
+        filter.frequency.setValueAtTime(800, this.ctx.currentTime); 
 
         const panner = this.ctx.createStereoPanner();
         // Mappa la corsia 0, 1, 2 nei valori di pan -1 (Sinistra), 0 (Centro), 1 (Destra)
@@ -27,22 +33,23 @@ class AudioEngine {
         const alienGain = this.ctx.createGain();  // Serve per il volume del singolo alieno
         alienGain.gain.setValueAtTime(0, this.ctx.currentTime); // Parte muto finché non entra nello schermo
 
-        // Catena audio: Oscillatore -> Panner -> Volume Singolo -> Volume Generale
-        osc.connect(panner);
+        // Catena audio: Oscillatore -> Filtro -> Panner -> Volume Singolo -> Volume Generale
+        osc.connect(filter);
+        filter.connect(panner);
         panner.connect(alienGain);
         alienGain.connect(this.masterGain);
 
         osc.start();
 
-        return { osc, alienGain, hasEntered: false };
+        return { osc, filter, alienGain, hasEntered: false };
     }
 
     startAlienSound(alienSound) {
         if (!alienSound || alienSound.hasEntered) return;
         alienSound.hasEntered = true; // Segna che il suono è stato attivato (c'era il problema che suonava prima che entrasse effettivamente nello schermo)
         
-        // Alza dolcemente il volume da 0 a 0.05 in 5 centesimi di secondo
-        alienSound.alienGain.gain.setTargetAtTime(0.05, this.ctx.currentTime, 0.05);  // Volume molto basso per ogni singolo alieno (se ce ne sono tanti diventa troppo forte)
+        // Volume leggermente più basso è più bilanciato (rispetto ad 0.1)
+        alienSound.alienGain.gain.setTargetAtTime(0.08, this.ctx.currentTime, 0.05);  
     }
 
     stopAlienSonar(alienSound) { // Per quando muore l'alieno
@@ -55,7 +62,11 @@ class AudioEngine {
 
     updateAlienPitch(alienSound, yPercentage) {
         if (!alienSound) return;
-        const newFreq = 150 + (450 * yPercentage); // Da 150Hz a 600Hz
-        alienSound.osc.frequency.setValueAtTime(newFreq, this.ctx.currentTime);
+        
+        const baseFreq = 120 + (280 * yPercentage); // Da 120Hz a 400Hz
+        alienSound.osc.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
+        
+        // Il filtro man mano che l'alieno scende, rende il suono più brillante e aggressivo
+        alienSound.filter.frequency.setValueAtTime(800 + (3200 * yPercentage), this.ctx.currentTime);
     }
 }
