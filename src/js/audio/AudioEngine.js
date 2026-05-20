@@ -63,10 +63,10 @@ class AudioEngine {
     updateAlienPitch(alienSound, yPercentage) {
         if (!alienSound) return;
         
-        const baseFreq = 120 + (280 * yPercentage); // Da 120Hz a 400Hz
+        const baseFreq = 120 + (380 * yPercentage); // Da 120Hz a 400Hz
         alienSound.osc.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
         
         // Il filtro man mano che l'alieno scende, rende il suono più brillante e aggressivo
-        alienSound.filter.frequency.setValueAtTime(800 + (3200 * yPercentage), this.ctx.currentTime);
+        alienSound.filter.frequency.setValueAtTime(800 + (3000 * yPercentage), this.ctx.currentTime);
     }
 }

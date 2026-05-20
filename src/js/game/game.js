@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Clona l'oggetto audio per permettere spari rapidi e sovrapposti senza blocchi
         const currentShootSound = shootSound.cloneNode();
-        currentShootSound.volume = 0.05; // Abbassa il volume dello sparo al 30%
+        currentShootSound.volume = 0.2; // Volume più bilanciato
         currentShootSound.play().catch(e => console.log("Impossibile riprodurre il suono del laser:", e));
         
         laser.addEventListener('animationend', () => laser.remove());
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (lives > 1) {
             const currentLoseLifeSound = loseLifeSound.cloneNode();
-            currentLoseLifeSound.volume = 1; 
+            currentLoseLifeSound.volume = 0.6; // Volume abbassato (era 1)
             currentLoseLifeSound.play().catch(e => console.log("Impossibile riprodurre lose_life.mp3", e));
         }
 
