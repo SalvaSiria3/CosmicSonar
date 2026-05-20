@@ -46,11 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         progressBar.style.width = percentage + '%';
         
-        // aggiorna il testo della percentuale per gli screen reader (ha senso?)
         loadingPercentage.textContent = percentage + '%';
-
-        // comunica il valore allo screen reader (ha senso?)
-        progressBar.setAttribute('aria-valuenow', percentage);
 
         if (assetsLoaded === totalAssets) {
             const elapsedTime = Date.now() - startTime;
