@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (lives > 1) {
             const currentLoseLifeSound = loseLifeSound.cloneNode();
-            currentLoseLifeSound.volume = 0.6; // Volume abbassato (era 1)
+            currentLoseLifeSound.volume = 0.6; // Volume più basso
             currentLoseLifeSound.play().catch(e => console.log("Impossibile riprodurre lose_life.mp3", e));
         }
 

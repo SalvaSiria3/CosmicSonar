@@ -37,6 +37,12 @@
   box-sizing: border-box;
 }
 
+html {
+    font-size: 16px !important; 
+    -webkit-text-size-adjust: 100% !important; 
+    text-size-adjust: 100% !important;
+}
+
 body {
     background: var(--neutral-dark);
     overflow-x: hidden;
