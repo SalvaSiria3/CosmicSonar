@@ -72,6 +72,13 @@ class AudioEngine {
         // Effettua un fade-out rapido per evitare "click" fastidiosi quando si taglia l'onda di netto
         alienSound.alienGain.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.05);
         alienSound.osc.stop(this.ctx.currentTime + 0.1);
+        
+        //Disconnette i nodi audio per liberare memoria ed evitare rallentamenti
+        setTimeout(() => {
+            alienSound.osc.disconnect();
+            alienSound.filter.disconnect();
+            alienSound.alienGain.disconnect();
+        }, 150);
     }
 
     updateAlienPitch(alienSound, yPercentage) {

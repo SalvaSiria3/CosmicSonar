@@ -31,10 +31,26 @@
                             <span class="menu-icon icon-leaderboard" aria-hidden="true"></span>
                             <span class="menu-option-title">Classifica</span>
                         </a>
-                        <a href="settings.php" class="arcade-btn menu-option">
+                        <button type="button" id="open-settings-btn" class="arcade-btn menu-option" aria-haspopup="dialog" aria-controls="settings-modal">
                             <span class="menu-icon icon-settings" aria-hidden="true"></span>
                             <span class="menu-option-title">Impostazioni</span>
-                        </a>
+                        </button>
+                    </div>
+
+                    <!-- Schermata Impostazioni (Modale) -->
+                    <div id="settings-modal" class="hide" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+                        <h2 id="settings-title" class="menu-title">Impostazioni</h2>
+                        <div class="settings-content">
+                            <div class="volume-control">
+                                <label for="sfx-volume">Effetti Sonori</label>
+                                <input type="range" id="sfx-volume" min="0" max="10" step="1" value="9" aria-valuemin="0" aria-valuemax="10">
+                            </div>
+                            <div class="volume-control">
+                                <label for="music-volume">Musica</label>
+                                <input type="range" id="music-volume" min="0" max="10" step="1" value="1" aria-valuemin="0" aria-valuemax="10">
+                            </div>
+                        </div>
+                        <button type="button" id="close-settings-btn" class="arcade-btn">Chiudi</button>
                     </div>
                 </main>
             </div>

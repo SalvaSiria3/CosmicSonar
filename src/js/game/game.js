@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sfxSlider.addEventListener('input', (e) => {
             sfxVolume = e.target.value / 10; // Converte la posizione 0-10 in percentuale 0.0-1.0
             localStorage.setItem('cosmicSfxVol', sfxVolume);
+            sfxSlider.setAttribute('aria-valuenow', e.target.value); // Meglio far sapere allo screen reader il valore attuale dello slider
             audio.setVolume(sfxVolume); // Aggiorna il volume degli alieni in tempo reale
             
             // Suono di feedback per far capire il livello del volume
@@ -85,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         musicSlider.addEventListener('input', (e) => {
             musicVolume = e.target.value / 10;
             localStorage.setItem('cosmicMusicVol', musicVolume);
+            musicSlider.setAttribute('aria-valuenow', e.target.value); // Meglio far sapere allo screen reader il valore attuale dello slider
             gameMusic.volume = musicVolume; // Aggiorna in tempo reale
         });
     }

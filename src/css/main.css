@@ -723,7 +723,7 @@
 
 #settings-title {
     font-size: 8cqw;
-    margin-bottom: 4cqw;
+    margin-bottom: 6cqw;
 }
 
 .settings-content {
@@ -753,10 +753,11 @@
     cursor: pointer;
 }
 
-#resume-btn {
-    font-size: 2.2cqw;
-    padding: 1.5cqw 3cqw;
-    margin-top: 1cqw;
+#resume-btn,
+#close-settings-btn {
+    font-size: 2.8cqw;
+    padding: 2cqw 4cqw;
+    margin-top: 2cqw;
 }
 
 /* --- Classifica --- */
@@ -900,7 +901,7 @@
     .player-name-container label { font-size: 1vw; text-shadow: 0 0 0.4vw rgba(0, 0, 0, 1); }
     #player-name { font-size: 1.8vw; width: 24vw; padding: 0.6vw; }
     #save-score-btn { font-size: 1.1vw; padding: 0.8vw 1.6vw; margin-top: 1.2vw; }
-    #settings-title { font-size: 3.2vw; }
+    #settings-title { font-size: 2.4vw; }
     
     /* Classifica */
     .leaderboard-title { font-size: 2.4vw; text-shadow: 0 0 0.8vw rgba(149, 149, 149, 0.3); }
