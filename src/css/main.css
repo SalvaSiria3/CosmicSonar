@@ -100,7 +100,7 @@
 
 .arcade-footer {
     position: absolute;
-    bottom: 1.2%;
+    bottom: 1.25%;
     left: 50%;
     transform: translateX(-50%);
     width: 88%;
@@ -111,7 +111,7 @@
     font-size: 1cqw;
     background-color: #0f0f0f;
     padding: 0.8cqw 1.5cqw;
-    border-radius: 0.8cqw;
+    border-radius: 0.8cqw 0.8cqw 0 0;
     letter-spacing: 0.1cqw;
     display: flex;
     flex-direction: column;
@@ -142,6 +142,14 @@
 
 .game-name {
     color: var(--tertiary-color);
+}
+
+.footer-divider {
+    width: 85%;
+    border: none;
+    margin-top: 1cqw;
+    border-bottom: 0.2cqw dashed var(--secondary-color);
+    opacity: 0.6;
 }
 
 .footer-bottom {
@@ -772,12 +780,11 @@
     padding: 1.5cqw 3cqw;
 }
 
-/* ==========================================================================
-   FALLBACK PER VECCHI BROWSER E VIRTUAL MACHINE (Chrome < 105)
+/* 
+   FALLBACK PER VECCHI BROWSER 
    Se il browser non supporta la direttiva "cqw", applica in automatico 
    questi valori calcolati esattamente in base alla larghezza dello schermo.
-   Nessuna regola precedente viene alterata!
-   ========================================================================== */
+*/
 @supports not (width: 1cqw) {
     .insert-coin { font-size: 3.2vw; text-shadow: 0 0 2.4vw rgba(0, 0, 0, 0.4); }
     
