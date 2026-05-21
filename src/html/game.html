@@ -32,6 +32,22 @@
                         <p id="loading-text" aria-live="polite">Caricamento in corso...</p>
                     </div>
 
+                    <!-- Selezione Modalità -->
+                    <div id="mode-selection" class="hide">
+                        <h2 class="menu-title" id="mode-title">Modalità</h2>
+                        <div class="mode-buttons" role="group" aria-labelledby="mode-title">
+                            <button type="button" id="btn-classic" class="arcade-btn mode-btn">Classica</button>
+                            <button type="button" id="btn-hard" class="arcade-btn mode-btn">Difficile</button>
+                        </div>
+                        <div class="mode-description">
+                            <p><strong>CLASSICA:</strong> Esperienza arcade standard completa.</p>
+                            <p class="hard-text">
+                                <strong>DIFFICILE:</strong> Niente musica. Schermo compromesso. 
+                                Nessun aiuto visivo. Gioca affidandoti esclusivamente al tuo udito e al Sonar 3D!
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Schermata di gioco -->
                     <div id="topbargame">
                         <div class="score-container" id="score-container" aria-label="Punteggio: 0">
@@ -51,6 +67,9 @@
                         <div class="lane" id="lane-left"></div>
                         <div class="lane" id="lane-center"></div>
                         <div class="lane" id="lane-right"></div>
+                        
+                        <!-- Effetto glitch visibile solo in modalità difficile -->
+                        <div class="hard-mode-glitch" aria-hidden="true"></div>
                         
                         <img src="src/assets/images/navicella.png" id="player-ship" class="player-ship lane-1" alt="" aria-hidden="true">
                     </div>

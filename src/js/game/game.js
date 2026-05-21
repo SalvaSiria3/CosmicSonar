@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLane = 1;
     let isGameRunning = false;
     let isPaused = false;
+    let gameMode = 'classic'; // Di base è classica
     let score = 0;
     let lives = 3;
     
@@ -70,7 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (sfxSlider) {
         sfxSlider.addEventListener('input', (e) => {
-            sfxVolume = e.target.value / 10; // Converte la posizione 0-10 in percentuale 0.0-1.0
+            let val = parseInt(e.target.value);
+            // Se siamo in modalità difficile, blocca il volume SFX a minimo 1
+            if (gameMode === 'hard' && val < 1) {
+                val = 1;
+                sfxSlider.value = 1;
+            }
+            sfxVolume = val / 10; 
             localStorage.setItem('cosmicSfxVol', sfxVolume);
             sfxSlider.setAttribute('aria-valuenow', e.target.value); // Meglio far sapere allo screen reader il valore attuale dello slider
             audio.setVolume(sfxVolume); // Aggiorna il volume degli alieni in tempo reale
@@ -84,7 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (musicSlider) {
         musicSlider.addEventListener('input', (e) => {
-            musicVolume = e.target.value / 10;
+            let val = gameMode === 'hard' ? 0 : parseInt(e.target.value); // Blocca a 0 se difficile
+            musicVolume = val / 10;
             localStorage.setItem('cosmicMusicVol', musicVolume);
             musicSlider.setAttribute('aria-valuenow', e.target.value); // Meglio far sapere allo screen reader il valore attuale dello slider
             gameMusic.volume = musicVolume; // Aggiorna in tempo reale
@@ -320,6 +328,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameArea) gameArea.classList.remove('active');
         if (topBarGame) topBarGame.classList.remove('active');
         
+        const glitchLayer = document.querySelector('.hard-mode-glitch');
+        if (glitchLayer) glitchLayer.classList.remove('active');
+        
         // Annuncia la sconfitta in modo chiaro
         if (gameAnnouncer) {
             gameAnnouncer.textContent = `Game Over. Punteggio finale: ${score}. Inserisci il tuo nome per la classifica oppure clicca direttamente salva e rimani anonimo.`;
@@ -345,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: Date.now(),
             name: username.substring(0, 10), 
             score: score,
-            mode: 'classic' // Poi ci sarà la versione accessibile/difficile
+            mode: gameMode // Salva il punteggio con la modalità corretta
         };
         
         try {
@@ -375,9 +386,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.startCosmicSonarGame = function() {
+    window.startCosmicSonarGame = function(selectedMode) {
         if (isGameRunning) return;
         isGameRunning = true;
+        gameMode = selectedMode || 'classic';
+        
+        // Applica i modificatori per la Modalità Difficile
+        if (gameMode === 'hard') {
+            gameArea.classList.add('hard-mode');
+            topBarGame.classList.add('hard-mode');
+            
+            const glitchLayer = document.querySelector('.hard-mode-glitch');
+            if (glitchLayer) glitchLayer.classList.add('active');
+            
+            // Spegne la musica e blocca lo slider
+            gameMusic.volume = 0;
+            if (musicSlider) {
+                musicSlider.value = 0;
+                musicSlider.disabled = true; // Impedisce all'utente di cambiare il volume
+            }
+            
+            // Forza gli SFX a minimo 10%
+            if (sfxVolume < 0.1) {
+                sfxVolume = 0.1;
+                audio.setVolume(sfxVolume);
+                if (sfxSlider) {
+                    sfxSlider.value = 1;
+                    localStorage.setItem('cosmicSfxVol', 0.1);
+                }
+            }
+        }
         
         audio.resume(); // Risveglia la scheda audio al primo click utente
         
@@ -391,7 +429,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(() => {});
         });
                 
-        gameMusic.play().catch(e => console.log("Impossibile avviare musica", e));
+        if (gameMode !== 'hard') {
+            gameMusic.play().catch(e => console.log("Impossibile avviare musica", e));
+        }
 
         // Annuncio iniziale per orientare il giocatore
         if (gameAnnouncer) {
@@ -401,4 +441,15 @@ document.addEventListener('DOMContentLoaded', () => {
         scheduleNextSpawn();
         animationFrameId = requestAnimationFrame(gameLoop);
     };
+
+    // --- COMANDO PROVVISORIO: Premi 'T' per la trasparenza del cabinato ---
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'KeyT') {
+            const cabinato = document.querySelector('.arcade-image');
+            if (cabinato) {
+                cabinato.style.transition = 'opacity 0.3s ease';
+                cabinato.style.opacity = cabinato.style.opacity === '0' ? '1' : '0';
+            }
+        }
+    });
 });

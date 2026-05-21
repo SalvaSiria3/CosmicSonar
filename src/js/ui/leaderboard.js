@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const listContainer = document.getElementById('leaderboard-list');
     const filterClassicBtn = document.getElementById('filter-classic');
-    const filterBlindBtn = document.getElementById('filter-blind');
+    const filterHardBtn = document.getElementById('filter-hard');
     if (!listContainer) return;
 
     let leaderboard = JSON.parse(localStorage.getItem('cosmicSonarLeaderboard')) || [];
@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
     leaderboard.sort((a, b) => b.score - a.score);
 
     let currentFilter = 'classic';
+
+    // Se c'è un ultimo punteggio salvato in questa sessione, usa la sua modalità come filtro predefinito
+    if (lastPlayedId) {
+        const lastPlayedEntry = leaderboard.find(entry => entry.id === lastPlayedId);
+        if (lastPlayedEntry && lastPlayedEntry.mode) {
+            currentFilter = lastPlayedEntry.mode;
+        }
+    }
 
     function createRowHTML(entry, rank, isHighlight) {
         const highlightClass = isHighlight ? 'highlight' : '';
@@ -63,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.innerHTML = html;
     }
 
-    if (filterClassicBtn && filterBlindBtn) {
+    if (filterClassicBtn && filterHardBtn) {
         const setFilter = (mode, activeBtn, inactiveBtn) => {
             currentFilter = mode;
             activeBtn.classList.add('active');
@@ -73,8 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
             renderLeaderboard();
         };
 
-        filterClassicBtn.addEventListener('click', () => setFilter('classic', filterClassicBtn, filterBlindBtn));
-        filterBlindBtn.addEventListener('click', () => setFilter('blind', filterBlindBtn, filterClassicBtn));
+        filterClassicBtn.addEventListener('click', () => setFilter('classic', filterClassicBtn, filterHardBtn));
+        filterHardBtn.addEventListener('click', () => setFilter('hard', filterHardBtn, filterClassicBtn));
+        
+        // Imposta visivamente il bottone attivo corretto all'avvio in base al filtro
+        if (currentFilter === 'hard') {
+            filterHardBtn.classList.add('active');
+            filterHardBtn.setAttribute('aria-pressed', 'true');
+            filterClassicBtn.classList.remove('active');
+            filterClassicBtn.setAttribute('aria-pressed', 'false');
+        }
     }
 
     renderLeaderboard();

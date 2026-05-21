@@ -418,6 +418,83 @@
     margin-top: 5.25cqw;
 }
 
+/* --- Selezione Modalità --- */
+#mode-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-family: var(--primary-font);
+    color: var(--neutral-light);
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 3cqw;
+    margin-bottom: 3cqw;
+}
+
+.mode-btn {
+    font-size: 2.5cqw;
+    padding: 1.5cqw 3cqw;
+}
+
+.mode-description {
+    font-family: var(--secondary-font);
+    font-size: 2.2cqw;
+    text-align: center;
+    width: 85%;
+    line-height: 1.5;
+}
+
+.mode-description p { margin-bottom: 0.5cqw; }
+.hard-text { color: #d64545; text-shadow: 0 0 1cqw rgba(214, 69, 69, 0.5); }
+
+/* --- Regole Modalità Difficile (Blind) --- */
+.hard-mode .player-ship,
+.hard-mode .alien,
+.hard-mode .laser,
+.hard-mode .score-container,
+.hard-mode .lives-container {
+    opacity: 0 !important; /* Rende gli elementi invisibili ma li lascia interattivi nel motore JS */
+}
+
+.hard-mode-glitch {
+    position: absolute;
+    top: -8cqw;
+    bottom: 2%;
+    left: 1cqw;
+    width: 99cqw;
+    background-image: url('../assets/images/glitch_screen.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 25;
+    pointer-events: none;
+    display: none;
+    opacity: 0;
+}
+
+.hard-mode .hard-mode-glitch {
+    display: block;
+    animation: glitchAppear 1.5s steps(10) forwards;
+}
+
+@keyframes glitchAppear {
+    0% { opacity: 0; background-position: 50% 50%; filter: contrast(1); }
+    10% { opacity: 0.5; background-position: 48% 52%; filter: contrast(1.5) hue-rotate(90deg); }
+    20% { opacity: 0.2; background-position: 52% 48%; filter: contrast(1); }
+    30% { opacity: 0.8; background-position: 45% 50%; filter: contrast(1.2) invert(0.2); }
+    40% { opacity: 0.4; background-position: 55% 55%; filter: contrast(1); }
+    50% { opacity: 0.9; background-position: 48% 45%; filter: contrast(1.5) hue-rotate(-90deg); }
+    60% { opacity: 0.3; background-position: 50% 52%; filter: contrast(1); }
+    70% { opacity: 1; background-position: 52% 50%; filter: contrast(1.2); }
+    80% { opacity: 0.6; background-position: 45% 48%; filter: contrast(1); }
+    90% { opacity: 0.9; background-position: 52% 55%; filter: contrast(1.5) hue-rotate(45deg); }
+    100% { opacity: 1; background-position: 50% 50%; filter: none; }
+}
+
 /* --- Interfaccia Gioco (Top Bar) --- */
 #topbargame {
     position: absolute;
@@ -437,6 +514,11 @@
 #topbargame.active {
     display: flex;
 }
+
+#topbargame.hard-mode {
+    background-color: rgba(24, 33, 38, 0.50);
+}
+
 
 .score-container {
     font-family: var(--primary-font);
@@ -767,7 +849,7 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    height: 100%;
+    height: 95%;
 }
 
 .leaderboard-header {
@@ -776,7 +858,6 @@
     align-items: center;
     justify-content: center;
     gap: 1cqw;
-    margin-top: 2cqw;
     margin-bottom: 0.5cqw;
     width: 100%;
 }
@@ -812,6 +893,7 @@
     padding: 1cqw 2cqw;
     opacity: 0.5;
     border-width: 0.3cqw;
+    letter-spacing: 0.1cqw;
 }
 
 .filter-btn.active {
@@ -861,7 +943,7 @@
 .leaderboard-actions {
     display: flex;
     gap: 3cqw;
-    margin-top: 3.7cqw;
+    margin-top: auto;
 }
 
 .back-btn,

@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'src/assets/images/aliens2.webp',
         'src/assets/images/aliens3.webp',
         'src/assets/images/aliens4.webp',
+        'src/assets/images/glitch_screen.png',
         // Audio
         'src/assets/sounds/coin.mp3',
         'src/assets/sounds/menu_sound.mp3',
@@ -84,26 +85,35 @@ document.addEventListener('DOMContentLoaded', () => {
         progressBar.parentElement.classList.add('hide');
         loadingPercentage.classList.add('hide');
 
-        const playButton = document.createElement('button');
-        playButton.textContent = 'Gioca';
-        playButton.className = 'arcade-btn play-button';
-        loadingScreen.appendChild(playButton);
-        
-        playButton.focus(); // comodo per la tastiera (appena finito il caricamento il bottone ha già il focus)
-
-        playButton.addEventListener('click', () => {
-
+        // Mostra la selezione delle modalità dopo 0.5s
+        setTimeout(() => {
             loadingScreen.classList.add('hide');
+            const modeSelection = document.getElementById('mode-selection');
+            if (modeSelection) modeSelection.classList.remove('hide');
+            
+            const btnClassic = document.getElementById('btn-classic');
+            if (btnClassic) btnClassic.focus(); // Accessibilità: sposta il focus
+        }, 500);
+    }
+        
+    function startGameWithMode(mode) {
+            const modeSelection = document.getElementById('mode-selection');
+            if (modeSelection) modeSelection.classList.add('hide');
+            
             if (topBarGame) topBarGame.classList.add('active');
             
             const gameArea = document.getElementById('game-area');
             if (gameArea) gameArea.classList.add('active');
             
             if (typeof window.startCosmicSonarGame === 'function') {
-                window.startCosmicSonarGame();
+                window.startCosmicSonarGame(mode);
             }
-        });
     }
+
+    const btnClassic = document.getElementById('btn-classic');
+    const btnHard = document.getElementById('btn-hard');
+    if (btnClassic) btnClassic.addEventListener('click', () => startGameWithMode('classic'));
+    if (btnHard) btnHard.addEventListener('click', () => startGameWithMode('hard'));
 
     // Avvia il caricamento degli asset
     preloadAssets();
