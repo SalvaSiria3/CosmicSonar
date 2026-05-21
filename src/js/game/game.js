@@ -16,10 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveScoreBtn = document.getElementById('save-score-btn');
     const usernameInput = document.getElementById('player-name');
     
+    const settingsBtn = document.querySelector('.settings-btn');
+    const settingsModal = document.getElementById('settings-modal');
+    const resumeBtn = document.getElementById('resume-btn');
+    
     if (!playerShip || !gameArea) return;
 
     let currentLane = 1;
     let isGameRunning = false;
+    let isPaused = false;
     let score = 0;
     let lives = 3;
     
@@ -40,6 +45,68 @@ document.addEventListener('DOMContentLoaded', () => {
     const wallSound = new Audio('src/assets/sounds/wall.mp3');
     wallSound.preload = 'auto';
 
+    // --- MUSICA DI GIOCO ---
+    const gameMusic = new Audio('src/assets/sounds/menu_sound.mp3');
+    gameMusic.loop = true;
+    gameMusic.preload = 'auto';
+
+    // --- GESTIONE VOLUMI ---
+    let sfxVolume = 0.9; // Volume effetti sonori di default al 90%
+    let musicVolume = 0.1; // Parte di default esattamente al 10%
+    
+    const savedSfx = localStorage.getItem('cosmicSfxVol');
+    const savedMusic = localStorage.getItem('cosmicMusicVol');
+    if (savedSfx !== null) sfxVolume = parseFloat(savedSfx);
+    if (savedMusic !== null) musicVolume = parseFloat(savedMusic);
+
+    gameMusic.volume = musicVolume; // Applica subito il volume alla musica
+
+    const sfxSlider = document.getElementById('sfx-volume');
+    const musicSlider = document.getElementById('music-volume');
+    
+    // Posiziona il cursore sul blocco corretto (da 0 a 10)
+    if (sfxSlider) sfxSlider.value = Math.round(sfxVolume * 10);
+    if (musicSlider) musicSlider.value = Math.round(musicVolume * 10);
+
+    if (sfxSlider) {
+        sfxSlider.addEventListener('input', (e) => {
+            sfxVolume = e.target.value / 10; // Converte la posizione 0-10 in percentuale 0.0-1.0
+            localStorage.setItem('cosmicSfxVol', sfxVolume);
+            audio.setVolume(sfxVolume); // Aggiorna il volume degli alieni in tempo reale
+            
+            // Suono di feedback per far capire il livello del volume
+            const testSound = shootSound.cloneNode();
+            testSound.volume = 0.2 * sfxVolume;
+            testSound.play().catch(err => console.log("Impossibile riprodurre suono di test", err));
+        });
+    }
+
+    if (musicSlider) {
+        musicSlider.addEventListener('input', (e) => {
+            musicVolume = e.target.value / 10;
+            localStorage.setItem('cosmicMusicVol', musicVolume);
+            gameMusic.volume = musicVolume; // Aggiorna in tempo reale
+        });
+    }
+
+    // --- GESTIONE PAUSA ---
+    settingsBtn.addEventListener('click', () => {
+        if (!isGameRunning || isPaused) return;
+        isPaused = true;
+        clearTimeout(spawnTimeoutId); // Ferma la creazione di nuovi nemici
+        gameArea.classList.add('paused-animation'); // Congela le animazioni CSS (laser e alieni)
+        audio.suspend(); // Congela il suono degli alieni a mezz'aria
+        settingsModal.classList.remove('hide');
+    });
+
+    resumeBtn.addEventListener('click', () => {
+        isPaused = false;
+        settingsModal.classList.add('hide');
+        gameArea.classList.remove('paused-animation'); // Scongela le animazioni
+        audio.resume(); // Riprende il suono degli alieni
+        spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate); // Aspetta il tempo corretto prima di far apparire il nemico
+    });
+
     function updateShipPosition() {
         playerShip.classList.remove('lane-0', 'lane-1', 'lane-2');
         playerShip.classList.add(`lane-${currentLane}`);
@@ -47,12 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playWallSound() {
         const currentWallSound = wallSound.cloneNode();
-        currentWallSound.volume = 0.5; // Regola il volume dell'impatto col muro
+        currentWallSound.volume = 0.5 * sfxVolume; 
         currentWallSound.play().catch(e => console.log("Impossibile riprodurre wall.mp3", e));
     }
 
     document.addEventListener('keydown', (e) => {
-        if (!isGameRunning) return;
+        if (!isGameRunning || isPaused) return;
 
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
             if (currentLane > 0) {
@@ -116,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Clona l'oggetto audio per permettere spari rapidi e sovrapposti senza blocchi
         const currentShootSound = shootSound.cloneNode();
-        currentShootSound.volume = 0.2; // Volume più bilanciato
+        currentShootSound.volume = 0.2 * sfxVolume; // Applica il volume SFX globale
         currentShootSound.play().catch(e => console.log("Impossibile riprodurre il suono del laser:", e));
         
         laser.addEventListener('animationend', () => laser.remove());
@@ -124,6 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gameLoop() {
         if (!isGameRunning) return;
+        
+        if (isPaused) {
+            animationFrameId = requestAnimationFrame(gameLoop); // Mantieni vivo il loop, ma ignora la logica
+            return; 
+        }
         
         const aliens = document.querySelectorAll('.alien:not(.exploded)');
         const lasers = document.querySelectorAll('.laser');
@@ -146,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Clona e riproduce il suono dell'esplosione
                     const currentExplosionSound = explosionSound.cloneNode();
-                    currentExplosionSound.volume = 0.5; // Regola il volume se necessario
+                    currentExplosionSound.volume = 0.5 * sfxVolume; 
                     currentExplosionSound.play().catch(e => console.log("Impossibile riprodurre l'esplosione:", e));
                     
                     score += 10;    // Bastano 10?
@@ -199,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (lives > 1) {
             const currentLoseLifeSound = loseLifeSound.cloneNode();
-            currentLoseLifeSound.volume = 0.6; // Volume più basso
+            currentLoseLifeSound.volume = 0.6 * sfxVolume; // Applica il volume SFX globale
             currentLoseLifeSound.play().catch(e => console.log("Impossibile riprodurre lose_life.mp3", e));
         }
 
@@ -228,6 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(spawnTimeoutId);
         cancelAnimationFrame(animationFrameId);
         
+        gameMusic.pause(); // Ferma la musica quando il giocatore perde
+
         document.querySelectorAll('.alien, .laser').forEach(el => {
             // Spegne il suono dell'alieno prima di rimuoverlo dallo schermo (rimaneva anche se eliminato)
             if (el.classList.contains('alien') && el.audioNode) {
@@ -237,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         gameOverSound.currentTime = 0;
+        gameOverSound.volume = 1.0 * sfxVolume;
         gameOverSound.play().catch(e => console.log("Impossibile riprodurre game_over.mp3", e));
         
         // Nasconde l'interfaccia di gioco
@@ -313,6 +388,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 sound.volume = 1; // Ripristina il volume
             }).catch(() => {});
         });
+                
+        gameMusic.play().catch(e => console.log("Impossibile avviare musica", e));
+
         // Annuncio iniziale per orientare il giocatore
         if (gameAnnouncer) {
             gameAnnouncer.textContent = 'Partita iniziata. Sei nella corsia Centrale.';

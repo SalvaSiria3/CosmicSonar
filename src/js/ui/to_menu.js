@@ -24,15 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (menuLoaded) return;
         menuLoaded = true;
 
+        // Recupera il volume SFX salvato (o usa 0.9 di default)
+        const savedSfx = localStorage.getItem('cosmicSfxVol');
+        const sfxVolume = savedSfx !== null ? parseFloat(savedSfx) : 0.9;
+        coinSound.volume = 1.0 * sfxVolume;
+
         coinSound.currentTime = 0;
         coinSound.play().catch(e => console.log("Audio moneta non trovato:", e));
 
         if (startBanner) startBanner.classList.add('hidden');
 
         if (insertCoinText) {
-            insertCoinText.style.animation = 'none';
-            insertCoinText.style.transition = 'opacity 0.3s ease';
-            insertCoinText.style.opacity = '0';
+            insertCoinText.classList.add('insert-coin-hidden');
         }
         
         if (statusMessage) {
@@ -59,9 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (startBanner) startBanner.classList.remove('hidden');
             if (insertCoinText) {
-                insertCoinText.style.animation = '';
-                insertCoinText.style.transition = '';
-                insertCoinText.style.opacity = '';
+                insertCoinText.classList.remove('insert-coin-hidden');
             }
             if (statusMessage) {
                 statusMessage.textContent = 'Premi la barra spaziatrice per iniziare il gioco';

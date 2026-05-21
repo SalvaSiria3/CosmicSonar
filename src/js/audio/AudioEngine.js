@@ -4,7 +4,10 @@ class AudioEngine {
         this.ctx = new AudioContext(); // Ambiente audio (ctx sta per context)
         
         this.masterGain = this.ctx.createGain();
-        this.masterGain.gain.value = 0.5; // Volume iniziale al 50%
+        
+        // Carica il volume salvato o usa 0.9 (90%) di base. Il volume base dell'engine è 0.5.
+        const savedSfxVolume = parseFloat(localStorage.getItem('cosmicSfxVol')) ?? 0.9;
+        this.masterGain.gain.value = 0.5 * (isNaN(savedSfxVolume) ? 0.9 : savedSfxVolume); 
         
         this.masterGain.connect(this.ctx.destination); // Collega il master gain all'uscita audio del browser
     }
@@ -13,6 +16,17 @@ class AudioEngine {
         if (this.ctx.state === 'suspended') {
             this.ctx.resume();
         }
+    }
+
+    suspend() {
+        if (this.ctx.state === 'running') {
+            this.ctx.suspend(); // Si ferma il tempo del motore audio
+        }
+    }
+
+    // Regola il volume globale degli alieni (SFX)
+    setVolume(volume) {
+        this.masterGain.gain.setValueAtTime(0.5 * volume, this.ctx.currentTime);
     }
 
     createAlienSonar(laneIndex) { //In base alla colonna, il suono sarà più a sinistra o a destra

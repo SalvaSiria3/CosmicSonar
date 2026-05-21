@@ -69,6 +69,23 @@
                             <span aria-hidden="true">Salva e<br>vai alla classifica</span>
                         </button>
                     </div>
+
+                    <!-- Schermata Impostazioni (Pausa) -->
+                    <div id="settings-modal" class="hide" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+                        <h2 id="settings-title" class="menu-title">IN PAUSA</h2>
+                        <div class="settings-content">
+                            <div class="volume-control">
+                                <label for="sfx-volume">Effetti Sonori</label>
+                                <input type="range" id="sfx-volume" min="0" max="10" step="1" value="9" aria-valuemin="0" aria-valuemax="10">
+                            </div>
+                            <div class="volume-control">
+                                <label for="music-volume">Musica</label>
+                                <input type="range" id="music-volume" min="0" max="10" step="1" value="1" aria-valuemin="0" aria-valuemax="10">
+                            </div>
+                        </div>
+                        <button type="button" id="resume-btn" class="arcade-btn">Riprendi Gioco</button>
+                    </div>
+
                 </main>
             </div>
         </div>

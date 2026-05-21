@@ -98,6 +98,12 @@
     50% { opacity: 0; }
 }
 
+.insert-coin-hidden {
+    animation: none;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
 .arcade-footer {
     position: absolute;
     bottom: 1.25%;
@@ -415,13 +421,13 @@
 /* --- Interfaccia Gioco (Top Bar) --- */
 #topbargame {
     position: absolute;
-    top: -1%;
+    top: 1.5%;
     left: -1cqw;
     width: 100cqw;
     display: none;
     justify-content: space-between;
     align-items: center;
-    padding: 3cqw 10cqw 0.5cqw 9cqw;
+    padding: 0.5cqw 10cqw 0.3cqw 9cqw;
     z-index: 30;
     background-color: rgba(24, 33, 38, 0.70);
     border-bottom: 0.3cqw solid var(--secondary-color);
@@ -445,16 +451,37 @@
 }
 
 .heart-icon {
-    width: 6cqw;
+    width: 7cqw;
     height: auto;
 }
 
 .settings-btn {
+    position: relative;
     border-width: 0.3cqw;
     box-shadow: inset 0 0 0 0.2cqw var(--secondary-color);
     border-radius: 8px;
     padding: 0.8cqw;
-    margin-bottom: 1cqw;
+    margin-bottom: 0.7cqw;
+    margin-top: 0.5cqw;
+}
+
+/* Avvicina il bordo di hover per questo bottone che è più piccolo */
+.settings-btn:hover,
+.settings-btn:focus-visible {
+    outline-offset: 1px;
+}
+
+/* Espande l'area cliccabile invisibile per rispettare i 44px delle WCAG */
+.settings-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
+    width: 100%;
+    height: 100%;
 }
 
 .settings-btn .icon-settings {
@@ -579,6 +606,11 @@
     100% { bottom: 100vh; }
 }
 
+/* Classe magica per mettere in pausa tutte le animazioni CSS */
+.paused-animation * {
+    animation-play-state: paused !important;
+}
+
 /* --- Schermata Game Over --- */
 #game-over-screen {
     display: none;
@@ -668,6 +700,63 @@
     line-height: 1.8;
     text-align: center;
     text-shadow: 0 0.5cqw 1cqw var(--secondary-color);
+}
+
+/* --- Schermata Impostazioni --- */
+#settings-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 50;
+    font-family: var(--primary-font);
+    color: var(--neutral-light);
+}
+
+#settings-modal.hide {
+    display: none !important;
+}
+
+#settings-title {
+    font-size: 8cqw;
+    margin-bottom: 4cqw;
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3cqw;
+    width: 70%;
+    margin-bottom: 4cqw;
+}
+
+.volume-control {
+    display: flex;
+    flex-direction: column;
+    gap: 1cqw;
+    text-align: left;
+}
+
+.volume-control label {
+    font-size: 2cqw;
+    color: var(--tertiary-color);
+    text-shadow: 0 0 1cqw rgba(0, 0, 0, 1);
+}
+
+.volume-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+#resume-btn {
+    font-size: 2.2cqw;
+    padding: 1.5cqw 3cqw;
+    margin-top: 1cqw;
 }
 
 /* --- Classifica --- */
@@ -801,7 +890,7 @@
     
     /* Gioco */
     .score-container { font-size: 1.4vw; text-shadow: 0 0 0.4vw var(--tertiary-color); }
-    .heart-icon { width: 2.4vw; }
+    .heart-icon { width: 3.4vw; }
     .player-ship { width: 2.8vw; bottom: 1.6vw; }
     .alien { width: 3.6vw; height: 3.6vw; }
     
@@ -811,6 +900,7 @@
     .player-name-container label { font-size: 1vw; text-shadow: 0 0 0.4vw rgba(0, 0, 0, 1); }
     #player-name { font-size: 1.8vw; width: 24vw; padding: 0.6vw; }
     #save-score-btn { font-size: 1.1vw; padding: 0.8vw 1.6vw; margin-top: 1.2vw; }
+    #settings-title { font-size: 3.2vw; }
     
     /* Classifica */
     .leaderboard-title { font-size: 2.4vw; text-shadow: 0 0 0.8vw rgba(149, 149, 149, 0.3); }
