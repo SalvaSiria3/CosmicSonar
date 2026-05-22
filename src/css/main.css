@@ -203,8 +203,8 @@
 .start-banner {
     position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    width: 100vw;
     background: linear-gradient(135deg, 
         rgba(187, 137, 225, 0.95) 0%, 
         rgba(57, 154, 162, 0.95) 100%);
@@ -214,14 +214,14 @@
     box-shadow: 0 -4px 30px black;
     border-top: 3px solid black;
     opacity: 0.98;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
     transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
     visibility: visible;
 }
 
 .start-banner.hidden {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateX(-50%) translateY(100%);
     pointer-events: none;
     visibility: hidden; /* Nasconde completamente il banner agli screen reader quando è chiuso */
 }
