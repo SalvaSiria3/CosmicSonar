@@ -42,12 +42,12 @@
                         <h2 id="settings-title" class="menu-title">Impostazioni</h2>
                         <div class="settings-content">
                             <div class="volume-control">
-                                <label for="sfx-volume">Effetti Sonori</label>
-                                <input type="range" id="sfx-volume" min="0" max="10" step="1" value="9" aria-valuemin="0" aria-valuemax="10">
+                                <label for="sfx-volume" aria-hidden="true">Effetti Sonori</label>
+                                <input type="range" id="sfx-volume" aria-label="Volume Effetti Sonori" min="0" max="10" step="1" value="9" aria-valuemin="0" aria-valuemax="10" aria-valuenow="9">
                             </div>
                             <div class="volume-control">
-                                <label for="music-volume">Musica</label>
-                                <input type="range" id="music-volume" min="0" max="10" step="1" value="1" aria-valuemin="0" aria-valuemax="10">
+                                <label for="music-volume" aria-hidden="true">Musica</label>
+                                <input type="range" id="music-volume" aria-label="Volume Musica" min="0" max="10" step="1" value="1" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1">
                             </div>
                         </div>
                         <button type="button" id="close-settings-btn" class="arcade-btn">Chiudi</button>

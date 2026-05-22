@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const modeSelection = document.getElementById('mode-selection');
             if (modeSelection) modeSelection.classList.remove('hide');
             
-            const btnClassic = document.getElementById('btn-classic');
-            if (btnClassic) btnClassic.focus(); // Accessibilità: sposta il focus
+            const modeTitle = document.getElementById('mode-title');
+            if (modeTitle) modeTitle.focus(); // Accessibilità: annuncia all'utente la schermata
         }, 500);
     }
         

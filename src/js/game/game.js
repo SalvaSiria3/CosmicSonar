@@ -29,6 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let lives = 3;
     
+    // Variabili per tracciamento statistiche Database
+    let aliensDestroyed = 0;
+    let shotsFired = 0;
+    let wallsHit = 0;
+    let gameStartTime = 0;
+    
     let spawnRate = 5000;
     let enemySpeed = 15.0; // Secondi di discesa dei nemici (più basso = più veloce)
     let spawnTimeoutId;
@@ -129,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playWallSound() {
+        wallsHit++; // Traccia il muro colpito per il Database
         const currentWallSound = wallSound.cloneNode();
         currentWallSound.volume = 0.5 * sfxVolume; 
         currentWallSound.play().catch(e => console.log("Impossibile riprodurre wall.mp3", e));
@@ -199,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function shoot() {
         if (!isGameRunning) return;
+        shotsFired++; // Traccia il colpo sparato
         const laser = document.createElement('div');
         laser.className = 'laser';
         lanes[currentLane].appendChild(laser);
@@ -232,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isColliding(laserRect, alienRect) && alienRect.bottom > gameAreaRect.top) {
                     laser.remove();
 
+                    aliensDestroyed++; // Traccia l'alieno distrutto
                     audio.stopAlienSonar(alien.audioNode);
                     const currentTop = window.getComputedStyle(alien).top;
                     alien.style.setProperty('--freeze-top', currentTop);
@@ -364,26 +373,33 @@ document.addEventListener('DOMContentLoaded', () => {
             username = "ANONIMUS";
         }
         
-        const newScore = { 
-            id: Date.now(),
+        const durationSeconds = Math.floor((Date.now() - gameStartTime) / 1000);
+        
+        const payload = { 
             name: username.substring(0, 10), 
             score: score,
-            mode: gameMode // Salva il punteggio con la modalità corretta
+            mode: gameMode,
+            duration: durationSeconds,
+            aliensDestroyed: aliensDestroyed,
+            shotsFired: shotsFired,
+            wallsHit: wallsHit,
+            tutorialPhase: null // Lo useremo più avanti
         };
         
-        try {
-            let leaderboard = JSON.parse(localStorage.getItem('cosmicSonarLeaderboard')) || [];
-            leaderboard.push(newScore);
-            
-            leaderboard.sort((a, b) => b.score - a.score);
-            localStorage.setItem('cosmicSonarLeaderboard', JSON.stringify(leaderboard));
-            
-            sessionStorage.setItem('lastPlayedId', newScore.id);
-        } catch (error) {
-            console.warn("Impossibile salvare il punteggio nel localStorage:", error);
-        }
-        
-        window.location.href = 'leaderboard.php';
+        // Invia i dati al database tramite PHP
+        fetch('salva_punteggio.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) sessionStorage.setItem('lastPlayedId', data.id); // Salva l'ID vero del DB
+        })
+        .catch(err => console.error("Errore salvataggio DB:", err))
+        .finally(() => {
+            window.location.href = 'leaderboard.php';
+        });
     }
 
     if (saveScoreBtn) {
@@ -402,6 +418,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isGameRunning) return;
         isGameRunning = true;
         gameMode = selectedMode || 'classic';
+        
+        // Reset variabili statistiche
+        aliensDestroyed = 0;
+        shotsFired = 0;
+        wallsHit = 0;
+        gameStartTime = Date.now();
         
         // Applica i modificatori per la modalità difficile
         if (gameMode === 'hard') {

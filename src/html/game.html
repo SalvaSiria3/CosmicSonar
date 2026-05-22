@@ -37,17 +37,18 @@
                         <h2 class="menu-title" id="mode-title">Seleziona modalità</h2>
                         <div class="mode-cards-container" role="group" aria-labelledby="mode-title">
                             <div class="mode-card">
-                                <button type="button" id="btn-classic" class="arcade-btn mode-btn classic-btn">Classica</button>
-                                <p class="mode-desc">Esperienza standard completa di visuale, musica e audio spaziale.</p>
+                                <button type="button" id="btn-classic" class="arcade-btn mode-btn classic-btn" aria-describedby="desc-classic">Classica</button>
+                                <p id="desc-classic" class="mode-desc">Esperienza standard completa di visuale, musica e audio spaziale.</p>
                             </div>
                             <div class="mode-card hard-card">
-                                <button type="button" id="btn-hard" class="arcade-btn mode-btn hard-btn">Difficile</button>
-                                <p class="mode-desc hard-text">Niente musica e schermo compromesso.<br>Affidati solo al tuo udito!<br></p>
+                                <button type="button" id="btn-hard" class="arcade-btn mode-btn hard-btn" aria-describedby="desc-hard">Difficile</button>
+                                <p id="desc-hard" class="mode-desc hard-text">Niente musica e schermo compromesso.<br>Affidati solo al tuo udito!<br></p>
                             </div>
                         </div>
                         <p class="esc-hint">
+                            <span class="sr-only">Premi ESC in gioco per mettere in pausa o aprire le impostazioni</span>
                             <img src="src/assets/images/light.png" alt="" aria-hidden="true" class="hint-icon">
-                            Premi <strong>ESC</strong> in gioco per mettere in pausa o aprire le impostazioni
+                            <span aria-hidden="true">Premi <strong>ESC</strong> in gioco per mettere in pausa o aprire le impostazioni</span>
                         </p>
 
                     </div>
@@ -98,12 +99,12 @@
                         <h2 id="settings-title" class="menu-title">In pausa</h2>
                         <div class="settings-content">
                             <div class="volume-control">
-                                <label for="sfx-volume">Effetti Sonori</label>
-                                <input type="range" id="sfx-volume" min="0" max="10" step="1" value="9" aria-valuemin="0" aria-valuemax="10">
+                                <label for="sfx-volume" aria-hidden="true">Effetti Sonori</label>
+                                <input type="range" id="sfx-volume" aria-label="Volume Effetti Sonori" min="0" max="10" step="1" value="9" aria-valuemin="0" aria-valuemax="10" aria-valuenow="9">
                             </div>
                             <div class="volume-control">
-                                <label for="music-volume">Musica</label>
-                                <input type="range" id="music-volume" min="0" max="10" step="1" value="1" aria-valuemin="0" aria-valuemax="10">
+                                <label for="music-volume" aria-hidden="true">Musica</label>
+                                <input type="range" id="music-volume" aria-label="Volume Musica" min="0" max="10" step="1" value="1" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1">
                             </div>
                         </div>
                         <button type="button" id="resume-btn" class="arcade-btn">Riprendi Gioco</button>

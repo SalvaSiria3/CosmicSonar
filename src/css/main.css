@@ -701,11 +701,11 @@
     overflow: hidden;
 }
 
-.lane:first-of-type {
+#lane-left {
     border-left: 0.3cqw solid rgba(151, 29, 29, 0.8);
 }
 
-.lane:last-of-type {
+#lane-right {
     border-right: 0.3cqw solid rgba(151, 29, 29, 0.8);
 }
 
@@ -957,7 +957,7 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    height: 95%;
+    height: 93%;
 }
 
 .leaderboard-header {
