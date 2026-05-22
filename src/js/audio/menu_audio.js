@@ -69,9 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (musicSlider) musicSlider.value = Math.round((currMusic !== null ? parseFloat(currMusic) : 0.1) * 10);
             
             settingsModal.classList.remove('hide');
+            if (sfxSlider) sfxSlider.focus(); // Accessibilità: sposta il focus al primo slider
         });
 
-        closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hide'));
+        closeSettingsBtn.addEventListener('click', () => {
+            settingsModal.classList.add('hide');
+            openSettingsBtn.focus(); // Accessibilità: riporta il focus al bottone del menu
+        });
+        
+        // Chiude le impostazioni con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Escape' && !settingsModal.classList.contains('hide')) {
+                closeSettingsBtn.click();
+            }
+        });
     }
 
     if (sfxSlider) {

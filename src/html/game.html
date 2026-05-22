@@ -34,18 +34,22 @@
 
                     <!-- Selezione Modalità -->
                     <div id="mode-selection" class="hide">
-                        <h2 class="menu-title" id="mode-title">Modalità</h2>
-                        <div class="mode-buttons" role="group" aria-labelledby="mode-title">
-                            <button type="button" id="btn-classic" class="arcade-btn mode-btn">Classica</button>
-                            <button type="button" id="btn-hard" class="arcade-btn mode-btn">Difficile</button>
+                        <h2 class="menu-title" id="mode-title">Seleziona modalità</h2>
+                        <div class="mode-cards-container" role="group" aria-labelledby="mode-title">
+                            <div class="mode-card">
+                                <button type="button" id="btn-classic" class="arcade-btn mode-btn classic-btn">Classica</button>
+                                <p class="mode-desc">Esperienza standard completa di visuale, musica e audio spaziale.</p>
+                            </div>
+                            <div class="mode-card hard-card">
+                                <button type="button" id="btn-hard" class="arcade-btn mode-btn hard-btn">Difficile</button>
+                                <p class="mode-desc hard-text">Niente musica e schermo compromesso.<br>Affidati solo al tuo udito!<br></p>
+                            </div>
                         </div>
-                        <div class="mode-description">
-                            <p><strong>CLASSICA:</strong> Esperienza arcade standard completa.</p>
-                            <p class="hard-text">
-                                <strong>DIFFICILE:</strong> Niente musica. Schermo compromesso. 
-                                Nessun aiuto visivo. Gioca affidandoti esclusivamente al tuo udito e al Sonar 3D!
-                            </p>
-                        </div>
+                        <p class="esc-hint">
+                            <img src="src/assets/images/light.png" alt="" aria-hidden="true" class="hint-icon">
+                            Premi <strong>ESC</strong> in gioco per mettere in pausa o aprire le impostazioni
+                        </p>
+
                     </div>
 
                     <!-- Schermata di gioco -->
@@ -58,7 +62,7 @@
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-2">
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-3">
                         </div>
-                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" title="Impostazioni">
+                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" aria-haspopup="dialog" aria-controls="settings-modal" title="Impostazioni">
                             <span class="icon-settings" aria-hidden="true"></span>
                         </button>
                     </div>

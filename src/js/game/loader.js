@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'src/assets/images/aliens3.webp',
         'src/assets/images/aliens4.webp',
         'src/assets/images/glitch_screen.png',
+        'src/assets/images/light.png',
         // Audio
         'src/assets/sounds/coin.mp3',
         'src/assets/sounds/menu_sound.mp3',

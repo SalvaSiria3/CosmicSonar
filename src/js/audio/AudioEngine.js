@@ -24,7 +24,7 @@ class AudioEngine {
         }
     }
 
-    // Regola il volume globale degli alieni (SFX)
+    // Regola il volume globale degli alieni (SFX o effetti sonori)
     setVolume(volume) {
         this.masterGain.gain.setValueAtTime(0.5 * volume, this.ctx.currentTime);
     }
@@ -62,7 +62,6 @@ class AudioEngine {
         if (!alienSound || alienSound.hasEntered) return;
         alienSound.hasEntered = true; // Segna che il suono è stato attivato (c'era il problema che suonava prima che entrasse effettivamente nello schermo)
         
-        // Volume leggermente più basso è più bilanciato (rispetto ad 0.1)
         alienSound.alienGain.gain.setTargetAtTime(0.08, this.ctx.currentTime, 0.05);  
     }
 

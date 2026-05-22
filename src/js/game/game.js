@@ -100,22 +100,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- GESTIONE PAUSA ---
-    settingsBtn.addEventListener('click', () => {
-        if (!isGameRunning || isPaused) return;
-        isPaused = true;
-        clearTimeout(spawnTimeoutId); // Ferma la creazione di nuovi nemici
-        gameArea.classList.add('paused-animation'); // Congela le animazioni CSS (laser e alieni)
-        audio.suspend(); // Congela il suono degli alieni a mezz'aria
-        settingsModal.classList.remove('hide');
-    });
+    function togglePause() {
+        if (!isGameRunning) return;
+        
+        if (isPaused) {
+            isPaused = false;
+            settingsModal.classList.add('hide');
+            gameArea.classList.remove('paused-animation'); 
+            audio.resume(); 
+            spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate); 
+            settingsBtn.focus(); // Accessibilità: riporta il focus all'ingranaggio
+        } else {
+            isPaused = true;
+            clearTimeout(spawnTimeoutId); 
+            gameArea.classList.add('paused-animation'); 
+            audio.suspend(); 
+            settingsModal.classList.remove('hide');
+            if (sfxSlider) sfxSlider.focus(); // Accessibilità: sposta il focus dentro la modale
+        }
+    }
 
-    resumeBtn.addEventListener('click', () => {
-        isPaused = false;
-        settingsModal.classList.add('hide');
-        gameArea.classList.remove('paused-animation'); // Scongela le animazioni
-        audio.resume(); // Riprende il suono degli alieni
-        spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate); // Aspetta il tempo corretto prima di far apparire il nemico
-    });
+    settingsBtn.addEventListener('click', () => { if (!isPaused) togglePause(); });
+    resumeBtn.addEventListener('click', () => { if (isPaused) togglePause(); });
 
     function updateShipPosition() {
         playerShip.classList.remove('lane-0', 'lane-1', 'lane-2');
@@ -129,6 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('keydown', (e) => {
+        // Permette di mettere in pausa e toglierla con il tasto ESC (Accessibilità da tastiera)
+        if (e.code === 'Escape' && isGameRunning) {
+            togglePause();
+            return;
+        }
+
         if (!isGameRunning || isPaused) return;
 
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
@@ -281,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (lives > 1) {
             const currentLoseLifeSound = loseLifeSound.cloneNode();
-            currentLoseLifeSound.volume = 0.6 * sfxVolume; // Applica il volume SFX globale
+            currentLoseLifeSound.volume = 0.6 * sfxVolume; // Applica il volume SFX globale (effetti sonori)
             currentLoseLifeSound.play().catch(e => console.log("Impossibile riprodurre lose_life.mp3", e));
         }
 
@@ -331,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const glitchLayer = document.querySelector('.hard-mode-glitch');
         if (glitchLayer) glitchLayer.classList.remove('active');
         
-        // Annuncia la sconfitta in modo chiaro
+        // Annuncia il game over
         if (gameAnnouncer) {
             gameAnnouncer.textContent = `Game Over. Punteggio finale: ${score}. Inserisci il tuo nome per la classifica oppure clicca direttamente salva e rimani anonimo.`;
         }
@@ -391,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isGameRunning = true;
         gameMode = selectedMode || 'classic';
         
-        // Applica i modificatori per la Modalità Difficile
+        // Applica i modificatori per la modalità difficile
         if (gameMode === 'hard') {
             gameArea.classList.add('hard-mode');
             topBarGame.classList.add('hard-mode');
