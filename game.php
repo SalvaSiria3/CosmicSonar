@@ -20,5 +20,6 @@ echo Template::render('src/html/game.html', [
         'LEADERBOARD_CLASS' => '',
         'LEADERBOARD_ARIA' => ''
     ]),
-    'FOOTER' => Template::render('src/html/footer.html', [])
+    'FOOTER' => Template::render('src/html/footer.html', []),
+    'WARNING' => Template::render('src/html/warning.html', [])
 ]);

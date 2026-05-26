@@ -233,7 +233,14 @@ nav {
     line-height: 2;
 }
 
-@media screen and (max-width: 640px) {
+.warning-icon {
+    width: 4rem;
+    height: auto;
+    display: block;
+    margin: 0 auto 1rem auto;
+}
+
+@media screen and (max-width: 640px), screen and (max-height: 600px) {
     .resize-warning {
         display: flex;
     }

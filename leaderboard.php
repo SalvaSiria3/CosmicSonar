@@ -20,5 +20,6 @@ echo Template::render('src/html/leaderboard.html', [
         'LEADERBOARD_CLASS' => 'disabled',
         'LEADERBOARD_ARIA' => 'aria-current="page"'
     ]),
-    'FOOTER' => Template::render('src/html/footer.html', [])
+    'FOOTER' => Template::render('src/html/footer.html', []),
+    'WARNING' => Template::render('src/html/warning.html', [])
 ]);
