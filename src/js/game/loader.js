@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'src/assets/sounds/shot.mp3',
         'src/assets/sounds/death_alien.mp3',
         'src/assets/sounds/lose_life.mp3',
-        'src/assets/sounds/wall.mp3'
+        'src/assets/sounds/wall.mp3',
+        'src/assets/sounds/change_col.mp3'
     ];
 
     // Serve per far vedere il caricamento (sennò va troppo veloce)

@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let enemySpeed = 15.0; // Secondi di discesa dei nemici (più basso = più veloce)
     let spawnTimeoutId;
     let animationFrameId; // Motore di gioco continuo
+    let lastShootTime = 0; // Traccia l'ultimo sparo per evitare spam e lag
     
     const audio = new AudioEngine();
     const gameOverSound = new Audio('src/assets/sounds/game_over.mp3');
@@ -51,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loseLifeSound.preload = 'auto';
     const wallSound = new Audio('src/assets/sounds/wall.mp3');
     wallSound.preload = 'auto';
+    const changeColSound = new Audio('src/assets/sounds/change_col.mp3');
+    changeColSound.preload = 'auto';
 
     // --- MUSICA DI GIOCO ---
     const gameMusic = new Audio('src/assets/sounds/menu_sound.mp3');
@@ -137,8 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function playWallSound() {
         wallsHit++; // Traccia il muro colpito per il Database
         const currentWallSound = wallSound.cloneNode();
-        currentWallSound.volume = 0.5 * sfxVolume; 
+        currentWallSound.volume = 0.1 * sfxVolume; 
         currentWallSound.play().catch(e => console.log("Impossibile riprodurre wall.mp3", e));
+    }
+
+    function playChangeColSound() {
+        const currentChangeColSound = changeColSound.cloneNode();
+        currentChangeColSound.volume = 0.3 * sfxVolume; 
+        currentChangeColSound.play().catch(e => console.log("Impossibile riprodurre change_col.mp3", e));
     }
 
     document.addEventListener('keydown', (e) => {
@@ -150,10 +159,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isGameRunning || isPaused) return;
 
+        // Evita lo scrolling della pagina se si premono per sbaglio le frecce su/giù o durante il movimento
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+            e.preventDefault();
+        }
+
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
             if (currentLane > 0) {
                 currentLane--;
                 updateShipPosition();
+                playChangeColSound();
             } else {
                 playWallSound(); // Ha colpito il muro a sinistra
             }
@@ -161,12 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentLane < 2) {
                 currentLane++;
                 updateShipPosition();
+                playChangeColSound();
             } else {
                 playWallSound(); // Ha colpito il muro a destra
             }
         } else if (e.code === 'Space') {
             e.preventDefault(); // Evita scroll schermo
-            shoot();
+            if (!e.repeat) { // Evita che tenendo premuto spazio partano mille colpi
+                shoot();
+            }
         }
     });
 
@@ -206,6 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function shoot() {
         if (!isGameRunning) return;
+        
+        const now = Date.now();
+        // Limita la frequenza di sparo a circa 4 colpi al secondo (250ms)
+        if (now - lastShootTime < 250) return; 
+        lastShootTime = now;
+
         shotsFired++; // Traccia il colpo sparato
         const laser = document.createElement('div');
         laser.className = 'laser';
@@ -234,8 +258,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 1. Controlla collisioni tra proiettili e alieni
         lasers.forEach(laser => {
+            if (!laser.isConnected) return; // Se il laser ha già colpito in questo frame, ignoralo
+
             const laserRect = laser.getBoundingClientRect();
             aliens.forEach(alien => {
+                if (alien.classList.contains('exploded')) return; // Se l'alieno è già distrutto, ignoralo
+
                 const alienRect = alien.getBoundingClientRect();
                 if (isColliding(laserRect, alienRect) && alienRect.bottom > gameAreaRect.top) {
                     laser.remove();
@@ -249,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Clona e riproduce il suono dell'esplosione
                     const currentExplosionSound = explosionSound.cloneNode();
-                    currentExplosionSound.volume = 0.5 * sfxVolume; 
+                    currentExplosionSound.volume = 1.0 * sfxVolume; 
                     currentExplosionSound.play().catch(e => console.log("Impossibile riprodurre l'esplosione:", e));
                     
                     score += 10;    // Bastano 10?
@@ -454,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
         audio.resume(); // Risveglia la scheda audio al primo click utente
         
         // Suona silenziosamente i file audio al primo click utente per sbloccare i permessi del browser (alcuni audio li bloccava all'improvviso a caso)
-        [gameOverSound, loseLifeSound, wallSound].forEach(sound => {
+        [gameOverSound, loseLifeSound, wallSound, changeColSound].forEach(sound => {
             sound.volume = 0;
             sound.play().then(() => {
                 sound.pause();

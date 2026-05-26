@@ -66,11 +66,15 @@ class AudioEngine {
     }
 
     stopAlienSonar(alienSound) { // Per quando muore l'alieno
-        if (!alienSound) return;
+        if (!alienSound || alienSound.isStopped) return;
+        alienSound.isStopped = true; // Previene errori se chiamato più volte in un frame
         
         // Effettua un fade-out rapido per evitare "click" fastidiosi quando si taglia l'onda di netto
         alienSound.alienGain.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.05);
-        alienSound.osc.stop(this.ctx.currentTime + 0.1);
+        
+        try {
+            alienSound.osc.stop(this.ctx.currentTime + 0.1);
+        } catch(e) {} // Ignora l'errore se per via del lag l'oscillatore è già morto
         
         //Disconnette i nodi audio per liberare memoria ed evitare rallentamenti
         setTimeout(() => {

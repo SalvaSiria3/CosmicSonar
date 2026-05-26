@@ -22,12 +22,8 @@ CREATE TABLE IF NOT EXISTS statistiche_partita (
 /* Comandi sql per creare il db
 
 CREATE DATABASE IF NOT EXISTS cosmicsonar_db;
-
 CREATE USER 'cosmicsonar_user'@'localhost' IDENTIFIED BY 'cosmicsonar_password';
-
 GRANT ALL PRIVILEGES ON cosmicsonar_db.* TO 'cosmicsonar_user'@'localhost';
-
 FLUSH PRIVILEGES;
-
 
 */
