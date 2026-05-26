@@ -47,7 +47,6 @@ html {
 body {
     min-height: 100vh;
     width: 100%;
-    /* Permette al cabinato di restare fisso fino a 900px (avvicinandosi visivamente), poi rimpicciolisce dolcemente su mobile (180vw) per non tagliare la plancia */
     min-width: min(1000px, 160vw); 
     display: flex;
     flex-direction: column;
@@ -59,7 +58,6 @@ body {
     container-type: inline-size;
 }
 
-/* Centratura forzata e inattaccabile quando il body diventa più largo dello schermo */
 @media screen and (max-width: 1000px) {
     body {
         left: 50%;

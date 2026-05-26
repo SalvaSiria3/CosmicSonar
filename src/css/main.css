@@ -1084,6 +1084,7 @@
     .heart-icon { width: 3.4vw; }
     .player-ship { width: 2.8vw; bottom: 1.6vw; }
     .alien { width: 3.6vw; height: 3.6vw; }
+    .alien { width: 3.6vw; height: 2.4vw; }
     
     /* Game Over */
     .game-over-title { font-size: 6.8vw; filter: drop-shadow(0 0 0.8vw rgb(76, 49, 132)); }

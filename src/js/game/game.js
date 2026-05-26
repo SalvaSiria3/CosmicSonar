@@ -35,19 +35,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let wallsHit = 0;
     let gameStartTime = 0;
     
-    let spawnRate = 5000;
-    let enemySpeed = 15.0; // Secondi di discesa dei nemici (più basso = più veloce)
+    let spawnRate = 3500; // Parte più veloce (3.5s invece di 5s)
+    let enemySpeed = 12.0; // Velocità di discesa iniziale (12s invece di 15s)
     let spawnTimeoutId;
     let animationFrameId; // Motore di gioco continuo
-    let lastShootTime = 0; // Traccia l'ultimo sparo per evitare spam e lag
+    let lastShootTime = 0; // Previene il sovraccarico di proiettili
     
     const audio = new AudioEngine();
     const gameOverSound = new Audio('src/assets/sounds/game_over.mp3');
     gameOverSound.preload = 'auto';
-    const shootSound = new Audio('src/assets/sounds/shot.mp3');
-    shootSound.preload = 'auto';
-    const explosionSound = new Audio('src/assets/sounds/death_alien.mp3');
-    explosionSound.preload = 'auto';
+    
+    // --- AUDIO POOLS PER PREVENIRE LAG E BUG DEL BROWSER ---
+    const shootPool = [];
+    const explosionPool = [];
+    for(let i = 0; i < 5; i++) {
+        const s = new Audio('src/assets/sounds/shot.mp3');
+        s.preload = 'auto';
+        shootPool.push(s);
+        
+        const e = new Audio('src/assets/sounds/death_alien.mp3');
+        e.preload = 'auto';
+        explosionPool.push(e);
+    }
+    let shootIndex = 0;
+    let explosionIndex = 0;
+
     const loseLifeSound = new Audio('src/assets/sounds/lose_life.mp3');
     loseLifeSound.preload = 'auto';
     const wallSound = new Audio('src/assets/sounds/wall.mp3');
@@ -92,9 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.setVolume(sfxVolume); // Aggiorna il volume degli alieni in tempo reale
             
             // Suono di feedback per far capire il livello del volume
-            const testSound = shootSound.cloneNode();
+            const testSound = shootPool[shootIndex];
+            testSound.currentTime = 0;
             testSound.volume = 0.2 * sfxVolume;
             testSound.play().catch(err => console.log("Impossibile riprodurre suono di test", err));
+            shootIndex = (shootIndex + 1) % 5;
         });
     }
 
@@ -118,14 +132,14 @@ document.addEventListener('DOMContentLoaded', () => {
             gameArea.classList.remove('paused-animation'); 
             audio.resume(); 
             spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate); 
-            settingsBtn.focus(); // Accessibilità: riporta il focus all'ingranaggio
+            settingsBtn.focus(); // Riporta il focus all'icona delle impostazioni
         } else {
             isPaused = true;
             clearTimeout(spawnTimeoutId); 
             gameArea.classList.add('paused-animation'); 
             audio.suspend(); 
             settingsModal.classList.remove('hide');
-            if (sfxSlider) sfxSlider.focus(); // Accessibilità: sposta il focus dentro la modale
+            if (sfxSlider) sfxSlider.focus(); // Sposta il focus dentro la modale
         }
     }
 
@@ -138,20 +152,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playWallSound() {
-        wallsHit++; // Traccia il muro colpito per il Database
-        const currentWallSound = wallSound.cloneNode();
-        currentWallSound.volume = 0.1 * sfxVolume; 
-        currentWallSound.play().catch(e => console.log("Impossibile riprodurre wall.mp3", e));
+        wallsHit++; // Traccia il muro colpito per il database
+        wallSound.currentTime = 0;
+        wallSound.volume = 0.1 * sfxVolume; 
+        wallSound.play().catch(() => {}); // Ignora errori se il suono è interrotto
     }
 
     function playChangeColSound() {
-        const currentChangeColSound = changeColSound.cloneNode();
-        currentChangeColSound.volume = 0.3 * sfxVolume; 
-        currentChangeColSound.play().catch(e => console.log("Impossibile riprodurre change_col.mp3", e));
+        changeColSound.currentTime = 0;
+        changeColSound.volume = 0.3 * sfxVolume; 
+        changeColSound.play().catch(() => {}); // Ignora errori se il suono è interrotto
     }
 
     document.addEventListener('keydown', (e) => {
-        // Permette di mettere in pausa e toglierla con il tasto ESC (Accessibilità da tastiera)
+        // Permette di mettere in pausa e toglierla con il tasto ESC
         if (e.code === 'Escape' && isGameRunning) {
             togglePause();
             return;
@@ -165,6 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+            if (e.repeat) return; // Blocca il movimento continuo se si tiene premuto il tasto
+            
             if (currentLane > 0) {
                 currentLane--;
                 updateShipPosition();
@@ -173,6 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 playWallSound(); // Ha colpito il muro a sinistra
             }
         } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+            if (e.repeat) return; // Blocca il movimento continuo se si tiene premuto il tasto
+            
             if (currentLane < 2) {
                 currentLane++;
                 updateShipPosition();
@@ -182,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (e.code === 'Space') {
             e.preventDefault(); // Evita scroll schermo
-            if (!e.repeat) { // Evita che tenendo premuto spazio partano mille colpi
+            if (!e.repeat) { // Blocca il "fuoco continuo" automatico del sistema operativo
                 shoot();
             }
         }
@@ -213,21 +231,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         spawnEnemy();
         
-        // Aumenta la frequenza di comparsa (-2% di tempo tra uno spawn e l'altro)
-        spawnRate = Math.max(400, spawnRate * 0.98); 
-        
-        // Aumenta la velocità fisica del nemico (-1% di durata dell'animazione)
-        enemySpeed = Math.max(1.2, enemySpeed * 0.99); 
+        spawnRate = Math.max(600, spawnRate * 0.98); 
+        const currentMinSpeed = score > 2580 ? 1.7 : 2.5; // Sblocca un nuovo livello di difficoltà oltre i 2580 pt
+        enemySpeed = Math.max(currentMinSpeed, enemySpeed * 0.985); 
         
         spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate);
     }
 
     function shoot() {
         if (!isGameRunning) return;
-        
+
         const now = Date.now();
-        // Limita la frequenza di sparo a circa 4 colpi al secondo (250ms)
-        if (now - lastShootTime < 250) return; 
+        // Limite di 150ms (circa 7 colpi al sec) per evitare che il browser crashi o lagghi creando troppi proiettili
+        if (now - lastShootTime < 200) return; 
         lastShootTime = now;
 
         shotsFired++; // Traccia il colpo sparato
@@ -235,10 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
         laser.className = 'laser';
         lanes[currentLane].appendChild(laser);
         
-        // Clona l'oggetto audio per permettere spari rapidi e sovrapposti senza blocchi
-        const currentShootSound = shootSound.cloneNode();
-        currentShootSound.volume = 0.2 * sfxVolume; // Applica il volume SFX globale
-        currentShootSound.play().catch(e => console.log("Impossibile riprodurre il suono del laser:", e));
+        // Usa il pool audio invece di cloneNode per evitare microscatti al momento dello sparo
+        const currentShootSound = shootPool[shootIndex];
+        currentShootSound.currentTime = 0;
+        currentShootSound.volume = 0.2 * sfxVolume;
+        currentShootSound.play().catch(e => console.log("Impossibile riprodurre il laser:", e));
+        shootIndex = (shootIndex + 1) % 5;
         
         laser.addEventListener('animationend', () => laser.remove());
     }
@@ -251,69 +269,84 @@ document.addEventListener('DOMContentLoaded', () => {
             return; 
         }
         
-        const aliens = document.querySelectorAll('.alien:not(.exploded)');
-        const lasers = document.querySelectorAll('.laser');
-        const shipRect = playerShip.getBoundingClientRect(); // Coordinate della navicella sullo schermo
-        const gameAreaRect = gameArea.getBoundingClientRect(); // Coordinate dell'area di gioco
+        const alienNodes = document.querySelectorAll('.alien:not(.exploded)');
+        const laserNodes = document.querySelectorAll('.laser');
         
-        // 1. Controlla collisioni tra proiettili e alieni
+        // --- 1. FASE DI LETTURA (DOM READ) ---
+        const shipRect = playerShip.getBoundingClientRect(); 
+        const gameAreaRect = gameArea.getBoundingClientRect(); 
+        
+        const lasers = Array.from(laserNodes).map(el => ({ el, rect: el.getBoundingClientRect() }));
+        const aliens = Array.from(alienNodes).map(el => ({ el, rect: el.getBoundingClientRect() }));
+        
+        const aliensToExplode = new Map();
+        const elementsToRemove = new Set();
+        let newScore = null;
+        let livesToLose = 0;
+        
+        // --- 2. FASE DI LOGICA ---
         lasers.forEach(laser => {
-            if (!laser.isConnected) return; // Se il laser ha già colpito in questo frame, ignoralo
+            if (elementsToRemove.has(laser.el)) return;
 
-            const laserRect = laser.getBoundingClientRect();
             aliens.forEach(alien => {
-                if (alien.classList.contains('exploded')) return; // Se l'alieno è già distrutto, ignoralo
+                if (aliensToExplode.has(alien.el) || elementsToRemove.has(alien.el)) return;
 
-                const alienRect = alien.getBoundingClientRect();
-                if (isColliding(laserRect, alienRect) && alienRect.bottom > gameAreaRect.top) {
-                    laser.remove();
-
-                    aliensDestroyed++; // Traccia l'alieno distrutto
-                    audio.stopAlienSonar(alien.audioNode);
-                    const currentTop = window.getComputedStyle(alien).top;
-                    alien.style.setProperty('--freeze-top', currentTop);
+                if (isColliding(laser.rect, alien.rect) && alien.rect.bottom > gameAreaRect.top) {
+                    elementsToRemove.add(laser.el);
                     
-                    alien.classList.add('exploded');
+                    const exactCssTop = window.getComputedStyle(alien.el).top;
+                    aliensToExplode.set(alien.el, exactCssTop);
 
-                    // Clona e riproduce il suono dell'esplosione
-                    const currentExplosionSound = explosionSound.cloneNode();
+                    aliensDestroyed++;
+                    audio.stopAlienSonar(alien.el.audioNode);
+
+                    const currentExplosionSound = explosionPool[explosionIndex];
+                    currentExplosionSound.currentTime = 0;
                     currentExplosionSound.volume = 1.0 * sfxVolume; 
-                    currentExplosionSound.play().catch(e => console.log("Impossibile riprodurre l'esplosione:", e));
+                    currentExplosionSound.play().catch(() => {});
+                    explosionIndex = (explosionIndex + 1) % 5;
                     
-                    score += 10;    // Bastano 10?
-                    if (scoreElement) scoreElement.textContent = score.toString().padStart(4, '0');
-                    
-                    if (scoreContainer) scoreContainer.setAttribute('aria-label', `Punteggio: ${score}`);
-                    
-                    // Annuncia ad alta voce solo al raggiungimento dei traguardi specifici (sennò lo screen reader annuncerebbe ogni volta che si colpisce un nemico, diventando fastidioso)
-                    if (score === 10 || score === 100 || (score >= 500 && score % 500 === 0)) {
-                        if (gameAnnouncer) {
-                            gameAnnouncer.textContent = `Punteggio raggiunto: ${score}`;
-                        }
-                    }
+                    score += 10;
+                    newScore = score;
                 }
             });
         });
         
-        // 2. Controlla se un alieno è arrivato all'altezza della navicella senza essere stato colpito
         aliens.forEach(alien => {
-            const alienRect = alien.getBoundingClientRect();
+            if (aliensToExplode.has(alien.el) || elementsToRemove.has(alien.el)) return;
             
-            // Accende l'audio dell'alieno solo quando entra fisicamente nell'area di gioco
-            if (alienRect.bottom > gameAreaRect.top) {
-                audio.startAlienSound(alien.audioNode);
+            if (alien.rect.bottom > gameAreaRect.top) {
+                audio.startAlienSound(alien.el.audioNode);
             }
             
-            if (alienRect.bottom >= shipRect.top + (shipRect.height * 0.2)) {
-                audio.stopAlienSonar(alien.audioNode);
-                alien.remove();
-                loseLife();
+            if (alien.rect.bottom >= shipRect.top + (shipRect.height * 0.2)) {
+                elementsToRemove.add(alien.el);
+                audio.stopAlienSonar(alien.el.audioNode);
+                livesToLose++;
+            } else {
+                const yPercentage = Math.max(0, Math.min(1, (alien.rect.bottom - gameAreaRect.top) / gameAreaRect.height));
+                audio.updateAlienPitch(alien.el.audioNode, yPercentage);
             }
-            
-            // Modula il pitch: 0% in cima allo schermo, 100% in fondo
-            const yPercentage = Math.max(0, Math.min(1, (alienRect.bottom - gameAreaRect.top) / gameAreaRect.height));
-            audio.updateAlienPitch(alien.audioNode, yPercentage);
         });
+
+        // --- 3. FASE DI SCRITTURA (DOM WRITE) ---
+        elementsToRemove.forEach(el => el.remove());
+        
+        aliensToExplode.forEach((exactCssTop, alienEl) => {
+            alienEl.style.setProperty('--freeze-top', exactCssTop);
+            alienEl.classList.add('exploded');
+        });
+        
+        if (newScore !== null) {
+            if (scoreElement) scoreElement.textContent = newScore.toString().padStart(4, '0');
+            if (scoreContainer) scoreContainer.setAttribute('aria-label', `Punteggio: ${newScore}`);
+            
+            if (newScore === 10 || newScore === 100 || (newScore >= 500 && newScore % 500 === 0)) {
+                if (gameAnnouncer) gameAnnouncer.textContent = `Punteggio raggiunto: ${newScore}`;
+            }
+        }
+        
+        for (let i = 0; i < livesToLose; i++) loseLife();
         
         animationFrameId = requestAnimationFrame(gameLoop);
     }
@@ -329,9 +362,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lives <= 0) return;
 
         if (lives > 1) {
-            const currentLoseLifeSound = loseLifeSound.cloneNode();
-            currentLoseLifeSound.volume = 0.6 * sfxVolume; // Applica il volume SFX globale (effetti sonori)
-            currentLoseLifeSound.play().catch(e => console.log("Impossibile riprodurre lose_life.mp3", e));
+            loseLifeSound.currentTime = 0;
+            loseLifeSound.volume = 0.6 * sfxVolume;
+            loseLifeSound.play().catch(() => {});
         }
 
         const lifeIcon = document.getElementById(`life-${lives}`);
@@ -452,6 +485,9 @@ document.addEventListener('DOMContentLoaded', () => {
         shotsFired = 0;
         wallsHit = 0;
         gameStartTime = Date.now();
+        spawnRate = 3500; // Resetta la difficoltà all'inizio di ogni nuova partita
+        enemySpeed = 12.0;
+        lastShootTime = 0;
         
         // Applica i modificatori per la modalità difficile
         if (gameMode === 'hard') {
@@ -482,7 +518,8 @@ document.addEventListener('DOMContentLoaded', () => {
         audio.resume(); // Risveglia la scheda audio al primo click utente
         
         // Suona silenziosamente i file audio al primo click utente per sbloccare i permessi del browser (alcuni audio li bloccava all'improvviso a caso)
-        [gameOverSound, loseLifeSound, wallSound, changeColSound].forEach(sound => {
+        const soundsToUnlock = [gameOverSound, loseLifeSound, wallSound, changeColSound, ...shootPool, ...explosionPool];
+        soundsToUnlock.forEach(sound => {
             sound.volume = 0;
             sound.play().then(() => {
                 sound.pause();
