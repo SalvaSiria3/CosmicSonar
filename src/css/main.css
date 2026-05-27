@@ -694,6 +694,16 @@
     background-position: center;
 }
 
+.settings-btn .icon-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4cqw;
+    height: 4cqw;
+    font-size: 3cqw;
+    font-family: var(--primary-font);
+    color: var(--neutral-light);
+}
 
 #game-area {
     position: absolute;
@@ -1106,6 +1116,67 @@
     padding: 1.5cqw 3cqw;
 }
 
+
+/* --- Schermata Tutorial --- */
+#tutorial-ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 50;
+    background-color: rgba(24, 33, 38, 0.95);
+    border: 0.3cqw solid var(--tertiary-color);
+    border-radius: 8px;
+    padding: 3cqw 2cqw;
+    box-shadow: 0 1cqw 3cqw rgba(0,0,0,0.8);
+    transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease;
+}
+
+#tutorial-ui h2 { 
+    font-size: 2.2cqw;
+    font-family: var(--primary-font);
+    color: var(--primary-color);
+    margin-bottom: 2cqw; 
+}
+
+.tutorial-text {
+    font-family: var(--tertiary-font);
+    font-size: 3.3cqw;
+    color: var(--neutral-light);
+    margin: 0 auto 2cqw auto;
+    line-height: 1.8;
+}
+
+#tutorial-action-btn {
+    font-size: 2.8cqw;
+    padding: 2cqw 4cqw;
+}
+
+.tutorial-phase-text {
+    font-family: var(--primary-font);
+    font-size: 2.5cqw;
+    color: var(--tertiary-color);
+    text-shadow: 0 0 1cqw var(--neutral-dark);
+    display: flex;
+    align-items: center;
+}
+
+.tutorial-mode-text {
+    color: var(--neutral-light);
+    text-shadow: 0 0 1cqw var(--neutral-dark);
+}
+
+#game-focus {
+    outline: none;
+}
+
+
 /* 
    FALLBACK PER VECCHI BROWSER 
    Se il browser non supporta la direttiva "cqw", applica in automatico 
@@ -1156,4 +1227,6 @@
     .leaderboard-row { font-size: 1vw; padding: 0.4vw 0.8vw; }
     .back-btn, .play-again-btn { font-size: 1.2vw; padding: 0.6vw 1.2vw; }
     .error-details { font-size: 1vw; margin-bottom: 1.5vw; padding: 1vw 1.5vw; border-left-width: 0.3vw; }
+    .settings-btn .icon-info { width: 3.6vw; height: 3.6vw; font-size: 2.4vw; }
+    .tutorial-phase-text { font-size: 2.2vw; }
 }

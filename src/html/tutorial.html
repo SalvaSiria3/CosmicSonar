@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Tutorial - Cosmic Sonar</title>
+    <meta name="description" content="Impara a giocare a Cosmic Sonar con questo tutorial interattivo. Allena il tuo udito a riconoscere la posizione e la distanza dei nemici.">
+    <meta name="keywords" content="Tutorial, Cosmic Sonar, come giocare, audio spaziale, accessibilità">
+    [!HEAD!]
+</head>
+<body>
+    [!HEADER!]
+
+    <div class="arcade-container zoomed no-transition">
+        <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
+        
+        <div class="arcade-screen">
+            <div class="screen-content">
+                <main id="main-content" tabindex="-1">
+                    <h1 class="sr-only">Tutorial di Cosmic Sonar</h1>
+                    
+                    <!-- Annunci per lo screen reader durante il tutorial -->
+                    <p class="sr-only" aria-live="assertive" id="tutorial-announcer"></p>
+
+                    <!-- Top Bar del tutorial -->
+                    <div id="topbargame" class="active">
+                        <div class="score-container">
+                            <span class="sr-only">Modalità: Tutorial</span>
+                            <span aria-hidden="true" class="tutorial-mode-text">Tutorial</span>
+                        </div>
+                        <div class="lives-container">
+                            <span id="tutorial-phase-counter" class="tutorial-phase-text" aria-live="polite">Fase 1/3</span>
+                        </div>
+                        <button type="button" id="repeat-instructions-btn" class="arcade-btn settings-btn" aria-label="Ripeti Istruzioni" title="Ripeti Istruzioni">
+                            <span class="icon-info" aria-hidden="true">?</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Focus trap per zittire lo screen reader e abilitare i controlli di gioco -->
+                    <div id="game-focus" tabindex="-1" role="application" aria-label="Fase in corso"></div>
+
+                    <!-- Schermata Tutorial -->
+                    <div id="tutorial-ui" role="dialog" aria-modal="true" aria-label="Istruzioni" tabindex="-1">
+                        <h2 id="tutorial-phase-title" class="menu-subtitle"></h2>
+                        <p id="tutorial-instructions" class="tutorial-text"></p>
+                        <button type="button" id="tutorial-action-btn" class="arcade-btn"></button>
+                    </div>
+
+                    <!-- Area di gioco del tutorial (Sempre visibile) -->
+                    <div id="game-area" class="active" aria-hidden="true">
+                        <div class="lane" id="lane-left"></div>
+                        <div class="lane" id="lane-center"></div>
+                        <div class="lane" id="lane-right"></div>
+                        
+                        <img src="src/assets/images/navicella.png" id="player-ship" class="player-ship lane-1" alt="" aria-hidden="true">
+                    </div>
+
+                </main>
+            </div>
+        </div>
+
+        [!FOOTER!]
+    </div>
+
+    [!WARNING!]
+
+    <div class="stars" aria-hidden="true"></div>
+    <div class="grid-background" aria-hidden="true"></div>
+
+    <!--
+        Carichiamo l'Audio Engine e lo script del tutorial in modo standard
+    -->
+    <script src="src/js/audio/AudioEngine.js" defer></script>
+    <script src="src/js/tutorial.js" defer></script>
+</body>
+</html>
