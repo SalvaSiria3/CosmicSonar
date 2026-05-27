@@ -42,30 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastShootTime = 0; // Previene il sovraccarico di proiettili
     
     const audio = new AudioEngine();
-    const gameOverSound = new Audio('src/assets/sounds/game_over.mp3');
-    gameOverSound.preload = 'auto';
     
-    // --- AUDIO POOLS PER PREVENIRE LAG E BUG DEL BROWSER ---
-    const shootPool = [];
-    const explosionPool = [];
-    for(let i = 0; i < 5; i++) {
-        const s = new Audio('src/assets/sounds/shot.mp3');
-        s.preload = 'auto';
-        shootPool.push(s);
-        
-        const e = new Audio('src/assets/sounds/death_alien.mp3');
-        e.preload = 'auto';
-        explosionPool.push(e);
-    }
-    let shootIndex = 0;
-    let explosionIndex = 0;
-
-    const loseLifeSound = new Audio('src/assets/sounds/lose_life.mp3');
-    loseLifeSound.preload = 'auto';
-    const wallSound = new Audio('src/assets/sounds/wall.mp3');
-    wallSound.preload = 'auto';
-    const changeColSound = new Audio('src/assets/sounds/change_col.mp3');
-    changeColSound.preload = 'auto';
+    // Pre-carica tutti gli effetti sonori direttamente nel Web Audio API (Zero lag, no limiti browser)
+    audio.loadSFX('shoot', 'src/assets/sounds/shot.mp3');
+    audio.loadSFX('explosion', 'src/assets/sounds/death_alien.mp3');
+    audio.loadSFX('wall', 'src/assets/sounds/wall.mp3');
+    audio.loadSFX('change_col', 'src/assets/sounds/change_col.mp3');
+    audio.loadSFX('lose_life', 'src/assets/sounds/lose_life.mp3');
+    audio.loadSFX('game_over', 'src/assets/sounds/game_over.mp3');
 
     // --- MUSICA DI GIOCO ---
     const gameMusic = new Audio('src/assets/sounds/menu_sound.mp3');
@@ -104,11 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.setVolume(sfxVolume); // Aggiorna il volume degli alieni in tempo reale
             
             // Suono di feedback per far capire il livello del volume
-            const testSound = shootPool[shootIndex];
-            testSound.currentTime = 0;
-            testSound.volume = 0.2 * sfxVolume;
-            testSound.play().catch(err => console.log("Impossibile riprodurre suono di test", err));
-            shootIndex = (shootIndex + 1) % 5;
+            audio.playSFX('shoot', 0.2 * sfxVolume);
         });
     }
 
@@ -153,15 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playWallSound() {
         wallsHit++; // Traccia il muro colpito per il database
-        wallSound.currentTime = 0;
-        wallSound.volume = 0.1 * sfxVolume; 
-        wallSound.play().catch(() => {}); // Ignora errori se il suono è interrotto
+        audio.playSFX('wall', 0.1 * sfxVolume);
     }
 
     function playChangeColSound() {
-        changeColSound.currentTime = 0;
-        changeColSound.volume = 0.3 * sfxVolume; 
-        changeColSound.play().catch(() => {}); // Ignora errori se il suono è interrotto
+        audio.playSFX('change_col', 0.3 * sfxVolume);
     }
 
     document.addEventListener('keydown', (e) => {
@@ -242,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isGameRunning) return;
 
         const now = Date.now();
-        // Limite di 150ms (circa 7 colpi al sec) per evitare che il browser crashi o lagghi creando troppi proiettili
+        // Limite di 150ms (circa 7 colpi al sec) sennò il browser va in crash
         if (now - lastShootTime < 200) return; 
         lastShootTime = now;
 
@@ -251,12 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
         laser.className = 'laser';
         lanes[currentLane].appendChild(laser);
         
-        // Usa il pool audio invece di cloneNode per evitare microscatti al momento dello sparo
-        const currentShootSound = shootPool[shootIndex];
-        currentShootSound.currentTime = 0;
-        currentShootSound.volume = 0.2 * sfxVolume;
-        currentShootSound.play().catch(e => console.log("Impossibile riprodurre il laser:", e));
-        shootIndex = (shootIndex + 1) % 5;
+        // Esecuzione immediata tramite Web Audio API
+        audio.playSFX('shoot', 0.2 * sfxVolume);
         
         laser.addEventListener('animationend', () => laser.remove());
     }
@@ -300,11 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     aliensDestroyed++;
                     audio.stopAlienSonar(alien.el.audioNode);
 
-                    const currentExplosionSound = explosionPool[explosionIndex];
-                    currentExplosionSound.currentTime = 0;
-                    currentExplosionSound.volume = 1.0 * sfxVolume; 
-                    currentExplosionSound.play().catch(() => {});
-                    explosionIndex = (explosionIndex + 1) % 5;
+                    // Esecuzione immediata tramite Web Audio API
+                    audio.playSFX('explosion', 1.0 * sfxVolume);
                     
                     score += 10;
                     newScore = score;
@@ -362,9 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lives <= 0) return;
 
         if (lives > 1) {
-            loseLifeSound.currentTime = 0;
-            loseLifeSound.volume = 0.6 * sfxVolume;
-            loseLifeSound.play().catch(() => {});
+            audio.playSFX('lose_life', 0.6 * sfxVolume);
         }
 
         const lifeIcon = document.getElementById(`life-${lives}`);
@@ -402,9 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.remove();
         });
         
-        gameOverSound.currentTime = 0;
-        gameOverSound.volume = 1.0 * sfxVolume;
-        gameOverSound.play().catch(e => console.log("Impossibile riprodurre game_over.mp3", e));
+        audio.playSFX('game_over', 1.0 * sfxVolume);
         
         // Nasconde l'interfaccia di gioco
         if (gameArea) gameArea.classList.remove('active');
@@ -517,16 +482,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         audio.resume(); // Risveglia la scheda audio al primo click utente
         
-        // Suona silenziosamente i file audio al primo click utente per sbloccare i permessi del browser (alcuni audio li bloccava all'improvviso a caso)
-        const soundsToUnlock = [gameOverSound, loseLifeSound, wallSound, changeColSound, ...shootPool, ...explosionPool];
-        soundsToUnlock.forEach(sound => {
-            sound.volume = 0;
-            sound.play().then(() => {
-                sound.pause();
-                sound.currentTime = 0;
-                sound.volume = 1; // Ripristina il volume
-            }).catch(() => {});
-        });
                 
         if (gameMode !== 'hard') {
             gameMusic.play().catch(e => console.log("Impossibile avviare musica", e));

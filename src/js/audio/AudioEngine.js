@@ -10,6 +10,33 @@ class AudioEngine {
         this.masterGain.gain.value = 0.5 * (isNaN(savedSfxVolume) ? 0.9 : savedSfxVolume); 
         
         this.masterGain.connect(this.ctx.destination); // Collega il master gain all'uscita audio del browser
+
+        this.buffers = {}; // Memoria per i file audio decodificati
+    }
+
+    // Carica l'audio grezzo direttamente in memoria (Zero limitazioni del browser)
+    async loadSFX(name, url) {
+        try {
+            const response = await fetch(url);
+            const arrayBuffer = await response.arrayBuffer();
+            this.ctx.decodeAudioData(arrayBuffer, (audioBuffer) => {
+                this.buffers[name] = audioBuffer;
+            });
+        } catch (e) {
+            console.error("Errore caricamento SFX:", name, e);
+        }
+    }
+
+    // Crea una sorgente usa-e-getta senza lag che permette suoni sovrapposti illimitati
+    playSFX(name, volume = 1.0) {
+        if (!this.buffers[name]) return;
+        const source = this.ctx.createBufferSource();
+        source.buffer = this.buffers[name];
+        const gainNode = this.ctx.createGain();
+        gainNode.gain.value = volume;
+        source.connect(gainNode);
+        gainNode.connect(this.masterGain);
+        source.start(0);
     }
 
     resume() {
