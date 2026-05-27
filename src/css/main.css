@@ -836,6 +836,36 @@
     font-family: var(--secondary-font);
 }
 
+.error-details {
+    font-family: var(--tertiary-font);
+    font-size: 3.2cqw;
+    color: var(--neutral-light);
+    text-align: left;
+    width: 85%;
+    margin-bottom: 8.5cqw;
+    line-height: 1.6;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1.2cqw 1.5cqw;
+    border-radius: 6px;
+    border-left: 0.4cqw solid var(--tertiary-color);
+}
+
+.error-details p { margin-bottom: 1cqw; }
+.error-details p:last-child { margin-bottom: 0; }
+.error-details span { color: var(--tertiary-color); }
+
+.error-title {
+    margin-bottom: 0.5cqw;
+    font-size: 10cqw;
+}
+
+.error-subtitle {
+    margin-bottom: 3.5cqw;
+    font-size: 5cqw;
+    font-family: var(--secondary-font);
+}
+
+
 .final-score-text {
     font-size: 3.75cqw;
     color: var(--primary-color);
@@ -1124,4 +1154,5 @@
     .filter-btn { font-size: 1vw; padding: 0.4vw 0.8vw; }
     .leaderboard-row { font-size: 1vw; padding: 0.4vw 0.8vw; }
     .back-btn, .play-again-btn { font-size: 1.2vw; padding: 0.6vw 1.2vw; }
+    .error-details { font-size: 1vw; margin-bottom: 1.5vw; padding: 1vw 1.5vw; border-left-width: 0.3vw; }
 }
