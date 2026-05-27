@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         // Invia i dati al database tramite PHP
-        fetch('salva_punteggio.php', {
+        fetch('save_score.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)

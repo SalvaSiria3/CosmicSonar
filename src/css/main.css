@@ -9,7 +9,6 @@
     margin-bottom: 0;
 }
 
-/* Utility classes per separare lo stile dall'HTML */
 .hide {
     display: none !important;
 }

@@ -1,5 +1,5 @@
 <?php
-require_once 'connessione.php';
+require_once 'connection.php';
 
 // Diciamo al browser che risponderemo in formato JSON
 header('Content-Type: application/json');

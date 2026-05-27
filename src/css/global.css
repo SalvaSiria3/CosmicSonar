@@ -60,8 +60,7 @@ body {
 
 @media screen and (max-width: 1000px) {
     body {
-        left: 50%;
-        transform: translateX(-50%);
+        left: calc(50% - (min(1000px, 160vw) / 2));
     }
 }
 

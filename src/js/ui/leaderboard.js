@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Scarica i punteggi dal database
-    fetch('carica_punteggi.php')
+    fetch('load_scores.php')
         .then(response => response.json())
         .then(res => {
             if (res.success) {
