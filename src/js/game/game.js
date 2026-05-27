@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.loadSFX('change_col', 'src/assets/sounds/change_col.mp3');
     audio.loadSFX('lose_life', 'src/assets/sounds/lose_life.mp3');
     audio.loadSFX('game_over', 'src/assets/sounds/game_over.mp3');
+    
+    // Audio separato per testare il volume nelle impostazioni anche quando il gioco è in pausa
+    const testSfx = new Audio('src/assets/sounds/shot.mp3');
 
     // --- MUSICA DI GIOCO ---
     const gameMusic = new Audio('src/assets/sounds/menu_sound.mp3');
@@ -88,7 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.setVolume(sfxVolume); // Aggiorna il volume degli alieni in tempo reale
             
             // Suono di feedback per far capire il livello del volume
-            audio.playSFX('shoot', 0.2 * sfxVolume);
+            testSfx.currentTime = 0;
+            testSfx.volume = 0.2 * sfxVolume;
+            testSfx.play().catch(() => {});
         });
     }
 
@@ -179,6 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!e.repeat) { // Blocca il "fuoco continuo" automatico del sistema operativo
                 shoot();
             }
+        } else if (e.code === 'KeyP') {
+            if (gameAnnouncer) {
+                gameAnnouncer.textContent = `Punteggio: ${score}`;
+            }
+        } else if (e.code === 'KeyV') {
+            if (gameAnnouncer) {
+                gameAnnouncer.textContent = `Vite: ${lives}`;
+            }
         }
     });
 
@@ -218,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isGameRunning) return;
 
         const now = Date.now();
-        // Limite di 150ms (circa 7 colpi al sec) sennò il browser va in crash
         if (now - lastShootTime < 200) return; 
         lastShootTime = now;
 
@@ -307,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         if (newScore !== null) {
-            if (scoreElement) scoreElement.textContent = newScore.toString().padStart(4, '0');
+            if (scoreElement) scoreElement.textContent = newScore.toString().padStart(5, '0');
             if (scoreContainer) scoreContainer.setAttribute('aria-label', `Punteggio: ${newScore}`);
             
             if (newScore === 10 || newScore === 100 || (newScore >= 500 && newScore % 500 === 0)) {
@@ -386,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameOverScreen) {
             gameOverScreen.classList.remove('hide');
             gameOverScreen.classList.add('active');
-            finalScoreElement.textContent = score.toString().padStart(4, '0');
+            finalScoreElement.textContent = score.toString().padStart(5, '0');
             
             setTimeout(() => usernameInput.focus(), 100);
         }
@@ -433,9 +445,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (usernameInput) {
-        usernameInput.addEventListener('keypress', (e) => {
+        usernameInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 saveScoreAndRedirect();
+            } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+                if (usernameInput.value.length >= 10 && usernameInput.selectionStart === usernameInput.selectionEnd) {
+                    audio.playSFX('wall', 0.3 * sfxVolume);
+                }
             }
         });
     }

@@ -91,9 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('cosmicSfxVol', vol);
             sfxSlider.setAttribute('aria-valuenow', e.target.value);
             
-            const currentTestSfx = testSfx.cloneNode(); // Previene i glitch trascinando velocemente lo slider
-            currentTestSfx.volume = 0.2 * vol; 
-            currentTestSfx.play().catch(() => {});
+            testSfx.currentTime = 0; 
+            testSfx.volume = 0.2 * vol; 
+            testSfx.play().catch(() => {});
         });
     }
 

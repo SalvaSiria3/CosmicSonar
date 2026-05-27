@@ -308,6 +308,10 @@
     position: relative;
 }
 
+.menu-option:visited {
+    border-color: #d2a8ff;
+}
+
 .menu-option::before {
     content: '';
     position: absolute;
@@ -539,9 +543,9 @@
 .esc-hint {
     position: absolute;
     bottom: -15cqw;
-    width: 100%;
-    font-family: var(--secondary-font);
-    font-size: 3.5cqw;
+    width: 80%;
+    font-family: var(--tertiary-font);
+    font-size: 3cqw;
     color: rgba(247, 247, 247, 0.7);
     display: flex;
     align-items: center;
@@ -554,6 +558,10 @@
     height: auto;
     opacity: 0.8;
     margin-right: 1cqw;
+}
+
+.hint-highlight {
+    color: var(--tertiary-color);
 }
 
 /* --- Modalità Difficile --- */

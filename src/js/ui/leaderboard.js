@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="name"><span class="sr-only">Giocatore </span>${entry.name} </span>
                 <span class="score">
                     <span class="sr-only">Punteggio ${entry.score}</span>
-                    <span aria-hidden="true">${entry.score.toString().padStart(4, '0')}</span>
+                    <span aria-hidden="true">${entry.score.toString().padStart(5, '0')}</span>
                 </span>
             </li>
         `;

@@ -14,7 +14,7 @@ class AudioEngine {
         this.buffers = {}; // Memoria per i file audio decodificati
     }
 
-    // Carica l'audio grezzo direttamente in memoria (Zero limitazioni del browser)
+    // Carica l'audio grezzo direttamente in memoria (evita limitazioni del browser)
     async loadSFX(name, url) {
         try {
             const response = await fetch(url);

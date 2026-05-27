@@ -170,6 +170,10 @@ nav {
     transition: color 0.3s;
 }
 
+.nav-links a:visited {
+    color: var(--tertiary-color);
+}
+
 .nav-links a.disabled {
     color: var(--neutral-light);
     opacity: 0.5;
