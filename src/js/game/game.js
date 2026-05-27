@@ -494,6 +494,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('cosmicSfxVol', 0.1);
                 }
             }
+        } else {
+            // Ripristina l'interfaccia e l'audio per la modalità classica
+            gameArea.classList.remove('hard-mode');
+            topBarGame.classList.remove('hard-mode');
+            
+            const glitchLayer = document.querySelector('.hard-mode-glitch');
+            if (glitchLayer) glitchLayer.classList.remove('active');
+            
+            // Ripristina la musica e sblocca lo slider
+            gameMusic.volume = musicVolume;
+            if (musicSlider) {
+                musicSlider.value = Math.round(musicVolume * 10);
+                musicSlider.disabled = false;
+            }
+            
+            // Ripristina il volume SFX originale
+            audio.setVolume(sfxVolume);
+            if (sfxSlider) sfxSlider.value = Math.round(sfxVolume * 10);
         }
         
         audio.resume(); // Risveglia la scheda audio al primo click utente
