@@ -1,7 +1,7 @@
 class TutorialManager {
     constructor() {
         this.state = {
-            phase: 1, // 1: Panning, 2: Fuoco, 3: Distanza, 4: Fine
+            phase: 0, // 0: Hints, 1: Panning, 2: Fuoco, 3: Distanza, 4: Fine
             isPlaying: false
         };
         
@@ -63,6 +63,11 @@ class TutorialManager {
                 window.location.href = 'game.php';
                 return;
             }
+            
+            if (this.state.phase === 0) {
+                this.nextPhase();
+                return;
+            }
 
             this.hideBanner();
             if (!this.state.isPlaying) {
@@ -71,7 +76,7 @@ class TutorialManager {
         });
 
         document.getElementById('repeat-instructions-btn').addEventListener('click', () => {
-            if (this.state.phase !== 4) {
+            if (this.state.phase > 0 && this.state.phase < 4) {
                 this.showBanner();
             }
         });
@@ -131,11 +136,19 @@ class TutorialManager {
     }
 
     updateBannerUI() {
-        if (this.state.phase <= 3) {
+        if (this.state.phase === 0) {
+            this.ui.phaseCounter.textContent = 'Pre-partita';
+        } else if (this.state.phase <= 3) {
             this.ui.phaseCounter.textContent = `Fase ${this.state.phase}/3`;
         }
 
         switch (this.state.phase) {
+            case 0:
+                this.ui.phaseTitle.textContent = 'Prima di iniziare...';
+                this.ui.instructions.innerHTML = '<span class="sr-only">È fortemente consigliato l\'uso delle cuffie per sfruttare appieno l\'audio spaziale. Inoltre, ricorda che puoi premere ESC in qualsiasi momento per risentire le istruzioni e mettere in pausa.</span><span aria-hidden="true">È fortemente consigliato l\'uso delle <span class="hint-highlight">cuffie</span> per l\'audio 3D.<br>Premi <span class="hint-highlight">ESC</span> in qualsiasi momento per rivedere le istruzioni e mettere in pausa.</span>';
+                this.ui.actionBtn.textContent = 'Avanti';
+                break;
+                
             case 1: // Fase 1 (Panning)
                 this.ui.phaseTitle.textContent = 'Fase 1: Allineamento';
                 this.ui.instructions.innerHTML = '<span class="sr-only">Il nemico è fermo nella parte alta dello schermo. Usa le frecce destra e sinistra per spostare la navicella sotto di lui. Il suono sarà bilanciato nelle cuffie quando sarai allineato.</span><span aria-hidden="true">Il nemico è fermo nella parte alta dello schermo.<br>Usa le <span class="hint-highlight">frecce destra e sinistra</span> per spostare la navicella sotto di lui. Il suono sarà bilanciato nelle cuffie quando sarai allineato.</span>';
@@ -156,7 +169,7 @@ class TutorialManager {
 
             case 4: // Fine del tutorial
                 this.ui.phaseTitle.textContent = 'Tutorial Completato!';
-                this.ui.instructions.innerHTML = '<span class="sr-only">Hai imparato le basi di Cosmic Sonar. Ora sei pronta per la vera sfida. Buona fortuna, comandante!</span><span aria-hidden="true">Hai imparato le basi di Cosmic Sonar.<br>Ora sei pronta per la vera sfida.<br>Buona fortuna, comandante!</span>';
+                this.ui.instructions.innerHTML = '<span class="sr-only">Hai imparato le basi di Cosmic Sonar. La vera sfida può avere inizio. Buona fortuna, comandante!</span><span aria-hidden="true">Hai imparato le basi di Cosmic Sonar.<br>La vera sfida può avere inizio.<br>Buona fortuna, comandante!</span>';
                 this.ui.actionBtn.textContent = 'Vai al Gioco';
                 this.ui.phaseCounter.textContent = 'Completato';
                 break;
@@ -169,6 +182,25 @@ class TutorialManager {
         this.phaseProgress = 0; // Resetta il progresso per la nuova fase
         this.availableLanes = [0, 1, 2]; // Resetta le corsie disponibili
         this.availableAlienTypes = [1, 2, 3, 4]; // Resetta i tipi di alieni disponibili
+        
+        // Se c'è un alieno "avanzato" dalla fase precedente (es. da Fase 1 a Fase 2),
+        // lo rimuoviamo dalle opzioni disponibili per non ripetere la sua corsia e grafica
+        if (this.alienElement && this.alienLane !== null) {
+            const laneIndex = this.availableLanes.indexOf(this.alienLane);
+            if (laneIndex !== -1) {
+                this.availableLanes.splice(laneIndex, 1);
+            }
+            
+            const match = this.alienElement.className.match(/alien-(\d)/);
+            if (match) {
+                const type = parseInt(match[1]);
+                const typeIndex = this.availableAlienTypes.indexOf(type);
+                if (typeIndex !== -1) {
+                    this.availableAlienTypes.splice(typeIndex, 1);
+                }
+            }
+        }
+        
         this.audioEngine.suspend();
         this.ui.gameArea.classList.add('paused-animation');
         this.updateBannerUI();
@@ -221,11 +253,13 @@ class TutorialManager {
         }
 
         if (e.code === 'Escape') {
-            this.showBanner(); // ESC funge da pausa come nel gioco principale
+            if (this.state.phase > 0 && this.state.phase < 4) {
+                this.showBanner(); // ESC funge da pausa come nel gioco principale
+            }
             return;
         }
 
-        if (!this.state.isPlaying || this.state.phase === 4) return;
+        if (!this.state.isPlaying || this.state.phase === 4 || this.state.phase === 0) return;
         if (!this.ui.uiPanel.classList.contains('hide')) return; // Blocca input se il banner è aperto
 
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {

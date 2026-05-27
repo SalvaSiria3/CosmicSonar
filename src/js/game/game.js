@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             sfxVolume = val / 10; 
             localStorage.setItem('cosmicSfxVol', sfxVolume);
-            sfxSlider.setAttribute('aria-valuenow', e.target.value); // Meglio far sapere allo screen reader il valore attuale dello slider
             audio.setVolume(sfxVolume); // Aggiorna il volume degli alieni in tempo reale
             
             // Suono di feedback per far capire il livello del volume
@@ -102,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let val = gameMode === 'hard' ? 0 : parseInt(e.target.value); // Blocca a 0 se difficile
             musicVolume = val / 10;
             localStorage.setItem('cosmicMusicVol', musicVolume);
-            musicSlider.setAttribute('aria-valuenow', e.target.value); // Meglio far sapere allo screen reader il valore attuale dello slider
             gameMusic.volume = musicVolume; // Aggiorna in tempo reale
         });
     }
@@ -320,7 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (newScore !== null) {
             if (scoreElement) scoreElement.textContent = newScore.toString().padStart(5, '0');
-            if (scoreContainer) scoreContainer.setAttribute('aria-label', `Punteggio: ${newScore}`);
+            const srScore = document.getElementById('sr-score');
+            if (srScore) srScore.textContent = `Punteggio: ${newScore}`;
             
             if (newScore === 10 || newScore === 100 || (newScore >= 500 && newScore % 500 === 0)) {
                 if (gameAnnouncer) gameAnnouncer.textContent = `Punteggio raggiunto: ${newScore}`;
@@ -353,8 +352,9 @@ document.addEventListener('DOMContentLoaded', () => {
         lives--;
         
         const livesContainer = document.getElementById('lives-container');
-        if (livesContainer) {
-            livesContainer.setAttribute('aria-label', `Vite: ${lives}`);
+        const srLives = document.getElementById('sr-lives');
+        if (srLives) {
+            srLives.textContent = `Vite: ${lives}`;
         }
         
         if (gameAnnouncer && lives > 0) {

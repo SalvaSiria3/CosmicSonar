@@ -63,10 +63,12 @@
 
                     <!-- Schermata di gioco -->
                     <div id="topbargame">
-                        <div class="score-container" id="score-container" aria-label="Punteggio: 0">
+                        <div class="score-container" id="score-container">
+                            <span class="sr-only" id="sr-score">Punteggio: 0</span>
                             <span id="score" aria-hidden="true">00000</span>
                         </div>
-                        <div class="lives-container" role="group" aria-label="Vite: 3" id="lives-container">
+                        <div class="lives-container" id="lives-container">
+                            <span class="sr-only" id="sr-lives">Vite: 3</span>
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-1">
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-2">
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-3">

@@ -231,6 +231,7 @@
     font-size: var(--font-small);
     color: var(--neutral-dark);
     text-transform: uppercase;
+    line-height: 2.4;
 }
 
 .tasto {
@@ -1149,8 +1150,8 @@
     font-family: var(--tertiary-font);
     font-size: 3.3cqw;
     color: var(--neutral-light);
-    margin: 0 auto 2cqw auto;
-    line-height: 1.8;
+    margin: 1cqw 0 3cqw 0;
+    line-height: 1.5;
 }
 
 #tutorial-action-btn {
