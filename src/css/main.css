@@ -1,6 +1,6 @@
 .arcade-container {
     position: relative;
-    margin-top: 8cqw;
+    margin-top: 8vw;
     width: max-content;
     margin-left: auto;
     margin-right: auto;
@@ -8,6 +8,7 @@
     transform-origin: center 30%;
     margin-bottom: 0;
 }
+
 
 .hide {
     display: none !important;
@@ -19,7 +20,7 @@
 
 .arcade-container.zoomed {
     transform: scale(2);
-    margin-bottom: 60cqw;
+    margin-bottom: 60vw;
 }
 
 .arcade-image {
@@ -139,7 +140,7 @@
 
 .footer-description {
     text-align: left;
-    font-size: 1cqw;
+    font-size: 1.2cqw;
     color: var(--neutral-light);
     margin: 0;
     line-height: 1.3;
