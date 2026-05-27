@@ -444,7 +444,7 @@
 
 #mode-title {
     font-size: 7.5cqw;
-    margin-bottom: 5.5cqw;
+    margin-bottom: 1.5cqw;
 }
 
 .mode-cards-container {
@@ -540,10 +540,17 @@
     color: #ff8a8a; 
 }
 
-.esc-hint {
+.hints-container {
     position: absolute;
-    bottom: -15cqw;
-    width: 80%;
+    bottom: -18cqw;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8cqw;
+}
+
+.esc-hint {
     font-family: var(--tertiary-font);
     font-size: 3cqw;
     color: rgba(247, 247, 247, 0.7);
@@ -551,6 +558,7 @@
     align-items: center;
     justify-content: center;
     gap: 1cqw;
+    margin: 0;
 }
 
 .hint-icon {
@@ -1108,7 +1116,8 @@
     .mode-btn { font-size: 1.1vw; padding: 0.6vw 0; margin-bottom: 0.6vw; }
     .mode-desc { font-size: 1vw; }
     .mode-card { padding: 1.4vw 0.6vw; border-width: 0.12vw; } /* Aggiornato anche per la virtual machine */
-    .esc-hint { font-size: 1.4vw; bottom: 1.6vw; gap: 0.4vw; }
+    .hints-container { bottom: -2vw; gap: 0.6vw; }
+    .esc-hint { font-size: 1.4vw; gap: 0.4vw; }
     .hint-icon { width: 1.4vw; }
 
     /* Classifica */
