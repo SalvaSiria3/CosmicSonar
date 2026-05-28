@@ -501,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const glitchLayer = document.querySelector('.hard-mode-glitch');
             if (glitchLayer) glitchLayer.classList.remove('active');
-            
+
             // Ripristina la musica e sblocca lo slider
             gameMusic.volume = musicVolume;
             if (musicSlider) {

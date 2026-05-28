@@ -32,6 +32,38 @@
     pointer-events: none;
 }
 
+.arcade-image.transparent {
+    opacity: 0;
+}
+
+/* Pulsante invisibile per l'inserimento moneta */
+.arcade-coin-btn {
+    position: absolute;
+    top: 60cqw;
+    left: 37.5cqw;
+    width: 3.2cqw;
+    height: 3.2cqw;
+    background: transparent;
+    border: none;
+    border-radius: 50%; /* Se il pulsante disegnato è tondo */
+    cursor: pointer;
+    z-index: 25;
+}
+
+/* Pulsante invisibile per l'Easter Egg */
+.arcade-secret-btn {
+    position: absolute;
+    top: 42cqw;
+    left: 26.2cqw;
+    width: 4.2cqw;
+    height: 3.2cqw;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 25;
+}
+
 .arcade-screen {
     position: absolute;
     top: 17.5%; 

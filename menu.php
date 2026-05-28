@@ -1,8 +1,11 @@
 <?php
 require_once 'src/components/template.php';
 
+
+$page_scripts = ''; // Nessuno script specifico per questa pagina
+
 echo Template::render('src/html/menu.html', [
-    'HEAD' => Template::render('src/html/head.html', []),
+    'HEAD' => Template::render('src/html/head.html', ['PAGE_SCRIPTS' => $page_scripts]),
     'HEADER' => Template::render('src/html/header.html', [
         'HOME_HREF' => 'index.php',
         'HOME_CLASS' => '',

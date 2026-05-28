@@ -2,7 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const listContainer = document.getElementById('leaderboard-list');
     const filterClassicBtn = document.getElementById('filter-classic');
     const filterHardBtn = document.getElementById('filter-hard');
+    const filterPacmanBtn = document.getElementById('filter-pacman');
     if (!listContainer) return;
+
+    // Mostra il bottone Pac-Man solo se l'utente ha sbloccato il segreto
+    if (filterPacmanBtn && localStorage.getItem('pacmanUnlocked') === 'true') {
+        filterPacmanBtn.classList.remove('hide');
+    }
 
     let leaderboard = [];
     const lastPlayedId = parseInt(sessionStorage.getItem('lastPlayedId'));
@@ -32,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderLeaderboard() {
         const filteredBoard = leaderboard.filter(entry => entry.mode === currentFilter);
         
-        const modeName = currentFilter === 'classic' ? 'Classica' : 'Difficile';
+        const modeName = currentFilter === 'classic' ? 'Classica' : (currentFilter === 'hard' ? 'Difficile' : 'Pac-Man');
         listContainer.setAttribute('aria-label', `Migliori Punteggi Modalità ${modeName}`);
 
         const userIndex = filteredBoard.findIndex(entry => entry.id === lastPlayedId);
@@ -70,18 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
         listContainer.innerHTML = html;
     }
 
-    if (filterClassicBtn && filterHardBtn) {
-        const setFilter = (mode, activeBtn, inactiveBtn) => {
+    if (filterClassicBtn && filterHardBtn && filterPacmanBtn) {
+        const setFilter = (mode, activeBtn, inactiveBtns) => {
             currentFilter = mode;
             activeBtn.classList.add('active');
             activeBtn.setAttribute('aria-pressed', 'true');
-            inactiveBtn.classList.remove('active');
-            inactiveBtn.setAttribute('aria-pressed', 'false');
+            inactiveBtns.forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+            });
             renderLeaderboard();
         };
 
-        filterClassicBtn.addEventListener('click', () => setFilter('classic', filterClassicBtn, filterHardBtn));
-        filterHardBtn.addEventListener('click', () => setFilter('hard', filterHardBtn, filterClassicBtn));
+        filterClassicBtn.addEventListener('click', () => setFilter('classic', filterClassicBtn, [filterHardBtn, filterPacmanBtn]));
+        filterHardBtn.addEventListener('click', () => setFilter('hard', filterHardBtn, [filterClassicBtn, filterPacmanBtn]));
+        filterPacmanBtn.addEventListener('click', () => setFilter('pacman', filterPacmanBtn, [filterClassicBtn, filterHardBtn]));
     }
 
     // Funzione di inizializzazione dopo il caricamento dei dati
@@ -92,14 +101,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (lastPlayedEntry && lastPlayedEntry.mode) {
                 currentFilter = lastPlayedEntry.mode;
             }
+            
+            // Se l'ultima giocata era pacman, assicurati che il bottone sia visibile
+            if (currentFilter === 'pacman' && filterPacmanBtn) {
+                filterPacmanBtn.classList.remove('hide');
+            }
         }
         
         // Imposta visivamente il bottone attivo corretto all'avvio in base al filtro
-        if (currentFilter === 'hard' && filterHardBtn && filterClassicBtn) {
+        if (currentFilter === 'hard' && filterHardBtn && filterClassicBtn && filterPacmanBtn) {
             filterHardBtn.classList.add('active');
             filterHardBtn.setAttribute('aria-pressed', 'true');
             filterClassicBtn.classList.remove('active');
             filterClassicBtn.setAttribute('aria-pressed', 'false');
+            filterPacmanBtn.classList.remove('active');
+            filterPacmanBtn.setAttribute('aria-pressed', 'false');
+        } else if (currentFilter === 'pacman' && filterPacmanBtn && filterClassicBtn && filterHardBtn) {
+            filterPacmanBtn.classList.add('active');
+            filterPacmanBtn.setAttribute('aria-pressed', 'true');
+            filterClassicBtn.classList.remove('active');
+            filterClassicBtn.setAttribute('aria-pressed', 'false');
+            filterHardBtn.classList.remove('active');
+            filterHardBtn.setAttribute('aria-pressed', 'false');
         }
         
         renderLeaderboard();

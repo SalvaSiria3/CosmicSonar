@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const insertCoinText = document.querySelector('.insert-coin');
     const statusMessage = document.getElementById('status-message');
     const nav = document.querySelector('nav');
+    const arcadeCoinBtn = document.getElementById('arcade-coin-btn');
     
     const coinSound = new Audio('src/assets/sounds/coin.mp3');
     coinSound.preload = 'auto'; // Forza il browser a caricare il suono in anticipo
@@ -19,6 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
             toMenu();
         }
     });
+
+    if (arcadeCoinBtn) {
+        arcadeCoinBtn.addEventListener('click', () => {
+            if (insertCoinText) {
+                // Se c'è la scritta "inserisci moneta" allora siamo nella home: avvia la transizione
+                toMenu();
+            } else {
+                // Se non c'è, siamo in un'altra pagina: riproduci solo il suono
+                const savedSfx = localStorage.getItem('cosmicSfxVol');
+                const sfxVolume = savedSfx !== null ? parseFloat(savedSfx) : 0.9;
+                coinSound.volume = 1.0 * sfxVolume;
+                coinSound.currentTime = 0;
+                coinSound.play().catch(e => console.log("Audio moneta non trovato:", e));
+            }
+        });
+    }
 
     function toMenu() {
         if (menuLoaded) return;

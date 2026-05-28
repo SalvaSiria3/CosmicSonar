@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Pac-Man - Cosmic Sonar</title>
+    <meta name="description" content="Modalità segreta Pac-Man di Cosmic Sonar.">
+    <meta name="keywords" content="Pac-Man, Cosmic Sonar, arcade, easter egg">
+    [!HEAD!]
+</head>
+<body>
+    [!HEADER!]
+
+    <div class="arcade-container zoomed no-transition">
+        <img src="src/assets/images/cabinato_pacman.svg" alt="" aria-hidden="true" class="arcade-image">
+        <button type="button" id="arcade-coin-btn" class="arcade-coin-btn" aria-label="Inserisci moneta (Suono)"></button>
+        
+        <div class="arcade-screen pacman-arcade-screen">
+            <div class="screen-content">
+                <main id="main-content" tabindex="-1">
+                    <h1 class="sr-only">Modalità Pac-Man</h1>
+                    
+                    <p class="sr-only" aria-live="assertive" id="game-announcer"></p>
+
+                    <div id="loading-screen" class="loading-container hide"></div>
+
+                    <!-- Selezione Modalità Semplificata -->
+                    <div id="mode-selection">
+                        <h2 class="pacman-secret-level-text" aria-hidden="true">Livello Segreto</h2>
+                        <h3 class="menu-title pacman-mode-title" id="mode-title">Pac-Man Mode</h3>
+                        <div class="mode-cards-container pacman-cards-container" role="group" aria-labelledby="mode-title">
+                            <div class="mode-card pacman-mode-card">
+                                <button type="button" id="btn-pacman" class="arcade-btn mode-btn pacman-btn-play" aria-describedby="desc-pacman">Gioca</button>
+                                <p id="desc-pacman" class="mode-desc pacman-mode-desc">
+                                    <span class="sr-only">In questa modalità non si spara. Muoviti sotto ai fantasmi per mangiarli all'ultimo momento!</span>
+                                    <span aria-hidden="true">In questa modalità non si spara! Muoviti sotto ai fantasmi per mangiarli all'ultimo momento!</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="hints-container hints-pac-man">
+                            <p class="esc-hint">
+                                <span class="sr-only">Comandi rapidi: Premi ESC per la pausa, P per il punteggio, V per le vite.</span>
+                                <img src="src/assets/images/light.png" alt="" aria-hidden="true" class="hint-icon">
+                                <span aria-hidden="true">Premi <strong>ESC</strong> in gioco per mettere in pausa o aprire le impostazioni</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="topbargame" class="pacman-mode">
+                        <div class="score-container" id="score-container">
+                            <span class="sr-only" id="sr-score">Punteggio: 0</span>
+                            <span id="score" aria-hidden="true">00000</span>
+                        </div>
+                        
+                        <div class="lives-container" id="lives-container">
+                            <span class="sr-only" id="sr-lives">Vite: 3</span>
+                            <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-1">
+                            <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-2">
+                            <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-3">
+                        </div>
+                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" aria-haspopup="dialog" aria-controls="settings-modal" title="Impostazioni">
+                            <span class="icon-settings" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <!-- game area forced in pacman mode -->
+                    <div id="game-area" class="pacman-mode" aria-hidden="true">
+                        <div class="lane" id="lane-left"></div>
+                        <div class="lane" id="lane-center"></div>
+                        <div class="lane" id="lane-right"></div>
+                        <div id="player-ship" class="player-ship lane-1" aria-hidden="true"></div>
+                    </div>
+
+                    <!-- Schermata di Game Over -->
+                    <div id="game-over-screen" role="alertdialog" aria-modal="true" aria-labelledby="go-title" class="hide">
+                        <h2 id="go-title" class="game-over-title pacman-game-over-title">GAME OVER</h2>
+                        <p class="final-score-text pacman-final-score-text">Punteggio: <span id="final-score">00000</span></p>
+                        <hr class="game-over-divider" aria-hidden="true">
+                        <div class="player-name-container">
+                            <label for="player-name">Inserisci il tuo nome</label>
+                            <input type="text" id="player-name" maxlength="10" autocomplete="off" spellcheck="false" placeholder="PLAYER">
+                        </div>
+                        <button type="button" id="save-score-btn" class="arcade-btn pacman-save-score-btn">
+                            <span class="sr-only">Salva e vai alla classifica</span>
+                            <span aria-hidden="true">Salva e<br>vai alla classifica</span>
+                        </button>
+                    </div>
+
+                    <div id="settings-modal" class="hide" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+                        <h2 id="settings-title" class="menu-title">In pausa</h2>
+                        <div class="settings-content">
+                            <div class="volume-control">
+                                <label for="sfx-volume" aria-hidden="true">Effetti Sonori</label>
+                                <input type="range" id="sfx-volume" aria-label="Volume Effetti Sonori" min="0" max="10" step="1" value="9" aria-valuemin="0" aria-valuemax="10" aria-valuenow="9">
+                            </div>
+                            <div class="volume-control">
+                                <label for="music-volume" aria-hidden="true">Musica</label>
+                                <input type="range" id="music-volume" aria-label="Volume Musica" min="0" max="10" step="1" value="1" aria-valuemin="0" aria-valuemax="10" aria-valuenow="1">
+                            </div>
+                        </div>
+                        <button type="button" id="resume-btn" class="arcade-btn">Riprendi Gioco</button>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+
+        [!FOOTER!]
+    </div>
+
+    [!WARNING!]
+    <div class="stars" aria-hidden="true"></div>
+    <div class="grid-background" aria-hidden="true"></div>
+</body>
+</html>

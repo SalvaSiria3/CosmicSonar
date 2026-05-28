@@ -1,8 +1,12 @@
 <?php
 require_once 'src/components/template.php';
 
+
+$page_scripts = '<script src="src/js/game/loader.js" defer></script>' . "\n" .
+                '    <script src="src/js/game/game.js" defer></script>';
+
 echo Template::render('src/html/game.html', [
-    'HEAD' => Template::render('src/html/head.html', []),
+    'HEAD' => Template::render('src/html/head.html', ['PAGE_SCRIPTS' => $page_scripts]),
     'HEADER' => Template::render('src/html/header.html', [
         'HOME_HREF' => 'index.php',
         'HOME_CLASS' => '',
