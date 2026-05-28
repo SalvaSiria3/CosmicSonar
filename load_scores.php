@@ -1,4 +1,11 @@
 <?php
+// Sicurezza: Accetta solo richieste AJAX/Fetch inviate dal nostro Javascript
+if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest') {
+    // Se un utente prova ad accedere via URL, lo rimandiamo alla pagina 404 personalizzata
+    header("Location: 404.php");
+    exit;
+}
+
 require_once 'connection.php';
 
 // Diciamo al browser che risponderemo in formato JSON

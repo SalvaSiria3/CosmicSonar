@@ -106,7 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Scarica i punteggi dal database
-    fetch('load_scores.php')
+    fetch('load_scores.php', {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest' // Header per identificare la richiesta come AJAX
+        }
+    })
         .then(response => response.json())
         .then(res => {
             if (res.success) {

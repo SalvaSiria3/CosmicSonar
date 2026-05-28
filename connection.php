@@ -20,6 +20,10 @@ try {
     
 } catch (PDOException $e) {
     // Blocca l'esecuzione e mostra un messaggio se la connessione fallisce
-    die("Errore di connessione al database: " . $e->getMessage());
+    // die("Errore di connessione al database: " . $e->getMessage());
+
+    // In un ambiente di produzione, non mostrare mai l'errore esatto ma reindirizza a una pagina di errore generica.
+    header("Location: 500.php");
+    exit;
 }
 ?>

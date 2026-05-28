@@ -1,4 +1,11 @@
 <?php
+// Sicurezza: Accetta solo richieste di tipo POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    // Se un utente prova ad accedere via URL (GET), lo rimandiamo alla pagina 404
+    header("Location: 404.php");
+    exit;
+}
+
 require_once 'connection.php';
 
 // Diciamo al browser che risponderemo in formato JSON

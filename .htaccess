@@ -1,0 +1,16 @@
+<FilesMatch "^(connection)\.php$">
+    # Per Apache 2.4+ (la maggior parte degli host moderni)
+    Require all denied
+
+    # Per Apache 2.2 e precedenti (decommentare se necessario)
+    # Order allow,deny
+    # Deny from all
+</FilesMatch>
+
+# Mostra le tue pagine di errore personalizzate invece di quelle di default del server
+ErrorDocument 403 /404.php
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+# Disabilita la visualizzazione del contenuto delle cartelle per sicurezza
+Options -Indexes
