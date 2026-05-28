@@ -1,0 +1,4 @@
+/* Fallback se JavaScript è disabilitato nel browser */
+body { 
+    opacity: 1 !important; 
+}

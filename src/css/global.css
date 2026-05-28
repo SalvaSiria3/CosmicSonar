@@ -42,6 +42,7 @@ html {
     -webkit-text-size-adjust: 100% !important; 
     text-size-adjust: 100% !important;
     overflow-x: hidden;
+    background-color: #000000; /* Evita il flash bianco durante il caricamento */
 }
 
 body {
@@ -56,6 +57,12 @@ body {
     max-width: min(100%, 1800px, 130vh);
     margin: 0 auto;
     container-type: inline-size;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+body.loaded {
+    opacity: 1;
 }
 
 @media screen and (max-width: 1000px) {
