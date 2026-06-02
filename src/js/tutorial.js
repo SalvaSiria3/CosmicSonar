@@ -53,6 +53,12 @@ class TutorialManager {
 
         this.updateBannerUI();
 
+        setTimeout(() => {
+            if (this.ui.uiPanel && !this.ui.uiPanel.classList.contains('hide')) {
+                this.ui.uiPanel.focus();
+            }
+        }, 150);
+
         this.ui.actionBtn.addEventListener('click', () => {
             // Avvia la musica al primo click
             this.gameMusic.play().catch(e => console.log("Auto-play bloccato:", e));
@@ -378,6 +384,8 @@ class TutorialManager {
         this.audioEngine.playSFX('explosion', 1.0 * this.sfxVolume);
 
         const exactCssTop = window.getComputedStyle(this.alienElement).top;
+        this.alienElement.style.top = '';
+        this.alienElement.style.animation = '';
         this.alienElement.style.setProperty('--freeze-top', exactCssTop);
         this.alienElement.classList.add('exploded');
         

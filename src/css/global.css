@@ -38,11 +38,13 @@
 }
 
 html {
-    font-size: 16px !important; 
-    -webkit-text-size-adjust: 100% !important; 
-    text-size-adjust: 100% !important;
-    overflow: hidden;
-    background-color: #000000; /* Evita il flash bianco durante il caricamento */
+    font-size: 100%; 
+    -webkit-text-size-adjust: 100%; 
+    text-size-adjust: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-gutter: stable; /* Ottimizzazione aggiuntiva per i browser moderni */
+    background-color: #000000;
 }
 
 body {
@@ -171,7 +173,7 @@ nav {
     color: var(--primary-color);
     text-decoration: none;
     font-family: var(--primary-font);
-    font-size: clamp(12px, 1.2cqw, 20px);
+    font-size: clamp(0.75rem, 1.2cqw, 1.25rem);
     text-transform: uppercase;
     transition: color 0.3s;
 }

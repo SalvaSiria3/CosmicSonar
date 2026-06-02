@@ -10,8 +10,13 @@
 }
 
 
-.hide {
-    display: none !important;
+.hide,
+#mode-selection.hide,
+#game-over-screen.hide,
+#settings-modal.hide,
+#loading-screen.hide,
+#filter-pacman.hide {
+    display: none;
 }
 
 .no-transition {
@@ -611,7 +616,7 @@
 .hard-mode .laser,
 .hard-mode .score-container,
 .hard-mode .lives-container {
-    opacity: 0 !important;
+    opacity: 0;
 }
 
 .hard-mode-glitch {
@@ -821,10 +826,10 @@
 }
 
 .alien.exploded {
-    top: var(--freeze-top) !important;
-    background-image: none !important;
+    top: var(--freeze-top);
+    background-image: none;
     border-radius: 50%;
-    animation: explodeEffect 0.3s ease-out forwards !important;
+    animation: explodeEffect 0.3s ease-out forwards;
 }
 
 /* --- Proiettile --- */
@@ -849,8 +854,11 @@
 }
 
 /* Classe magica per mettere in pausa tutte le animazioni CSS */
-.paused-animation * {
-    animation-play-state: paused !important;
+.paused-animation,
+.paused-animation .alien,
+.paused-animation .laser,
+.paused-animation .insert-coin {
+    animation-play-state: paused;
 }
 
 /* --- Schermata Game Over --- */
@@ -987,10 +995,6 @@
     z-index: 50;
     font-family: var(--primary-font);
     color: var(--neutral-light);
-}
-
-#settings-modal.hide {
-    display: none !important;
 }
 
 #settings-title {

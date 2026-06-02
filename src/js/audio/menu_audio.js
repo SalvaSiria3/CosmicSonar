@@ -89,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sfxSlider.addEventListener('input', (e) => {
             const vol = e.target.value / 10;
             localStorage.setItem('cosmicSfxVol', vol);
-            sfxSlider.setAttribute('aria-valuenow', e.target.value);
             
             testSfx.currentTime = 0; 
             testSfx.volume = 0.2 * vol; 
@@ -101,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         musicSlider.addEventListener('input', (e) => {
             const vol = e.target.value / 10;
             localStorage.setItem('cosmicMusicVol', vol);
-            musicSlider.setAttribute('aria-valuenow', e.target.value); // WCAG Best Practice
             menuSound.volume = vol; // Modifica il volume della musica in sottofondo in tempo reale!
         });
     }

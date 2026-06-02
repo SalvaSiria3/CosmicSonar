@@ -31,8 +31,9 @@
 .pacman-mode .alien-4 { background-image: url('../assets/images/Clyde.png'); }
 
 .pacman-mode .alien.exploded {
-    background-color: transparent !important;
-    box-shadow: none !important;
+    background-color: transparent;
+    box-shadow: none;
+    animation: none;
     color: #FFF;
     font-family: var(--primary-font);
     font-size: 2.5cqw;
