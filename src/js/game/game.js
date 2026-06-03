@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let wallsHit = 0;
     let gameStartTime = 0;
     
-    let spawnRate = 3500; // Parte più veloce (3.5s invece di 5s)
-    let enemySpeed = 12.0; // Velocità di discesa iniziale (12s invece di 15s)
+    let spawnRate = 3500; // Parte veloce (3.5s)
+    let enemySpeed = 12.0; // Velocità di discesa iniziale (12s)
     let spawnTimeoutId;
     let animationFrameId; // Motore di gioco continuo
     let lastShootTime = 0; // Previene il sovraccarico di proiettili
@@ -190,6 +190,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (gameAnnouncer) {
                 gameAnnouncer.textContent = `Vite: ${lives}`;
             }
+        } else if (e.code === 'KeyC') {
+            if (gameAnnouncer) {
+                const laneNames = ['Sinistra', 'Centrale', 'Destra'];
+                gameAnnouncer.textContent = `Corsia: ${laneNames[currentLane]}`;
+            }
+            audio.playLanePing(currentLane);
         }
     });
 

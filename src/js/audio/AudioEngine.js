@@ -114,10 +114,33 @@ class AudioEngine {
     updateAlienPitch(alienSound, yPercentage) {
         if (!alienSound || alienSound.isStopped) return;
         
-        const baseFreq = 120 + (380 * yPercentage); // Da 120Hz a 400Hz
+        const baseFreq = 120 + (380 * yPercentage);
         alienSound.osc.frequency.value = baseFreq; // Assegnazione diretta per evitare crash della memoria audio a 60 FPS
         
         // Il filtro man mano che l'alieno scende, rende il suono più brillante e aggressivo
         alienSound.filter.frequency.value = 800 + (3000 * yPercentage);
+    }
+
+    // Riproduce un suono breve e spazializzato per indicare la corsia corrente
+    playLanePing(laneIndex) {
+        const osc = this.ctx.createOscillator();
+        const panner = this.ctx.createStereoPanner();
+        const gain = this.ctx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+        
+        panner.pan.value = laneIndex - 1; // Mappa la corsia 0, 1, 2 in: -1 (Sinistra), 0 (Centro), 1 (Destra)
+        
+        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.4, this.ctx.currentTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+        
+        osc.connect(panner);
+        panner.connect(gain);
+        gain.connect(this.masterGain);
+        
+        osc.start(this.ctx.currentTime);
+        osc.stop(this.ctx.currentTime + 0.3);
     }
 }
