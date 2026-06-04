@@ -1,7 +1,7 @@
 <?php
 require_once 'src/components/template.php';
 
-$page_scripts = '<script src="src/js/ui/leaderboard.js" defer></script>';
+$page_scripts = '<script src="src/js/leaderboard.js" defer></script>';
 
 echo Template::render('src/html/leaderboard.html', [
     'HEAD' => Template::render('src/html/head.html', ['PAGE_SCRIPTS' => $page_scripts]),

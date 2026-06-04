@@ -1,7 +1,6 @@
 <?php
 require_once 'src/components/template.php';
 
-
 $page_scripts = '<script src="src/js/game/loader.js" defer></script>' . "\n" .
                 '    <script src="src/js/game/game.js" defer></script>';
 

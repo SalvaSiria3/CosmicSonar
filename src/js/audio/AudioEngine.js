@@ -56,7 +56,7 @@ class AudioEngine {
         this.masterGain.gain.setValueAtTime(0.5 * volume, this.ctx.currentTime);
     }
 
-    createAlienSonar(laneIndex) { //In base alla colonna, il suono sarà più a sinistra o a destra
+    createAlienSonar(laneIndex) {
         const osc = this.ctx.createOscillator();
         osc.type = 'square';
         osc.frequency.setValueAtTime(120, this.ctx.currentTime); // Frequenza di partenza udibile
@@ -68,6 +68,7 @@ class AudioEngine {
         filter.frequency.setValueAtTime(800, this.ctx.currentTime); 
 
         const panner = this.ctx.createStereoPanner();
+        //In base alla colonna, il suono sarà più a sinistra o a destra
         // Mappa la corsia 0, 1, 2 nei valori di pan -1 (Sinistra), 0 (Centro), 1 (Destra)
         panner.pan.value = laneIndex - 1;
 

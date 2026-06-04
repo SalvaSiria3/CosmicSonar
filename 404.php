@@ -1,7 +1,6 @@
 <?php
 require_once 'src/components/template.php';
 
-// Imposta correttamente l'intestazione HTTP per i motori di ricerca e il browser
 http_response_code(404);
 
 echo Template::render('src/html/404.html', [

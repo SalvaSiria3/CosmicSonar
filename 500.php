@@ -1,7 +1,6 @@
 <?php
 require_once 'src/components/template.php';
 
-// Imposta l'intestazione HTTP di errore del server
 http_response_code(500);
 
 echo Template::render('src/html/500.html', [

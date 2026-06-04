@@ -8,10 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 require_once 'connection.php';
 
-// Diciamo al browser che risponderemo in formato JSON
 header('Content-Type: application/json');
 
-// Recupera il JSON inviato da Javascript (fetch)
 $rawData = file_get_contents('php://input');
 $data = json_decode($rawData, true);
 

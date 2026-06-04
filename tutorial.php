@@ -1,7 +1,6 @@
 <?php
 require_once 'src/components/template.php';
 
-
 $page_scripts = '<script src="src/js/tutorial.js" defer></script>';
 
 echo Template::render('src/html/tutorial.html', [

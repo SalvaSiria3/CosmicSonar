@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space' && !menuLoaded && startBanner) {
-            e.preventDefault();
+            e.preventDefault(); // Blocca lo scorrimento predefinito della pagina
             toMenu();
         }
     });
