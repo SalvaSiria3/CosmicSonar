@@ -210,7 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         spawnEnemy();
         
-        spawnRate = Math.max(600, spawnRate * 0.98); 
+        // In Pac-Man mode il giocatore deve aspettare il fantasma in fondo allo schermo.
+        // Si alza il limite minimo di spawn a 1200ms (invece di 600ms del gioco base) per garantire sempre il tempo di spostarsi dalla colonna destra alla sinistra.
+        spawnRate = Math.max(1200, spawnRate * 0.98); 
+        
         const currentMinSpeed = score > 2580 ? 1.7 : 2.5;
         enemySpeed = Math.max(currentMinSpeed, enemySpeed * 0.985); 
         

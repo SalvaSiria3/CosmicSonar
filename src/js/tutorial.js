@@ -157,7 +157,7 @@ class TutorialManager {
                 
             case 1: // Fase 1 (Panning)
                 this.ui.phaseTitle.textContent = 'Fase 1: Allineamento';
-                this.ui.instructions.innerHTML = '<span class="sr-only">Il nemico è fermo nella parte alta dello schermo. Usa le frecce destra e sinistra per spostare la navicella sotto di lui. Il suono sarà bilanciato nelle cuffie quando sarai allineato.</span><span aria-hidden="true">Il nemico è fermo nella parte alta dello schermo.<br>Usa le <span class="hint-highlight">frecce destra e sinistra</span> per spostare la navicella sotto di lui. Il suono sarà bilanciato nelle cuffie quando sarai allineato.</span>';
+                this.ui.instructions.innerHTML = '<span class="sr-only">Il nemico è fermo nella parte alta dello schermo. Usa le frecce o i tasti A e D per spostare la navicella sotto di lui. Il suono sarà bilanciato nelle cuffie quando sarai allineato.</span><span aria-hidden="true">Il nemico è fermo nella parte alta dello schermo.<br>Usa le <span class="hint-highlight">frecce (o A e D)</span> per spostare la navicella sotto di lui. Il suono sarà bilanciato nelle cuffie quando sarai allineato.</span>';
                 this.ui.actionBtn.textContent = 'Inizia';
                 break;
             

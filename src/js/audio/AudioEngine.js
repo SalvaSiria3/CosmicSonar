@@ -83,14 +83,15 @@ class AudioEngine {
 
         osc.start();
 
-        return { osc, filter, alienGain, hasEntered: false };
+        return { osc, filter, alienGain, hasEntered: false, laneIndex };
     }
 
     startAlienSound(alienSound) {
         if (!alienSound || alienSound.hasEntered) return;
         alienSound.hasEntered = true; // Segna che il suono è stato attivato (c'era il problema che suonava prima che entrasse effettivamente nello schermo)
         
-        alienSound.alienGain.gain.setTargetAtTime(0.08, this.ctx.currentTime, 0.05);  
+        // Il volume parte molto basso, verrà alzato dinamicamente in base alla vicinanza
+        alienSound.alienGain.gain.setTargetAtTime(0.03, this.ctx.currentTime, 0.05);  
     }
 
     stopAlienSonar(alienSound) { // Per quando muore l'alieno
@@ -115,11 +116,21 @@ class AudioEngine {
     updateAlienPitch(alienSound, yPercentage) {
         if (!alienSound || alienSound.isStopped) return;
         
-        const baseFreq = 120 + (380 * yPercentage);
+        // 1. Variazione di Pitch per colonna (Detune)
+        // Corsia 0 (Sinistra): -20Hz, Corsia 1 (Centro): 0Hz, Corsia 2 (Destra): +20Hz
+        const lanePitchOffset = (alienSound.laneIndex - 1) * 20; 
+        
+        const baseFreq = 120 + lanePitchOffset + (380 * yPercentage);
         alienSound.osc.frequency.value = baseFreq; // Assegnazione diretta per evitare crash della memoria audio a 60 FPS
         
         // Il filtro man mano che l'alieno scende, rende il suono più brillante e aggressivo
         alienSound.filter.frequency.value = 800 + (3000 * yPercentage);
+        
+        // 2. Attenuazione dinamica del volume (Distanza spaziale)
+        if (alienSound.hasEntered) {
+            const dynamicVolume = 0.03 + (0.07 * yPercentage); // Sale progressivamente da 0.03 a 0.10
+            alienSound.alienGain.gain.setTargetAtTime(dynamicVolume, this.ctx.currentTime, 0.05);
+        }
     }
 
     // Riproduce un suono breve e spazializzato per indicare la corsia corrente

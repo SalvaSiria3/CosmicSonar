@@ -15,7 +15,8 @@
 #game-over-screen.hide,
 #settings-modal.hide,
 #loading-screen.hide,
-#filter-pacman.hide {
+#filter-pacman.hide,
+#tutorial-ui.hide {
     display: none;
 }
 
