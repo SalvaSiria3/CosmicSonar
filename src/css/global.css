@@ -167,6 +167,7 @@ nav {
     display: flex;
     gap: 2.5cqw;
     list-style: none;
+    align-items: center;
 }
 
 .nav-links a {

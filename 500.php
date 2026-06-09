@@ -20,5 +20,6 @@ echo Template::render('src/html/500.html', [
         'GAME_ARIA' => ''
     ]),
     'FOOTER' => Template::render('src/html/footer.html', []),
-    'WARNING' => Template::render('src/html/warning.html', [])
+    'WARNING' => Template::render('src/html/warning.html', []),
+    'SETTINGS' => Template::render('src/html/settings.html', [])
 ]);

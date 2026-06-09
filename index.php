@@ -1,8 +1,10 @@
 <?php
 require_once 'src/components/template.php';
 
+$page_scripts = '';
+
 echo Template::render('src/html/index.html', [
-    'HEAD' => Template::render('src/html/head.html', []),
+    'HEAD' => Template::render('src/html/head.html', ['PAGE_SCRIPTS' => $page_scripts]),
     'HEADER' => Template::render('src/html/header.html', [
         'HOME_HREF' => '#',
         'HOME_CLASS' => 'disabled',
@@ -21,5 +23,6 @@ echo Template::render('src/html/index.html', [
         'LEADERBOARD_ARIA' => ''
     ]),
     'FOOTER' => Template::render('src/html/footer.html', []),
-    'WARNING' => Template::render('src/html/warning.html', [])
+    'WARNING' => Template::render('src/html/warning.html', []),
+    'SETTINGS' => Template::render('src/html/settings.html', [])
 ]);

@@ -744,6 +744,17 @@
     color: var(--neutral-light);
 }
 
+.header-btn {
+    padding: 0.5cqw;
+    margin: 0;
+    border-width: 0.2cqw;
+    border-radius: 1.3cqw;
+}
+.header-btn .icon-settings {
+    width: 2.5cqw;
+    height: 2.5cqw;
+}
+
 #game-area {
     position: absolute;
     top: 10cqw;
@@ -881,6 +892,7 @@
 
 .game-over-title {
     background: linear-gradient(to bottom, var(--tertiary-color) 40%, var(--secondary-color));
+    background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     font-size: 12.75cqw;
@@ -1266,5 +1278,7 @@
     .back-btn, .play-again-btn { font-size: 1.2vw; padding: 0.6vw 1.2vw; }
     .error-details { font-size: 1vw; margin-bottom: 1.5vw; padding: 1vw 1.5vw; border-left-width: 0.3vw; }
     .settings-btn .icon-info { width: 3.6vw; height: 3.6vw; font-size: 2.4vw; }
+    .header-btn { padding: 0.8vw; border-width: 0.3vw; border-radius: 8px; }
+    .header-btn .icon-settings { width: 3.5vw; height: 3.5vw; }
     .tutorial-phase-text { font-size: 2.2vw; }
 }

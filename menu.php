@@ -4,7 +4,9 @@ require_once 'src/components/template.php';
 echo Template::render('src/html/menu.html', [
     'HEAD' => Template::render('src/html/head.html', []),
     'HEADER' => Template::render('src/html/header.html', [
-
+        'HOME_HREF' => 'index.php',
+        'HOME_CLASS' => '',
+        'HOME_ARIA' => '',
         'MENU_CLASS' => 'disabled',
         'MENU_ARIA' => 'aria-current="page"',
         'TUTORIAL_HREF' => 'tutorial.php',
@@ -18,5 +20,6 @@ echo Template::render('src/html/menu.html', [
         'LEADERBOARD_ARIA' => ''
     ]),
     'FOOTER' => Template::render('src/html/footer.html', []),
-    'WARNING' => Template::render('src/html/warning.html', [])
+    'WARNING' => Template::render('src/html/warning.html', []),
+    'SETTINGS' => Template::render('src/html/settings.html', [])
 ]);

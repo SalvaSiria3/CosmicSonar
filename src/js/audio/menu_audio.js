@@ -50,59 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         menuSound.addEventListener('loadedmetadata', startMusic);
     }
     
-    // --- GESTIONE IMPOSTAZIONI NEL MENU ---
-    const openSettingsBtn = document.getElementById('open-settings-btn');
-    const closeSettingsBtn = document.getElementById('close-settings-btn');
-    const settingsModal = document.getElementById('settings-modal');
-    const sfxSlider = document.getElementById('sfx-volume');
-    const musicSlider = document.getElementById('music-volume');
-    
-    const testSfx = new Audio('src/assets/sounds/shot.mp3'); // Feedback sonoro per gli slider SFX
+  
 
-    if (openSettingsBtn && settingsModal && closeSettingsBtn) {
-        openSettingsBtn.addEventListener('click', () => {
-            // Allinea gli slider con i volumi attualmente salvati (o quelli di default)
-            const currSfx = localStorage.getItem('cosmicSfxVol');
-            const currMusic = localStorage.getItem('cosmicMusicVol');
-            
-            if (sfxSlider) sfxSlider.value = Math.round((currSfx !== null ? parseFloat(currSfx) : 0.9) * 10);
-            if (musicSlider) musicSlider.value = Math.round((currMusic !== null ? parseFloat(currMusic) : 0.1) * 10);
-            
-            settingsModal.classList.remove('hide');
-            if (sfxSlider) sfxSlider.focus(); // Accessibilità: sposta il focus al primo slider
-        });
-
-        closeSettingsBtn.addEventListener('click', () => {
-            settingsModal.classList.add('hide');
-            openSettingsBtn.focus(); // Accessibilità: riporta il focus al bottone del menu
-        });
-        
-        // Chiude le impostazioni con ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Escape' && !settingsModal.classList.contains('hide')) {
-                closeSettingsBtn.click();
-            }
-        });
-    }
-
-    if (sfxSlider) {
-        sfxSlider.addEventListener('input', (e) => {
-            const vol = e.target.value / 10;
-            localStorage.setItem('cosmicSfxVol', vol);
-            
-            testSfx.currentTime = 0; 
-            testSfx.volume = 0.2 * vol; 
-            testSfx.play().catch(() => {});
-        });
-    }
-
-    if (musicSlider) {
-        musicSlider.addEventListener('input', (e) => {
-            const vol = e.target.value / 10;
-            localStorage.setItem('cosmicMusicVol', vol);
-            menuSound.volume = vol; // Modifica il volume della musica in sottofondo in tempo reale!
-        });
-    }
+    // Ascolta l'evento globale per il cambio volume della musica
+    document.addEventListener('musicVolumeChange', (e) => {
+        if (menuSound) menuSound.volume = e.detail.volume;
+    });
 
     window.addEventListener('beforeunload', () => {
         sessionStorage.setItem('menuMusicTime', menuSound.currentTime);

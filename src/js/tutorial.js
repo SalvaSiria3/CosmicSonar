@@ -2,7 +2,8 @@ class TutorialManager {
     constructor() {
         this.state = {
             phase: 0, // 0: Hints, 1: Panning, 2: Fuoco, 3: Distanza, 4: Fine
-            isPlaying: false
+            isPlaying: false,
+            isPaused: false
         };
         
         this.shipLane = 1; // 0 = sinistra, 1 = centro, 2 = destra
@@ -36,15 +37,105 @@ class TutorialManager {
                 document.getElementById('lane-left'),
                 document.getElementById('lane-center'),
                 document.getElementById('lane-right')
-            ]
+            ],
+            settingsModal: document.getElementById('settings-modal'),
+            resumeBtn: document.getElementById('resume-btn'),
+            headerSettingsBtn: document.getElementById('header-settings-btn'),
+            sfxSlider: document.getElementById('sfx-volume'),
+            musicSlider: document.getElementById('music-volume')
         };
 
         this.audioEngine = new AudioEngine();
 
         this.init();
+
+        // Permetti l'aggiornamento dei volumi se aperti tramite l'icona globale nell'header
+        document.addEventListener('sfxVolumeChange', (e) => {
+            this.sfxVolume = e.detail.volume;
+        });
+        document.addEventListener('musicVolumeChange', (e) => {
+            this.musicVolume = e.detail.volume;
+            if (this.gameMusic) this.gameMusic.volume = this.musicVolume;
+        });
     }
 
     init() {
+        // --- Gestione Modale Impostazioni (Header) ---
+        if (this.ui.headerSettingsBtn && this.ui.settingsModal) {
+            this.testSfx = new Audio('src/assets/sounds/shot.mp3');
+            
+            this.toggleSettings = () => {
+                if (this.state.phase === 4) return; // Disabilita in fase finale
+                
+                if (this.ui.settingsModal.classList.contains('hide')) {
+                    this.state.isPaused = true;
+                    
+                    if (this.state.phase > 0 && this.state.phase < 4) {
+                        this.ui.gameArea.classList.add('paused-animation');
+                        this.audioEngine.suspend();
+                    }
+
+                    // Nasconde il banner del tutorial se era aperto
+                    if (!this.ui.uiPanel.classList.contains('hide')) {
+                        this.ui.uiPanel.classList.add('hide');
+                        this.wasBannerOpen = true; // Se lo ricorda per riaprirlo dopo
+                    } else {
+                        this.wasBannerOpen = false;
+                    }
+
+                    const currSfx = localStorage.getItem('cosmicSfxVol');
+                    const currMusic = localStorage.getItem('cosmicMusicVol');
+                    
+                    if (this.ui.sfxSlider) this.ui.sfxSlider.value = Math.round((currSfx !== null ? parseFloat(currSfx) : 0.9) * 10);
+                    if (this.ui.musicSlider) this.ui.musicSlider.value = Math.round((currMusic !== null ? parseFloat(currMusic) : 0.1) * 10);
+                    
+                    this.ui.settingsModal.classList.remove('hide');
+                    if (this.ui.sfxSlider) this.ui.sfxSlider.focus();
+                } else {
+                    this.state.isPaused = false;
+                    this.ui.settingsModal.classList.add('hide');
+                    
+                    // Ripristina lo stato in cui si era
+                    if (this.wasBannerOpen) {
+                        this.ui.uiPanel.classList.remove('hide');
+                        this.ui.uiPanel.focus();
+                    } else if (this.state.phase > 0 && this.state.phase < 4) {
+                        this.ui.gameArea.classList.remove('paused-animation');
+                        this.audioEngine.resume();
+                        const gameFocus = document.getElementById('game-focus');
+                        if (gameFocus) gameFocus.focus();
+                    } else {
+                        if (this.ui.headerSettingsBtn) this.ui.headerSettingsBtn.focus();
+                    }
+                }
+            };
+
+            this.ui.headerSettingsBtn.addEventListener('click', this.toggleSettings);
+            if (this.ui.resumeBtn) {
+                this.ui.resumeBtn.addEventListener('click', this.toggleSettings);
+            }
+
+            if (this.ui.sfxSlider) {
+                this.ui.sfxSlider.addEventListener('input', (e) => {
+                    const vol = e.target.value / 10;
+                    localStorage.setItem('cosmicSfxVol', vol);
+                    this.sfxVolume = vol; 
+                    this.testSfx.currentTime = 0; 
+                    this.testSfx.volume = 0.2 * vol; 
+                    this.testSfx.play().catch(() => {});
+                });
+            }
+
+            if (this.ui.musicSlider) {
+                this.ui.musicSlider.addEventListener('input', (e) => {
+                    const vol = e.target.value / 10;
+                    localStorage.setItem('cosmicMusicVol', vol);
+                    this.musicVolume = vol;
+                    if (this.gameMusic) this.gameMusic.volume = vol;
+                });
+            }
+        }
+        
         this.audioEngine.loadSFX('shoot', 'src/assets/sounds/shot.mp3');
         this.audioEngine.loadSFX('explosion', 'src/assets/sounds/death_alien.mp3');
         this.audioEngine.loadSFX('wall', 'src/assets/sounds/wall.mp3');
@@ -259,13 +350,18 @@ class TutorialManager {
         }
 
         if (e.code === 'Escape') {
-            if (this.state.phase > 0 && this.state.phase < 4) {
+            // Evita conflitti: se la modale impostazioni è aperta, usa ESC per chiudere quella
+            if (this.ui.settingsModal && !this.ui.settingsModal.classList.contains('hide')) {
+                if (this.toggleSettings) this.toggleSettings();
+                return;
+            }
+            if (this.state.phase > 0 && this.state.phase < 4 && !this.state.isPaused) {
                 this.showBanner(); // ESC funge da pausa come nel gioco principale
             }
             return;
         }
 
-        if (!this.state.isPlaying || this.state.phase === 4 || this.state.phase === 0) return;
+        if (this.state.isPaused || !this.state.isPlaying || this.state.phase === 4 || this.state.phase === 0) return;
         if (!this.ui.uiPanel.classList.contains('hide')) return; // Blocca input se il banner è aperto
 
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
@@ -371,7 +467,7 @@ class TutorialManager {
         } else {
             // Nella fase 3 si muove e aggiorniamo il pitch
             this.alienElement.style.setProperty('--fall-speed', '15s');
-            this.alienElement.style.animation = 'fallDown var(--fall-speed, 15s) steps(30) forwards';
+            this.alienElement.style.animation = ''; // Rimuove il blocco inline permettendo al CSS e alla pausa di agire!
         }
         
         this.ui.lanes[lane].appendChild(this.alienElement);
@@ -399,7 +495,7 @@ class TutorialManager {
     gameLoop() {
         if (this.state.phase === 4) return; // Fine del tutorial
 
-        if (!this.state.isPlaying) {
+        if (this.state.isPaused || !this.state.isPlaying) {
             // Se in pausa o tra uno spawn e l'altro, mantieni in vita il motore a vuoto
             this.animationFrameId = requestAnimationFrame(() => this.gameLoop());
             return;

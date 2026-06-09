@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveScoreBtn = document.getElementById('save-score-btn');
     const usernameInput = document.getElementById('player-name');
     
-    const settingsBtn = document.querySelector('.settings-btn');
+    const settingsBtn = document.querySelector('#topbargame .settings-btn');
     const settingsModal = document.getElementById('settings-modal');
     const resumeBtn = document.getElementById('resume-btn');
     
@@ -98,6 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Ascolta gli eventi globali per il cambio volume
+    document.addEventListener('sfxVolumeChange', (e) => {
+        sfxVolume = e.detail.volume;
+        if (audio) audio.setVolume(sfxVolume);
+        if (sfxSlider) sfxSlider.value = Math.round(sfxVolume * 10);
+    });
+    document.addEventListener('musicVolumeChange', (e) => {
+        musicVolume = e.detail.volume;
+        if (gameMusic) gameMusic.volume = musicVolume;
+        if (musicSlider) musicSlider.value = Math.round(musicVolume * 10);
+    });
+
     // --- GESTIONE PAUSA ---
     function togglePause() {
         if (!isGameRunning) return;
@@ -108,7 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
             gameArea.classList.remove('paused-animation'); 
             audio.resume(); 
             spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate); 
-            settingsBtn.focus();
+            
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) mainContent.focus();
         } else {
             isPaused = true;
             clearTimeout(spawnTimeoutId); 
@@ -119,8 +133,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    settingsBtn.addEventListener('click', () => { if (!isPaused) togglePause(); });
-    resumeBtn.addEventListener('click', () => { if (isPaused) togglePause(); });
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => { if (!isPaused) togglePause(); });
+    }
+    
+    const headerSettingsBtn = document.getElementById('header-settings-btn');
+    if (headerSettingsBtn) {
+        headerSettingsBtn.addEventListener('click', () => {
+            if (isGameRunning) {
+                togglePause();
+            } else {
+                if (settingsModal.classList.contains('hide')) {
+                    settingsModal.classList.remove('hide');
+                    if (sfxSlider) sfxSlider.focus();
+                } else {
+                    settingsModal.classList.add('hide');
+                    headerSettingsBtn.focus();
+                }
+            }
+        });
+    }
+
+    if (resumeBtn) {
+        resumeBtn.addEventListener('click', () => {
+            if (isGameRunning && isPaused) {
+                togglePause();
+            } else if (!isGameRunning) {
+                settingsModal.classList.add('hide');
+                if (headerSettingsBtn) headerSettingsBtn.focus();
+            }
+        });
+    }
 
     function updateShipPosition() {
         playerShip.classList.remove('lane-0', 'lane-1', 'lane-2');
@@ -137,8 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('keydown', (e) => {
-        if (e.code === 'Escape' && isGameRunning) {
-            togglePause();
+        if (e.code === 'Escape') {
+            if (isGameRunning) {
+                togglePause();
+            } else if (!settingsModal.classList.contains('hide')) {
+                settingsModal.classList.add('hide');
+                if (headerSettingsBtn) headerSettingsBtn.focus();
+            }
             return;
         }
 
@@ -431,6 +479,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         scheduleNextSpawn();
         animationFrameId = requestAnimationFrame(gameLoop);
+        
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) mainContent.focus();
     };
 
     const btnPacman = document.getElementById('btn-pacman');

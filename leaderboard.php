@@ -23,5 +23,6 @@ echo Template::render('src/html/leaderboard.html', [
         'LEADERBOARD_ARIA' => 'aria-current="page"'
     ]),
     'FOOTER' => Template::render('src/html/footer.html', []),
-    'WARNING' => Template::render('src/html/warning.html', [])
+    'WARNING' => Template::render('src/html/warning.html', []),
+    'SETTINGS' => Template::render('src/html/settings.html', [])
 ]);
