@@ -2,8 +2,8 @@
 CREATE TABLE IF NOT EXISTS partite (
     id_partita INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(10) NOT NULL,
-    punteggio_finale INT NOT NULL DEFAULT 0,
-    modalita ENUM('classic', 'hard', 'tutorial') NOT NULL DEFAULT 'classic',
+    punteggio_finale INT NOT NULL DEFAULT 0,    
+    modalita ENUM('classic', 'hard', 'pacman', 'tutorial') NOT NULL DEFAULT 'classic',
     data_partita TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; -- quest'ultimo per le emoji --
 
