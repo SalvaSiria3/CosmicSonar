@@ -262,10 +262,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // In Pac-Man mode il giocatore deve aspettare il fantasma in fondo allo schermo.
         // Si alza il limite minimo di spawn a 1200ms (invece di 600ms del gioco base) per garantire sempre il tempo di spostarsi dalla colonna destra alla sinistra.
-        spawnRate = Math.max(1200, spawnRate * 0.98); 
+        spawnRate = Math.max(1000, spawnRate * 0.97); 
         
-        const currentMinSpeed = score > 2580 ? 1.7 : 2.5;
-        enemySpeed = Math.max(currentMinSpeed, enemySpeed * 0.985); 
+        // Curva di difficoltà più aggressiva e lineare per la velocità di caduta
+        let currentMinSpeed;
+        if (score > 1500) currentMinSpeed = 1.0; // Velocità massima
+        else if (score > 800) currentMinSpeed = 1.3;
+        else if (score > 300) currentMinSpeed = 1.8;
+        else currentMinSpeed = 2.2;
+        
+        enemySpeed = Math.max(currentMinSpeed, enemySpeed * 0.975); 
         
         spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate);
     }
@@ -469,8 +475,8 @@ document.addEventListener('DOMContentLoaded', () => {
         aliensDestroyed = 0;
         wallsHit = 0;
         gameStartTime = Date.now();
-        spawnRate = 3500;
-        enemySpeed = 12.0;
+        spawnRate = 2500; // Partenza più rapida per evitare noia iniziale
+        enemySpeed = 8.0; // Caduta iniziale più veloce
         
         audio.resume();
         gameMusic.play().catch(e => console.log("Impossibile avviare musica", e));
