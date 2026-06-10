@@ -3,8 +3,10 @@ require_once 'src/components/template.php';
 
 http_response_code(404);
 
+$page_scripts = '';
+
 echo Template::render('src/html/404.html', [
-    'HEAD' => Template::render('src/html/head.html', []),
+    'HEAD' => Template::render('src/html/head.html', ['PAGE_SCRIPTS' => $page_scripts]),
     'HEADER' => Template::render('src/html/header.html', [
         'HOME_HREF' => 'index.php',
         'HOME_CLASS' => '',

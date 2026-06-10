@@ -241,10 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameAnnouncer.textContent = `Vite: ${lives}`;
             }
         } else if (e.code === 'KeyC') {
-            if (gameAnnouncer) {
-                const laneNames = ['Sinistra', 'Centrale', 'Destra'];
-                gameAnnouncer.textContent = `Corsia: ${laneNames[currentLane]}`;
-            }
             audio.playLanePing(currentLane);
         }
     });
@@ -446,9 +442,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const glitchLayer = document.querySelector('.hard-mode-glitch');
         if (glitchLayer) glitchLayer.classList.remove('active');
         
-        // Annuncia il game over
+        // Costruisce l'annuncio del game over
+        let announcement = `Game Over. Punteggio finale: ${score}. `;
+        
+        const easterEggModal = document.getElementById('easter-egg-modal');
+        const showEasterEgg = easterEggModal && score >= 2600; // Svela l'Easter Egg solo se il punteggio è 2600 o superiore
+        
+        if (showEasterEgg) {
+            announcement += `Punteggio eccellente! Come ricompensa per il risultato ottenuto, ti viene svelato un segreto: all'interno del sito è nascosto un Easter Egg... la caccia al tesoro è aperta! `;
+        }
+
+        announcement += `Inserisci il tuo nome per la classifica oppure clicca direttamente salva e rimani anonimo.`;
+        
         if (gameAnnouncer) {
-            gameAnnouncer.textContent = `Game Over. Punteggio finale: ${score}. Inserisci il tuo nome per la classifica oppure clicca direttamente salva e rimani anonimo.`;
+            gameAnnouncer.textContent = announcement;
         }
         
         if (gameOverScreen) {
@@ -456,7 +463,19 @@ document.addEventListener('DOMContentLoaded', () => {
             gameOverScreen.classList.add('active');
             finalScoreElement.textContent = score.toString().padStart(5, '0');
             
-            setTimeout(() => usernameInput.focus(), 100);
+            if (showEasterEgg) {
+                easterEggModal.classList.remove('hide');
+                const closeEasterEggBtn = document.getElementById('close-easter-egg-btn');
+                if (closeEasterEggBtn) {
+                    setTimeout(() => closeEasterEggBtn.focus(), 100);
+                    closeEasterEggBtn.onclick = () => {
+                        easterEggModal.classList.add('hide');
+                        usernameInput.focus();
+                    };
+                }
+            } else {
+                setTimeout(() => usernameInput.focus(), 100);
+            }
         }
     }
 
@@ -516,6 +535,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isGameRunning) return;
         isGameRunning = true;
         gameMode = selectedMode || 'classic';
+        
+        // Segna nella memoria locale che l'utente non è più un principiante
+        localStorage.setItem('hasPlayed', 'false');
         
         // Reset variabili statistiche
         aliensDestroyed = 0;

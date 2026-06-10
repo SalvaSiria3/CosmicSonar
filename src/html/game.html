@@ -11,7 +11,6 @@
 
     <div class="arcade-container zoomed no-transition">
         <img src="src/assets/images/cabinato.svg" alt="" aria-hidden="true" class="arcade-image">
-        <button type="button" id="arcade-coin-btn" class="arcade-coin-btn" aria-label="Inserisci moneta (Suono)"></button>
         
         <div class="arcade-screen">
             <div class="screen-content">
@@ -48,6 +47,11 @@
                         </div>
                         
                         <div class="hints-container">
+                            <p class="esc-hint" id="tutorial-hint">
+                                <span class="sr-only">Prima volta qui? Se non sai come giocare, prova il tutorial.</span>
+                                <img src="src/assets/images/tutorial_icon.png" alt="" aria-hidden="true" class="hint-icon">
+                                <span aria-hidden="true">Prima volta qui? Se non sai come giocare, prova il <a href="tutorial.php" class="tutorial-link">tutorial</a>!</span>
+                            </p>
                             <p class="esc-hint">
                                 <span class="sr-only">Comandi rapidi: Premi ESC per la pausa, P per il punteggio, V per le vite, C per la colonna corrente.</span>
                                 <img src="src/assets/images/light.png" alt="" aria-hidden="true" class="hint-icon">
@@ -95,6 +99,7 @@
                         <h2 id="go-title" class="game-over-title">GAME OVER</h2>
                         <p class="final-score-text">Punteggio: <span id="final-score">00000</span></p>
                         <hr class="game-over-divider" aria-hidden="true">
+
                         <div class="player-name-container">
                             <label for="player-name">Inserisci il tuo nome</label>
                             <input type="text" id="player-name" maxlength="10" autocomplete="off" spellcheck="false" placeholder="PLAYER"> <!-- spellcheck serve per evitare il controllo ortografico dei browser (la classica linea rossa sotto) -->
@@ -103,6 +108,15 @@
                             <span class="sr-only">Salva e vai alla classifica</span>
                             <span aria-hidden="true">Salva e<br>vai alla classifica</span>
                         </button>
+                    </div>
+
+                    <!-- Banner Easter Egg in sovrimpressione -->
+                    <div id="easter-egg-modal" class="hide" role="dialog" aria-modal="true" aria-labelledby="easter-egg-title">
+                        <h2 id="easter-egg-title" class="game-over-title" style="font-size: 8cqw; margin-bottom: 4cqw;">SORPRESA!</h2>
+                        <div class="easter-egg-hint-content">
+                            <p><strong>Punteggio eccellente!</strong><br>Come ricompensa per il risultato ottenuto, ti viene svelato un segreto: all'interno del sito è nascosto un <em>Easter Egg</em> (un livello segreto)...<br>La caccia al tesoro è aperta!</p>
+                        </div>
+                        <button type="button" id="close-easter-egg-btn" class="arcade-btn">Wow, grazie!</button>
                     </div>
 
                     <!-- Schermata impostazioni (Pausa) -->
@@ -126,6 +140,8 @@
         </div>
 
         [!FOOTER!]
+
+        <button type="button" id="arcade-coin-btn" class="arcade-coin-btn" aria-label="Inserisci moneta (Suono)"></button>
     </div>
 
     [!WARNING!]

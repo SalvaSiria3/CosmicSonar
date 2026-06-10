@@ -242,7 +242,7 @@ class TutorialManager {
         switch (this.state.phase) {
             case 0:
                 this.ui.phaseTitle.textContent = 'Prima di iniziare...';
-                this.ui.instructions.innerHTML = '<span class="sr-only">È fortemente consigliato l\'uso delle cuffie per sfruttare appieno l\'audio spaziale. Inoltre, ricorda che puoi premere ESC in qualsiasi momento per risentire le istruzioni e mettere in pausa.</span><span aria-hidden="true">È fortemente consigliato l\'uso delle <span class="hint-highlight">cuffie</span> per l\'audio 3D.<br>Premi <span class="hint-highlight">ESC</span> in qualsiasi momento per rivedere le istruzioni e mettere in pausa.</span>';
+                this.ui.instructions.innerHTML = '<span class="sr-only">È fortemente consigliato l\'uso delle cuffie per sfruttare l\'audio spaziale. Ricorda che puoi premere ESC per mettere in pausa, e C per sentire un suono che indica la tua posizione.</span><span aria-hidden="true">È fortemente consigliato l\'uso delle <span class="hint-highlight">cuffie</span> per l\'audio 3D.<br>Premi <span class="hint-highlight">ESC</span> per la pausa e <span class="hint-highlight">C</span> per localizzare la tua navicella.</span>';
                 this.ui.actionBtn.textContent = 'Avanti';
                 break;
                 
@@ -373,6 +373,12 @@ class TutorialManager {
         } else if (e.code === 'Space') {
             if (e.repeat) return;
             this.shoot();
+        } else if (e.code === 'KeyC') {
+            if (this.ui.announcer) {
+                const laneNames = ['Sinistra', 'Centrale', 'Destra'];
+                this.ui.announcer.textContent = `Corsia: ${laneNames[this.shipLane]}`;
+            }
+            this.audioEngine.playLanePing(this.shipLane);
         }
     }
 

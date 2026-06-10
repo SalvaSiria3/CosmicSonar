@@ -1,7 +1,6 @@
 <?php
 require_once 'src/components/template.php';
 
-
 $page_scripts = '<script src="src/js/game/pacman_game.js" defer></script>
                 <link rel="stylesheet" href="src/css/pacman.css"/>';
 

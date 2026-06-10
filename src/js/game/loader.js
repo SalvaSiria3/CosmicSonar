@@ -93,6 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const modeSelection = document.getElementById('mode-selection');
             if (modeSelection) modeSelection.classList.remove('hide');
             
+            // Nasconde il suggerimento del tutorial se l'utente ha già giocato almeno una volta
+            const tutorialHint = document.getElementById('tutorial-hint');
+            if (tutorialHint && localStorage.getItem('hasPlayed') === 'true') {
+                tutorialHint.style.display = 'none';
+            }
+            
             const modeTitle = document.getElementById('mode-title');
             if (modeTitle) modeTitle.focus(); // Accessibilità: annuncia all'utente la schermata
         }, 500);

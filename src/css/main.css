@@ -6,7 +6,7 @@
     margin-right: auto;
     transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center 30%;
-    margin-bottom: 0;
+    margin-bottom: 8vw;
 }
 
 
@@ -16,7 +16,8 @@
 #settings-modal.hide,
 #loading-screen.hide,
 #filter-pacman.hide,
-#tutorial-ui.hide {
+#tutorial-ui.hide,
+#easter-egg-modal.hide {
     display: none;
 }
 
@@ -611,12 +612,22 @@
     color: var(--tertiary-color);
 }
 
+.esc-hint a.tutorial-link {
+    color: var(--tertiary-color);
+    text-decoration: underline;
+    text-underline-offset: 0.2cqw;
+}
+
+#tutorial-hint {
+    color: var(--neutral-light);
+    font-size: 3cqw;
+    padding-bottom: 0.6cqw;
+}
+
 /* --- Modalità Difficile --- */
 .hard-mode .player-ship,
 .hard-mode .alien,
-.hard-mode .laser,
-.hard-mode .score-container,
-.hard-mode .lives-container {
+.hard-mode .laser {
     opacity: 0;
 }
 
@@ -946,6 +957,45 @@
     opacity: 0.8;
 }
 
+/* --- Modal Easter Egg --- */
+#easter-egg-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 60;
+    font-family: var(--primary-font);
+    color: var(--neutral-light);
+    text-align: center;
+    padding: 3cqw;
+}
+
+.easter-egg-hint-content {
+    background-color: rgba(47, 233, 249, 0.15);
+    border: 0.2cqw solid var(--tertiary-color);
+    border-radius: 8px;
+    padding: 3cqw;
+    width: 85%;
+    margin-bottom: 4cqw;
+    font-family: var(--tertiary-font);
+    font-size: 4cqw;
+    color: var(--neutral-light);
+    line-height: 1.4;
+    text-shadow: 0 0 1cqw rgba(0,0,0,0.8);
+}
+
+.easter-egg-hint-content strong { color: var(--tertiary-color); }
+.easter-egg-hint-content em { color: var(--primary-color); font-style: normal; }
+
+#close-easter-egg-btn {
+    font-size: 2.5cqw;
+    padding: 1.5cqw 3cqw;
+}
+
 .player-name-container {
     display: flex;
     flex-direction: column;
@@ -1256,6 +1306,8 @@
     /* Game Over */
     .game-over-title { font-size: 6.8vw; filter: drop-shadow(0 0 0.8vw rgb(76, 49, 132)); }
     .final-score-text { font-size: 2vw; margin-bottom: 1.8vw; }
+    .easter-egg-hint-content { border-width: 0.2vw; padding: 2vw; width: 85%; margin-bottom: 3vw; font-size: 2.2vw; }
+    #close-easter-egg-btn { font-size: 1.5vw; padding: 1vw 2vw; }
     .player-name-container label { font-size: 1vw; text-shadow: 0 0 0.4vw rgba(0, 0, 0, 1); }
     #player-name { font-size: 1.8vw; width: 24vw; padding: 0.6vw; }
     #save-score-btn { font-size: 1.1vw; padding: 0.8vw 1.6vw; margin-top: 1.2vw; }
@@ -1267,7 +1319,7 @@
     .mode-btn { font-size: 1.1vw; padding: 0.6vw 0; margin-bottom: 0.6vw; }
     .mode-desc { font-size: 1vw; }
     .mode-card { padding: 1.4vw 0.6vw; border-width: 0.12vw; } /* Aggiornato anche per la virtual machine */
-    .hints-container { bottom: -2vw; gap: 0.6vw; }
+    .hints-container { bottom: -4vw; gap: 0.6vw; }
     .esc-hint { font-size: 1.4vw; gap: 0.4vw; }
     .hint-icon { width: 1.4vw; }
 

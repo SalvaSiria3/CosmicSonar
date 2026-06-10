@@ -226,10 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameAnnouncer.textContent = `Vite: ${lives}`;
             }
         } else if (e.code === 'KeyC') {
-            if (gameAnnouncer) {
-                const laneNames = ['Sinistra', 'Centrale', 'Destra'];
-                gameAnnouncer.textContent = `Corsia: ${laneNames[currentLane]}`;
-            }
             audio.playLanePing(currentLane);
         }
     });
