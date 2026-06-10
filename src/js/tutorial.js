@@ -191,7 +191,9 @@ class TutorialManager {
         // Annuncia le istruzioni allo screen reader
         if (this.ui.announcer) {
             const srOnly = this.ui.instructions.querySelector('.sr-only');
-            this.ui.announcer.textContent = srOnly ? srOnly.textContent : this.ui.instructions.textContent;
+            const textToAnnounce = srOnly ? srOnly.textContent : this.ui.instructions.textContent;
+            this.ui.announcer.textContent = '';
+            setTimeout(() => { this.ui.announcer.textContent = textToAnnounce; }, 50);
         }
         
         setTimeout(() => this.ui.uiPanel.focus(), 100);
@@ -210,7 +212,9 @@ class TutorialManager {
         
         if (this.ui.announcer) {
             const srOnly = this.ui.instructions.querySelector('.sr-only');
-            this.ui.announcer.textContent = srOnly ? srOnly.textContent : this.ui.instructions.textContent;
+            const textToAnnounce = srOnly ? srOnly.textContent : this.ui.instructions.textContent;
+            this.ui.announcer.textContent = '';
+            setTimeout(() => { this.ui.announcer.textContent = textToAnnounce; }, 50);
         }
         
         setTimeout(() => this.ui.uiPanel.focus(), 100);
@@ -307,7 +311,8 @@ class TutorialManager {
         if (this.ui.announcer) {
             const srOnly = this.ui.instructions.querySelector('.sr-only');
             const instructionsText = srOnly ? srOnly.textContent : this.ui.instructions.textContent;
-            this.ui.announcer.textContent = `${this.ui.phaseTitle.textContent}. ${instructionsText}`;
+            this.ui.announcer.textContent = '';
+            setTimeout(() => { this.ui.announcer.textContent = `${this.ui.phaseTitle.textContent}. ${instructionsText}`; }, 50);
         }
         
         // Sposta il focus sul container in modo che l'utente non salti per sbaglio le istruzioni

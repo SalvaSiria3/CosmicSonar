@@ -17,6 +17,8 @@
                 <main id="main-content" tabindex="-1">
                     <h1 class="sr-only">Modalità Pac-Man</h1>
                     
+                    <div id="game-focus" tabindex="-1" role="application" aria-label="Partita in corso"></div>
+
                     <p class="sr-only" aria-live="assertive" id="game-announcer"></p>
 
                     <div id="loading-screen" class="loading-container hide"></div>
@@ -24,7 +26,7 @@
                     <!-- Selezione Modalità Semplificata -->
                     <div id="mode-selection">
                         <h2 class="pacman-secret-level-text">Livello Segreto</h2>
-                        <h3 class="menu-title pacman-mode-title" id="mode-title">Pac-Man Mode</h3>
+                        <h3 class="menu-title pacman-mode-title" id="mode-title" tabindex="-1">Pac-Man Mode</h3>
                         <div class="mode-cards-container pacman-cards-container" role="group" aria-labelledby="mode-title">
                             <div class="mode-card pacman-mode-card">
                                 <button type="button" id="btn-pacman" class="arcade-btn mode-btn pacman-btn-play" aria-describedby="desc-pacman">Gioca</button>
@@ -56,7 +58,7 @@
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-2">
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-3">
                         </div>
-                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" aria-haspopup="dialog" aria-controls="settings-modal" title="Impostazioni">
+                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" aria-haspopup="dialog" aria-controls="settings-modal">
                             <span class="icon-settings" aria-hidden="true"></span>
                         </button>
                     </div>

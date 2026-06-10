@@ -42,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let spawnTimeoutId;
     let animationFrameId;
     
+    // All'avvio della pagina, sposta il focus sul titolo per farlo leggere allo screen reader
+    const modeTitle = document.getElementById('mode-title');
+    if (modeTitle) modeTitle.focus();
+
     const audio = new AudioEngine();
     
     // Pre-carica tutti gli effetti sonori
@@ -121,8 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.resume(); 
             spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate); 
             
-            const mainContent = document.getElementById('main-content');
-            if (mainContent) mainContent.focus();
+            const gameFocus = document.getElementById('game-focus');
+            if (gameFocus) gameFocus.focus();
         } else {
             isPaused = true;
             clearTimeout(spawnTimeoutId); 
@@ -219,11 +223,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (e.code === 'KeyP') {
             if (gameAnnouncer) {
-                gameAnnouncer.textContent = `Punteggio: ${score}`;
+                gameAnnouncer.textContent = '';
+                setTimeout(() => { gameAnnouncer.textContent = `Punteggio: ${score}`; }, 50);
             }
         } else if (e.code === 'KeyV') {
             if (gameAnnouncer) {
-                gameAnnouncer.textContent = `Vite: ${lives}`;
+                gameAnnouncer.textContent = '';
+                setTimeout(() => { gameAnnouncer.textContent = `Vite: ${lives}`; }, 50);
             }
         } else if (e.code === 'KeyC') {
             audio.playLanePing(currentLane);
@@ -476,8 +482,8 @@ document.addEventListener('DOMContentLoaded', () => {
         scheduleNextSpawn();
         animationFrameId = requestAnimationFrame(gameLoop);
         
-        const mainContent = document.getElementById('main-content');
-        if (mainContent) mainContent.focus();
+        const gameFocus = document.getElementById('game-focus');
+        if (gameFocus) gameFocus.focus();
     };
 
     const btnPacman = document.getElementById('btn-pacman');

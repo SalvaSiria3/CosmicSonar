@@ -17,6 +17,8 @@
                 <main id="main-content" tabindex="-1">
                     <h1 class="sr-only">Partita in corso</h1>
                     
+                    <div id="game-focus" tabindex="-1" role="application" aria-label="Partita in corso"></div>
+
                     <!-- Per comunicare danni e avvisi in tempo reale -->
                     <p class="sr-only" aria-live="assertive" id="game-announcer"></p>
 
@@ -34,7 +36,7 @@
 
                     <!-- Selezione Modalità -->
                     <div id="mode-selection" class="hide">
-                        <h2 class="menu-title" id="mode-title">Seleziona modalità</h2>
+                        <h2 class="menu-title" id="mode-title" tabindex="-1">Seleziona modalità</h2>
                         <div class="mode-cards-container" role="group" aria-labelledby="mode-title">
                             <div class="mode-card">
                                 <button type="button" id="btn-classic" class="arcade-btn mode-btn classic-btn" aria-describedby="desc-classic">Classica</button>
@@ -48,9 +50,8 @@
                         
                         <div class="hints-container">
                             <p class="esc-hint" id="tutorial-hint">
-                                <span class="sr-only">Prima volta qui? Se non sai come giocare, prova il tutorial.</span>
                                 <img src="src/assets/images/tutorial_icon.png" alt="" aria-hidden="true" class="hint-icon">
-                                <span aria-hidden="true">Prima volta qui? Se non sai come giocare, prova il <a href="tutorial.php" class="tutorial-link">tutorial</a>!</span>
+                                Prima volta qui? Se non sai come giocare, <a href="tutorial.php" class="tutorial-link">prova il tutorial</a>!
                             </p>
                             <p class="esc-hint">
                                 <span class="sr-only">Comandi rapidi: Premi ESC per la pausa, P per il punteggio, V per le vite, C per la colonna corrente.</span>
@@ -78,7 +79,7 @@
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-2">
                             <img src="src/assets/images/heart_full.png" alt="" aria-hidden="true" class="heart-icon" id="life-3">
                         </div>
-                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" aria-haspopup="dialog" aria-controls="settings-modal" title="Impostazioni">
+                        <button type="button" class="arcade-btn settings-btn" aria-label="Impostazioni" aria-haspopup="dialog" aria-controls="settings-modal">
                             <span class="icon-settings" aria-hidden="true"></span>
                         </button>
                     </div>

@@ -128,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.resume(); 
             spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate); 
             
-            const mainContent = document.getElementById('main-content');
-            if (mainContent) mainContent.focus();
+            const gameFocus = document.getElementById('game-focus');
+            if (gameFocus) gameFocus.focus();
         } else {
             isPaused = true;
             clearTimeout(spawnTimeoutId); 
@@ -234,11 +234,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (e.code === 'KeyP') {
             if (gameAnnouncer) {
-                gameAnnouncer.textContent = `Punteggio: ${score}`;
+                gameAnnouncer.textContent = '';
+                setTimeout(() => { gameAnnouncer.textContent = `Punteggio: ${score}`; }, 50);
             }
         } else if (e.code === 'KeyV') {
             if (gameAnnouncer) {
-                gameAnnouncer.textContent = `Vite: ${lives}`;
+                gameAnnouncer.textContent = '';
+                setTimeout(() => { gameAnnouncer.textContent = `Vite: ${lives}`; }, 50);
             }
         } else if (e.code === 'KeyC') {
             audio.playLanePing(currentLane);
@@ -537,7 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameMode = selectedMode || 'classic';
         
         // Segna nella memoria locale che l'utente non è più un principiante
-        localStorage.setItem('hasPlayed', 'false');
+        localStorage.setItem('hasPlayed', 'true');
         
         // Reset variabili statistiche
         aliensDestroyed = 0;
@@ -607,8 +609,8 @@ document.addEventListener('DOMContentLoaded', () => {
         scheduleNextSpawn();
         animationFrameId = requestAnimationFrame(gameLoop);
         
-        const mainContent = document.getElementById('main-content');
-        if (mainContent) mainContent.focus();
+        const gameFocus = document.getElementById('game-focus');
+        if (gameFocus) gameFocus.focus();
     };
 
     // --- COMANDO PROVVISORIO: Premi 'T' per la trasparenza del cabinato ---
