@@ -272,9 +272,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         spawnEnemy();
         
-        spawnRate = Math.max(600, spawnRate * 0.98); 
-        const currentMinSpeed = score > 2580 ? 1.7 : 2.5; // Sblocca un nuovo livello di difficoltà oltre i 2580 pt
-        enemySpeed = Math.max(currentMinSpeed, enemySpeed * 0.985); 
+        spawnRate = Math.max(610, spawnRate * 0.98); 
+        
+        let currentMinSpeed;
+        if (score > 4000) currentMinSpeed = 1.5; // Ulteriore livello di difficoltà oltre i 4000 pt
+        else if (score > 2580) currentMinSpeed = 1.7; // Sblocca un nuovo livello di difficoltà oltre i 2580 pt
+        else currentMinSpeed = 2.5;
         
         spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate);
     }
