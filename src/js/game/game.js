@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalScoreElement = document.getElementById('final-score');
     const saveScoreBtn = document.getElementById('save-score-btn');
     const usernameInput = document.getElementById('player-name');
+    const closeEasterEggBtn = document.getElementById('close-easter-egg-btn');
     
     const settingsBtn = document.querySelector('#topbargame .settings-btn');
     const settingsModal = document.getElementById('settings-modal');
@@ -522,6 +523,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (saveScoreBtn) {
         saveScoreBtn.addEventListener('click', saveScoreAndRedirect);
+        saveScoreBtn.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+            }
+        });
     }
     
     if (usernameInput) {
@@ -532,6 +538,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (usernameInput.value.length >= 10 && usernameInput.selectionStart === usernameInput.selectionEnd) {
                     audio.playSFX('wall', 0.3 * sfxVolume);
                 }
+            }
+        });
+    }
+
+    if (closeEasterEggBtn) {
+        closeEasterEggBtn.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
             }
         });
     }
