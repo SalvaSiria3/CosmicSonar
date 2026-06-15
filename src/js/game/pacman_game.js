@@ -454,6 +454,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (saveScoreBtn) {
         saveScoreBtn.addEventListener('click', saveScoreAndRedirect);
+        saveScoreBtn.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+            }
+        });
     }
     
     if (usernameInput) {
