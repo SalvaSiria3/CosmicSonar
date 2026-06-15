@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalScoreElement = document.getElementById('final-score');
     const saveScoreBtn = document.getElementById('save-score-btn');
     const usernameInput = document.getElementById('player-name');
-    const closeEasterEggBtn = document.getElementById('close-easter-egg-btn');
     
     const settingsBtn = document.querySelector('#topbargame .settings-btn');
     const settingsModal = document.getElementById('settings-modal');
@@ -273,12 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         spawnEnemy();
         
-        spawnRate = Math.max(610, spawnRate * 0.98); 
-        
-        let currentMinSpeed;
-        if (score > 4000) currentMinSpeed = 1.5; // Ulteriore livello di difficoltà oltre i 4000 pt
-        else if (score > 2580) currentMinSpeed = 1.7; // Sblocca un nuovo livello di difficoltà oltre i 2580 pt
-        else currentMinSpeed = 2.5;
+        spawnRate = Math.max(600, spawnRate * 0.98); 
+        const currentMinSpeed = score > 2580 ? 1.7 : 2.5; // Sblocca un nuovo livello di difficoltà oltre i 2580 pt
         enemySpeed = Math.max(currentMinSpeed, enemySpeed * 0.985); 
         
         spawnTimeoutId = setTimeout(scheduleNextSpawn, spawnRate);
@@ -524,11 +519,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (saveScoreBtn) {
         saveScoreBtn.addEventListener('click', saveScoreAndRedirect);
-        saveScoreBtn.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-            }
-        });
     }
     
     if (usernameInput) {
@@ -539,14 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (usernameInput.value.length >= 10 && usernameInput.selectionStart === usernameInput.selectionEnd) {
                     audio.playSFX('wall', 0.3 * sfxVolume);
                 }
-            }
-        });
-    }
-
-    if (closeEasterEggBtn) {
-        closeEasterEggBtn.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
             }
         });
     }
